@@ -13,8 +13,11 @@
     { "key": "hotelId", "value": "" },
     { "key": "corpCode", "value": "" },
     { "key": "brandCode", "value": "" },
+    { "key": "brandName", "value": "" },
     { "key": "hgCode", "value": "" },
+    { "key": "hgName", "value": "" },
     { "key": "hotelCode", "value": "" },
+    { "key": "hotelName", "value": "" },
     { "key": "corpDialCode", "value": "" },
     { "key": "brandDialCode", "value": "" },
     { "key": "hgDialCode", "value": "" },
@@ -97,12 +100,17 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "var suffix = Date.now().toString().slice(-5);",
-                  "var brandCode = 'Brand_01_' + suffix;",
+                  "// Generate unique BrandCode and BrandName dynamically",
+                  "var timestamp = Date.now().toString().slice(-6);",
+                  "var randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();",
+                  "var brandCode = 'BRD-TC001-' + timestamp + randomPart;",
+                  "var brandName = 'Brand TC001 ' + timestamp + randomPart;",
                   "pm.collectionVariables.set('brandCode', brandCode);",
+                  "pm.collectionVariables.set('brandName', brandName);",
                   "pm.collectionVariables.set('brandDialCode', '+1');",
                   "pm.collectionVariables.set('brandCountry', 'USA');",
-                  "console.log('TC_001 - Creating Brand: ' + brandCode);"
+                  "console.log('TC_001 - BrandCode: ' + brandCode);",
+                  "console.log('TC_001 - BrandName: ' + brandName);"
                 ]
               }
             },
@@ -132,7 +140,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandCode\": \"{{brandCode}}\",\n  \"brandName\": \"Brand {{brandCode}}\",\n  \"brandDescription\": \"Auto created brand for TC_001\",\n  \"brandStatus\": \"Active\",\n  \"marketSegment\": null,\n  \"contactPersonFirstName\": \"Brand\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"+1\",\n  \"dialCountryCode\": \"USA\",\n  \"contactPersonPhone\": \"9000000002\",\n  \"contactPersonEmail\": \"brand.TC001@test.com\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandCode\": \"{{brandCode}}\",\n  \"brandName\": \"{{brandName}}\",\n  \"brandDescription\": \"Auto created brand for TC_001\",\n  \"brandStatus\": \"Active\",\n  \"marketSegment\": null,\n  \"contactPersonFirstName\": \"Brand\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"+1\",\n  \"dialCountryCode\": \"USA\",\n  \"contactPersonPhone\": \"9000000002\",\n  \"contactPersonEmail\": \"brand.TC001@test.com\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
             },
             "url": {
               "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Brands/createbrand",
@@ -150,12 +158,17 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "var suffix = Date.now().toString().slice(-5);",
-                  "var hgCode = 'HG_01_' + suffix;",
+                  "// Generate unique HotelGroupCode and HotelGroupName dynamically",
+                  "var timestamp = Date.now().toString().slice(-6);",
+                  "var randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();",
+                  "var hgCode = 'HG-TC001-' + timestamp + randomPart;",
+                  "var hgName = 'HotelGroup TC001 ' + timestamp + randomPart;",
                   "pm.collectionVariables.set('hgCode', hgCode);",
+                  "pm.collectionVariables.set('hgName', hgName);",
                   "pm.collectionVariables.set('hgDialCode', '+1');",
                   "pm.collectionVariables.set('hgCountry', 'USA');",
-                  "console.log('TC_001 - Creating Hotel Group: ' + hgCode);"
+                  "console.log('TC_001 - HGCode: ' + hgCode);",
+                  "console.log('TC_001 - HGName: ' + hgName);"
                 ]
               }
             },
@@ -185,7 +198,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupCode\": \"{{hgCode}}\",\n  \"hotelGroupName\": \"HG {{hgCode}}\",\n  \"hotelGroupDescription\": \"Auto created HG for TC_001\",\n  \"contactPersonFirstName\": \"HG\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"+1\",\n  \"dialCountryCode\": \"USA\",\n  \"contactPersonPhone\": \"9000000003\",\n  \"contactPersonEmail\": \"hg.TC001@test.com\",\n  \"hotelGroupStatus\": \"Active\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupCode\": \"{{hgCode}}\",\n  \"hotelGroupName\": \"{{hgName}}\",\n  \"hotelGroupDescription\": \"Auto created HG for TC_001\",\n  \"contactPersonFirstName\": \"HG\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"+1\",\n  \"dialCountryCode\": \"USA\",\n  \"contactPersonPhone\": \"9000000003\",\n  \"contactPersonEmail\": \"hg.TC001@test.com\",\n  \"hotelGroupStatus\": \"Active\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
             },
             "url": {
               "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/HotelGroups/createhotelgroup",
@@ -203,15 +216,20 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "var suffix = Date.now().toString().slice(-5);",
-                  "var hotelCode = 'HTL_01_' + suffix;",
+                  "// Generate unique HotelCode and HotelName dynamically",
+                  "var timestamp = Date.now().toString().slice(-6);",
+                  "var randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();",
+                  "var hotelCode = 'HTL-TC001-' + timestamp + randomPart;",
+                  "var hotelName = 'Hotel TC001 ' + timestamp + randomPart;",
                   "pm.collectionVariables.set('hotelCode', hotelCode);",
+                  "pm.collectionVariables.set('hotelName', hotelName);",
                   "pm.collectionVariables.set('hotelDialCode', '+1');",
                   "pm.collectionVariables.set('hotelCountry', 'USA');",
                   "pm.collectionVariables.set('mappedHotelTimezone', 'EDT');",
                   "pm.collectionVariables.set('hotelCurrencySymbol', 'USD');",
                   "pm.collectionVariables.set('hotelDateFormat', 'MM/DD/YYYY');",
-                  "console.log('TC_001 - Creating Hotel: ' + hotelCode);"
+                  "console.log('TC_001 - HotelCode: ' + hotelCode);",
+                  "console.log('TC_001 - HotelName: ' + hotelName);"
                 ]
               }
             },
@@ -243,7 +261,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupId\": {{hotelGroupId}},\n  \"regionId\": null,\n  \"hotelCode\": \"{{hotelCode}}\",\n  \"hotelName\": \"Hotel {{hotelCode}}\",\n  \"firstName\": \"Hotel\",\n  \"lastName\": \"Auto\",\n  \"addressLine1\": \"Test Hotel Address\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"USA\",\n  \"dialCode\": \"+1\",\n  \"dialCountryCode\": \"USA\",\n  \"mobileNumber\": \"9000000004\",\n  \"email\": \"hotel.TC001@test.com\",\n  \"timezone\": \"EDT\",\n  \"hotelStatus\": \"Active\",\n  \"currencySymbol\": \"USD\",\n  \"currencyRoundOff\": \"2\",\n  \"paymentTypes\": null,\n  \"dateFormat\": \"MM/DD/YYYY\",\n  \"timeFormat\": \"HH:mm\",\n  \"hotelDescription\": \"Auto created hotel for TC_001\",\n  \"sourceGroup\": null,\n  \"sourceSubGroup\": null,\n  \"sourceUserName\": null,\n  \"sourcePassword\": null,\n  \"systemId\": null,\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupId\": {{hotelGroupId}},\n  \"regionId\": null,\n  \"hotelCode\": \"{{hotelCode}}\",\n  \"hotelName\": \"{{hotelName}}\",\n  \"firstName\": \"Hotel\",\n  \"lastName\": \"Auto\",\n  \"addressLine1\": \"Test Hotel Address\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"USA\",\n  \"dialCode\": \"+1\",\n  \"dialCountryCode\": \"USA\",\n  \"mobileNumber\": \"9000000004\",\n  \"email\": \"hotel.TC001@test.com\",\n  \"timezone\": \"EDT\",\n  \"hotelStatus\": \"Active\",\n  \"currencySymbol\": \"USD\",\n  \"currencyRoundOff\": \"2\",\n  \"paymentTypes\": null,\n  \"dateFormat\": \"MM/DD/YYYY\",\n  \"timeFormat\": \"HH:mm\",\n  \"hotelDescription\": \"Auto created hotel for TC_001\",\n  \"sourceGroup\": null,\n  \"sourceSubGroup\": null,\n  \"sourceUserName\": null,\n  \"sourcePassword\": null,\n  \"systemId\": null,\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
             },
             "url": {
               "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Hotels/createhotel",
@@ -320,12 +338,17 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "var suffix = Date.now().toString().slice(-5);",
-                  "var brandCode = 'Brand_02_' + suffix;",
+                  "// Generate unique BrandCode and BrandName dynamically",
+                  "var timestamp = Date.now().toString().slice(-6);",
+                  "var randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();",
+                  "var brandCode = 'BRD-TC002-' + timestamp + randomPart;",
+                  "var brandName = 'Brand TC002 ' + timestamp + randomPart;",
                   "pm.collectionVariables.set('brandCode', brandCode);",
+                  "pm.collectionVariables.set('brandName', brandName);",
                   "pm.collectionVariables.set('brandDialCode', '+91');",
                   "pm.collectionVariables.set('brandCountry', 'IND');",
-                  "console.log('TC_002 - Creating Brand: ' + brandCode);"
+                  "console.log('TC_002 - BrandCode: ' + brandCode);",
+                  "console.log('TC_002 - BrandName: ' + brandName);"
                 ]
               }
             },
@@ -355,7 +378,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandCode\": \"{{brandCode}}\",\n  \"brandName\": \"Brand {{brandCode}}\",\n  \"brandDescription\": \"Auto created brand for TC_002\",\n  \"brandStatus\": \"Active\",\n  \"marketSegment\": null,\n  \"contactPersonFirstName\": \"Brand\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"+91\",\n  \"dialCountryCode\": \"IND\",\n  \"contactPersonPhone\": \"9000000002\",\n  \"contactPersonEmail\": \"brand.TC002@test.com\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandCode\": \"{{brandCode}}\",\n  \"brandName\": \"{{brandName}}\",\n  \"brandDescription\": \"Auto created brand for TC_002\",\n  \"brandStatus\": \"Active\",\n  \"marketSegment\": null,\n  \"contactPersonFirstName\": \"Brand\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"+91\",\n  \"dialCountryCode\": \"IND\",\n  \"contactPersonPhone\": \"9000000002\",\n  \"contactPersonEmail\": \"brand.TC002@test.com\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
             },
             "url": {
               "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Brands/createbrand",
@@ -373,12 +396,17 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "var suffix = Date.now().toString().slice(-5);",
-                  "var hgCode = 'HG_02_' + suffix;",
+                  "// Generate unique HotelGroupCode and HotelGroupName dynamically",
+                  "var timestamp = Date.now().toString().slice(-6);",
+                  "var randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();",
+                  "var hgCode = 'HG-TC002-' + timestamp + randomPart;",
+                  "var hgName = 'HotelGroup TC002 ' + timestamp + randomPart;",
                   "pm.collectionVariables.set('hgCode', hgCode);",
+                  "pm.collectionVariables.set('hgName', hgName);",
                   "pm.collectionVariables.set('hgDialCode', '+91');",
                   "pm.collectionVariables.set('hgCountry', 'IND');",
-                  "console.log('TC_002 - Creating Hotel Group: ' + hgCode);"
+                  "console.log('TC_002 - HGCode: ' + hgCode);",
+                  "console.log('TC_002 - HGName: ' + hgName);"
                 ]
               }
             },
@@ -408,7 +436,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupCode\": \"{{hgCode}}\",\n  \"hotelGroupName\": \"HG {{hgCode}}\",\n  \"hotelGroupDescription\": \"Auto created HG for TC_002\",\n  \"contactPersonFirstName\": \"HG\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"+91\",\n  \"dialCountryCode\": \"IND\",\n  \"contactPersonPhone\": \"9000000003\",\n  \"contactPersonEmail\": \"hg.TC002@test.com\",\n  \"hotelGroupStatus\": \"Active\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupCode\": \"{{hgCode}}\",\n  \"hotelGroupName\": \"{{hgName}}\",\n  \"hotelGroupDescription\": \"Auto created HG for TC_002\",\n  \"contactPersonFirstName\": \"HG\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"+91\",\n  \"dialCountryCode\": \"IND\",\n  \"contactPersonPhone\": \"9000000003\",\n  \"contactPersonEmail\": \"hg.TC002@test.com\",\n  \"hotelGroupStatus\": \"Active\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
             },
             "url": {
               "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/HotelGroups/createhotelgroup",
@@ -426,15 +454,20 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "var suffix = Date.now().toString().slice(-5);",
-                  "var hotelCode = 'HTL_02_' + suffix;",
+                  "// Generate unique HotelCode and HotelName dynamically",
+                  "var timestamp = Date.now().toString().slice(-6);",
+                  "var randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();",
+                  "var hotelCode = 'HTL-TC002-' + timestamp + randomPart;",
+                  "var hotelName = 'Hotel TC002 ' + timestamp + randomPart;",
                   "pm.collectionVariables.set('hotelCode', hotelCode);",
+                  "pm.collectionVariables.set('hotelName', hotelName);",
                   "pm.collectionVariables.set('hotelDialCode', '+91');",
                   "pm.collectionVariables.set('hotelCountry', 'IND');",
                   "pm.collectionVariables.set('mappedHotelTimezone', 'IST');",
                   "pm.collectionVariables.set('hotelCurrencySymbol', 'INR');",
                   "pm.collectionVariables.set('hotelDateFormat', 'DD/MM/YYYY');",
-                  "console.log('TC_002 - Creating Hotel: ' + hotelCode);"
+                  "console.log('TC_002 - HotelCode: ' + hotelCode);",
+                  "console.log('TC_002 - HotelName: ' + hotelName);"
                 ]
               }
             },
@@ -466,7 +499,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupId\": {{hotelGroupId}},\n  \"regionId\": null,\n  \"hotelCode\": \"{{hotelCode}}\",\n  \"hotelName\": \"Hotel {{hotelCode}}\",\n  \"firstName\": \"Hotel\",\n  \"lastName\": \"Auto\",\n  \"addressLine1\": \"Test Hotel Address\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"IND\",\n  \"dialCode\": \"+91\",\n  \"dialCountryCode\": \"IND\",\n  \"mobileNumber\": \"9000000004\",\n  \"email\": \"hotel.TC002@test.com\",\n  \"timezone\": \"IST\",\n  \"hotelStatus\": \"Active\",\n  \"currencySymbol\": \"INR\",\n  \"currencyRoundOff\": \"2\",\n  \"paymentTypes\": null,\n  \"dateFormat\": \"DD/MM/YYYY\",\n  \"timeFormat\": \"HH:mm\",\n  \"hotelDescription\": \"Auto created hotel for TC_002\",\n  \"sourceGroup\": null,\n  \"sourceSubGroup\": null,\n  \"sourceUserName\": null,\n  \"sourcePassword\": null,\n  \"systemId\": null,\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupId\": {{hotelGroupId}},\n  \"regionId\": null,\n  \"hotelCode\": \"{{hotelCode}}\",\n  \"hotelName\": \"{{hotelName}}\",\n  \"firstName\": \"Hotel\",\n  \"lastName\": \"Auto\",\n  \"addressLine1\": \"Test Hotel Address\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"IND\",\n  \"dialCode\": \"+91\",\n  \"dialCountryCode\": \"IND\",\n  \"mobileNumber\": \"9000000004\",\n  \"email\": \"hotel.TC002@test.com\",\n  \"timezone\": \"IST\",\n  \"hotelStatus\": \"Active\",\n  \"currencySymbol\": \"INR\",\n  \"currencyRoundOff\": \"2\",\n  \"paymentTypes\": null,\n  \"dateFormat\": \"DD/MM/YYYY\",\n  \"timeFormat\": \"HH:mm\",\n  \"hotelDescription\": \"Auto created hotel for TC_002\",\n  \"sourceGroup\": null,\n  \"sourceSubGroup\": null,\n  \"sourceUserName\": null,\n  \"sourcePassword\": null,\n  \"systemId\": null,\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
             },
             "url": {
               "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Hotels/createhotel",
