@@ -2,35 +2,38 @@
   "info": {
     "name": "Category 2 - Different Currency (TC_003 to TC_010)",
     "_postman_id": "cat2-diff-currency-tc003-tc010",
-    "description": "Data-driven Postman collection for Category 2: Different Currency at Each Screen. Covers TC_003 to TC_010. Login is done manually - set authToken and loggedInUserId in collection variables before running.",
+    "description": "Data-driven Postman collection for Category 2: Different Currency at Each Screen. Covers TC_003 to TC_010. Login is done manually - set authToken and loggedInUserId in collection variables before running. Each API generates its own unique transactionId.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "authToken",            "value": "", "type": "string" },
-    { "key": "loggedInUserId",       "value": "", "type": "string" },
-    { "key": "corporateId",          "value": "", "type": "string" },
-    { "key": "brandId",              "value": "", "type": "string" },
-    { "key": "hotelGroupId",         "value": "", "type": "string" },
-    { "key": "hotelId",              "value": "", "type": "string" },
-    { "key": "corpCode",             "value": "", "type": "string" },
-    { "key": "brandCode",            "value": "", "type": "string" },
-    { "key": "brandName",            "value": "", "type": "string" },
-    { "key": "hgCode",               "value": "", "type": "string" },
-    { "key": "hgName",               "value": "", "type": "string" },
-    { "key": "hotelCode",            "value": "", "type": "string" },
-    { "key": "hotelName",            "value": "", "type": "string" },
-    { "key": "corpDialCode",         "value": "", "type": "string" },
-    { "key": "brandDialCode",        "value": "", "type": "string" },
-    { "key": "hgDialCode",           "value": "", "type": "string" },
-    { "key": "hotelDialCode",        "value": "", "type": "string" },
-    { "key": "mappedCorpTimezone",   "value": "", "type": "string" },
-    { "key": "mappedHotelTimezone",  "value": "", "type": "string" },
-    { "key": "corpCurrencySymbol",   "value": "", "type": "string" },
-    { "key": "brandCurrencySymbol",  "value": "", "type": "string" },
-    { "key": "hotelCurrencySymbol",  "value": "", "type": "string" },
-    { "key": "transactionId",        "value": "", "type": "string" },
-    { "key": "currentTestCaseIndex", "value": "0", "type": "string" },
-    { "key": "__testData__",         "value": "", "type": "string" }
+    { "key": "authToken",              "value": "", "type": "string" },
+    { "key": "loggedInUserId",         "value": "", "type": "string" },
+    { "key": "corporateId",            "value": "", "type": "string" },
+    { "key": "brandId",                "value": "", "type": "string" },
+    { "key": "hotelGroupId",           "value": "", "type": "string" },
+    { "key": "hotelId",                "value": "", "type": "string" },
+    { "key": "corpCode",               "value": "", "type": "string" },
+    { "key": "brandCode",              "value": "", "type": "string" },
+    { "key": "brandName",              "value": "", "type": "string" },
+    { "key": "hgCode",                 "value": "", "type": "string" },
+    { "key": "hgName",                 "value": "", "type": "string" },
+    { "key": "hotelCode",              "value": "", "type": "string" },
+    { "key": "hotelName",              "value": "", "type": "string" },
+    { "key": "corpDialCode",           "value": "", "type": "string" },
+    { "key": "brandDialCode",          "value": "", "type": "string" },
+    { "key": "hgDialCode",             "value": "", "type": "string" },
+    { "key": "hotelDialCode",          "value": "", "type": "string" },
+    { "key": "mappedCorpTimezone",     "value": "", "type": "string" },
+    { "key": "mappedHotelTimezone",    "value": "", "type": "string" },
+    { "key": "corpCurrencySymbol",     "value": "", "type": "string" },
+    { "key": "brandCurrencySymbol",    "value": "", "type": "string" },
+    { "key": "hotelCurrencySymbol",    "value": "", "type": "string" },
+    { "key": "corpTransactionId",      "value": "", "type": "string" },
+    { "key": "brandTransactionId",     "value": "", "type": "string" },
+    { "key": "hgTransactionId",        "value": "", "type": "string" },
+    { "key": "hotelTransactionId",     "value": "", "type": "string" },
+    { "key": "currentTestCaseIndex",   "value": "0", "type": "string" },
+    { "key": "__testData__",           "value": "", "type": "string" }
   ],
   "event": [
     {
@@ -185,7 +188,7 @@
           "    pm.collectionVariables.set(k, row[k]);",
           "});",
           "",
-          "// Shared dial code map (used by individual request pre-req scripts)",
+          "// Shared dial code map",
           "var dialCodeMap = {",
           "    'USA': '+1',  'GBR': '+44', 'DEU': '+49', 'JPN': '+81',",
           "    'SGP': '+65', 'AUS': '+61', 'IND': '+91', 'ZAF': '+27',",
@@ -222,11 +225,12 @@
               "var dialCodeMap = JSON.parse(pm.collectionVariables.get('__dialCodeMap__'));",
               "var timezoneMap = JSON.parse(pm.collectionVariables.get('__timezoneMap__'));",
               "",
-              "// ── Unique Transaction ID ───────────────────────────────────",
-              "var txnId = 'TXN_' + Date.now() + '_' + Math.random().toString(36).substr(2,5).toUpperCase();",
-              "pm.collectionVariables.set('transactionId', txnId);",
+              "// ── Unique Transaction ID for Create Corporate ──────────────",
+              "// Generated fresh on every execution of this specific request",
+              "var corpTxnId = 'CORP_TXN_' + Date.now() + '_' + Math.random().toString(36).substr(2,6).toUpperCase();",
+              "pm.collectionVariables.set('corpTransactionId', corpTxnId);",
               "",
-              "// ── Corporate Code (unique per run) ────────────────────────",
+              "// ── Corporate Code (unique per run) ─────────────────────────",
               "var ts       = Date.now().toString().slice(-6);",
               "var corpCode = 'Corp_' + testCaseId.replace('TC_','') + '_' + ts;",
               "pm.collectionVariables.set('corpCode', corpCode);",
@@ -242,7 +246,7 @@
               "var dialCode = dialCodeMap[pm.collectionVariables.get('corpCountry')] || '+1';",
               "pm.collectionVariables.set('corpDialCode', dialCode);",
               "",
-              "console.log('[' + testCaseId + '] Create Corporate => ' + corpCode + ' | TxnId: ' + txnId);"
+              "console.log('[' + testCaseId + '] Create Corporate => ' + corpCode + ' | Corp TxnId: ' + corpTxnId);"
             ]
           }
         },
@@ -258,7 +262,7 @@
               "    var json = pm.response.json();",
               "    pm.expect(json.successCode).to.eql(1);",
               "    pm.collectionVariables.set('corporateId', json.corporateId);",
-              "    console.log('[' + pm.collectionVariables.get('testCaseId') + '] Corporate ID: ' + json.corporateId);",
+              "    console.log('[' + pm.collectionVariables.get('testCaseId') + '] Corporate ID: ' + json.corporateId + ' | TxnId used: ' + pm.collectionVariables.get('corpTransactionId'));",
               "});"
             ]
           }
@@ -272,7 +276,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"corporateCode\": \"{{corpCode}}\",\n  \"corporateName\": \"Corp {{corpCode}}\",\n  \"corporateDescription\": \"Auto created for {{testCaseId}} | TxnId: {{transactionId}}\",\n  \"corporateStatus\": \"Active\",\n  \"firstName\": \"Auto\",\n  \"lastName\": \"Corp\",\n  \"addressLine1\": \"Test Address Line 1\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"{{corpCountry}}\",\n  \"dialCode\": \"{{corpDialCode}}\",\n  \"dialCountryCode\": \"{{corpCountry}}\",\n  \"mobileNumber\": \"9000000001\",\n  \"contactEmail\": \"corp.{{corpCode}}@test.com\",\n  \"timezone\": \"{{mappedCorpTimezone}}\",\n  \"dateFormat\": \"{{corpDateFormat}}\",\n  \"timeFormat\": \"hh:mm a\",\n  \"enableSsoLogin\": false,\n  \"b2cInstance\": null,\n  \"b2cDomainName\": null,\n  \"b2cSigninSignupPolicy\": null,\n  \"b2cClientId\": null,\n  \"sessionTimeoutLimit\": null,\n  \"enableMfa\": false,\n  \"otpMaxAttempts\": null,\n  \"otpExpirationTime\": null,\n  \"passwordExpirationPeriod\": null,\n  \"currencySymbol\": \"{{corpCurrencySymbol}}\",\n  \"currencyRoundOff\": \"{{corpDecimals}}\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+          "raw": "{\n  \"corporateCode\": \"{{corpCode}}\",\n  \"corporateName\": \"Corp {{corpCode}}\",\n  \"corporateDescription\": \"Auto created for {{testCaseId}} | TxnId: {{corpTransactionId}}\",\n  \"corporateStatus\": \"Active\",\n  \"firstName\": \"Auto\",\n  \"lastName\": \"Corp\",\n  \"addressLine1\": \"Test Address Line 1\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"{{corpCountry}}\",\n  \"dialCode\": \"{{corpDialCode}}\",\n  \"dialCountryCode\": \"{{corpCountry}}\",\n  \"mobileNumber\": \"9000000001\",\n  \"contactEmail\": \"corp.{{corpCode}}@test.com\",\n  \"timezone\": \"{{mappedCorpTimezone}}\",\n  \"dateFormat\": \"{{corpDateFormat}}\",\n  \"timeFormat\": \"hh:mm a\",\n  \"enableSsoLogin\": false,\n  \"b2cInstance\": null,\n  \"b2cDomainName\": null,\n  \"b2cSigninSignupPolicy\": null,\n  \"b2cClientId\": null,\n  \"sessionTimeoutLimit\": null,\n  \"enableMfa\": false,\n  \"otpMaxAttempts\": null,\n  \"otpExpirationTime\": null,\n  \"passwordExpirationPeriod\": null,\n  \"currencySymbol\": \"{{corpCurrencySymbol}}\",\n  \"currencyRoundOff\": \"{{corpDecimals}}\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
         },
         "url": {
           "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Corporates/createcorporate",
@@ -293,6 +297,11 @@
               "var testCaseId  = pm.collectionVariables.get('testCaseId');",
               "var dialCodeMap = JSON.parse(pm.collectionVariables.get('__dialCodeMap__'));",
               "",
+              "// ── Unique Transaction ID for Create Brand ──────────────────",
+              "// Generated fresh on every execution of this specific request",
+              "var brandTxnId = 'BRAND_TXN_' + Date.now() + '_' + Math.random().toString(36).substr(2,6).toUpperCase();",
+              "pm.collectionVariables.set('brandTransactionId', brandTxnId);",
+              "",
               "// ── Dynamic Brand Code & Name ───────────────────────────────",
               "var ts   = Date.now().toString().slice(-6);",
               "var rand = Math.random().toString(36).substr(2,4).toUpperCase();",
@@ -308,7 +317,7 @@
               "// ── Currency (Brand inherits Corp currency) ─────────────────",
               "pm.collectionVariables.set('brandCurrencySymbol', pm.collectionVariables.get('corpCurrency'));",
               "",
-              "console.log('[' + testCaseId + '] Create Brand => ' + brandCode + ' | CorporateId: ' + pm.collectionVariables.get('corporateId'));"
+              "console.log('[' + testCaseId + '] Create Brand => ' + brandCode + ' | Brand TxnId: ' + brandTxnId + ' | CorporateId: ' + pm.collectionVariables.get('corporateId'));"
             ]
           }
         },
@@ -324,7 +333,7 @@
               "    var json = pm.response.json();",
               "    pm.expect(json.successCode).to.eql(1);",
               "    pm.collectionVariables.set('brandId', json.brandId);",
-              "    console.log('[' + pm.collectionVariables.get('testCaseId') + '] Brand ID: ' + json.brandId);",
+              "    console.log('[' + pm.collectionVariables.get('testCaseId') + '] Brand ID: ' + json.brandId + ' | TxnId used: ' + pm.collectionVariables.get('brandTransactionId'));",
               "});"
             ]
           }
@@ -338,7 +347,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandCode\": \"{{brandCode}}\",\n  \"brandName\": \"{{brandName}}\",\n  \"brandDescription\": \"Auto created brand for {{testCaseId}} | TxnId: {{transactionId}}\",\n  \"brandStatus\": \"Active\",\n  \"marketSegment\": null,\n  \"contactPersonFirstName\": \"Brand\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"{{brandDialCode}}\",\n  \"dialCountryCode\": \"{{brandCountry}}\",\n  \"contactPersonPhone\": \"9000000002\",\n  \"contactPersonEmail\": \"brand.{{brandCode}}@test.com\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandCode\": \"{{brandCode}}\",\n  \"brandName\": \"{{brandName}}\",\n  \"brandDescription\": \"Auto created brand for {{testCaseId}} | TxnId: {{brandTransactionId}}\",\n  \"brandStatus\": \"Active\",\n  \"marketSegment\": null,\n  \"contactPersonFirstName\": \"Brand\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"{{brandDialCode}}\",\n  \"dialCountryCode\": \"{{brandCountry}}\",\n  \"contactPersonPhone\": \"9000000002\",\n  \"contactPersonEmail\": \"brand.{{brandCode}}@test.com\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
         },
         "url": {
           "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Brands/createbrand",
@@ -359,6 +368,11 @@
               "var testCaseId  = pm.collectionVariables.get('testCaseId');",
               "var dialCodeMap = JSON.parse(pm.collectionVariables.get('__dialCodeMap__'));",
               "",
+              "// ── Unique Transaction ID for Create Hotel Group ────────────",
+              "// Generated fresh on every execution of this specific request",
+              "var hgTxnId = 'HG_TXN_' + Date.now() + '_' + Math.random().toString(36).substr(2,6).toUpperCase();",
+              "pm.collectionVariables.set('hgTransactionId', hgTxnId);",
+              "",
               "// ── Dynamic Hotel Group Code & Name ─────────────────────────",
               "var ts   = Date.now().toString().slice(-6);",
               "var rand = Math.random().toString(36).substr(2,4).toUpperCase();",
@@ -371,7 +385,7 @@
               "var dialCode = dialCodeMap[pm.collectionVariables.get('hgCountry')] || '+1';",
               "pm.collectionVariables.set('hgDialCode', dialCode);",
               "",
-              "console.log('[' + testCaseId + '] Create Hotel Group => ' + hgCode + ' | CorporateId: ' + pm.collectionVariables.get('corporateId') + ' | BrandId: ' + pm.collectionVariables.get('brandId'));"
+              "console.log('[' + testCaseId + '] Create Hotel Group => ' + hgCode + ' | HG TxnId: ' + hgTxnId + ' | BrandId: ' + pm.collectionVariables.get('brandId'));"
             ]
           }
         },
@@ -387,7 +401,7 @@
               "    var json = pm.response.json();",
               "    pm.expect(json.successCode).to.eql(1);",
               "    pm.collectionVariables.set('hotelGroupId', json.hotelGroupId);",
-              "    console.log('[' + pm.collectionVariables.get('testCaseId') + '] Hotel Group ID: ' + json.hotelGroupId);",
+              "    console.log('[' + pm.collectionVariables.get('testCaseId') + '] Hotel Group ID: ' + json.hotelGroupId + ' | TxnId used: ' + pm.collectionVariables.get('hgTransactionId'));",
               "});"
             ]
           }
@@ -401,7 +415,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupCode\": \"{{hgCode}}\",\n  \"hotelGroupName\": \"{{hgName}}\",\n  \"hotelGroupDescription\": \"Auto created HG for {{testCaseId}} | TxnId: {{transactionId}}\",\n  \"contactPersonFirstName\": \"HG\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"{{hgDialCode}}\",\n  \"dialCountryCode\": \"{{hgCountry}}\",\n  \"contactPersonPhone\": \"9000000003\",\n  \"contactPersonEmail\": \"hg.{{hgCode}}@test.com\",\n  \"hotelGroupStatus\": \"Active\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupCode\": \"{{hgCode}}\",\n  \"hotelGroupName\": \"{{hgName}}\",\n  \"hotelGroupDescription\": \"Auto created HG for {{testCaseId}} | TxnId: {{hgTransactionId}}\",\n  \"contactPersonFirstName\": \"HG\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"{{hgDialCode}}\",\n  \"dialCountryCode\": \"{{hgCountry}}\",\n  \"contactPersonPhone\": \"9000000003\",\n  \"contactPersonEmail\": \"hg.{{hgCode}}@test.com\",\n  \"hotelGroupStatus\": \"Active\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
         },
         "url": {
           "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/HotelGroups/createhotelgroup",
@@ -423,6 +437,11 @@
               "var dialCodeMap = JSON.parse(pm.collectionVariables.get('__dialCodeMap__'));",
               "var timezoneMap = JSON.parse(pm.collectionVariables.get('__timezoneMap__'));",
               "",
+              "// ── Unique Transaction ID for Create Hotel ──────────────────",
+              "// Generated fresh on every execution of this specific request",
+              "var hotelTxnId = 'HTL_TXN_' + Date.now() + '_' + Math.random().toString(36).substr(2,6).toUpperCase();",
+              "pm.collectionVariables.set('hotelTransactionId', hotelTxnId);",
+              "",
               "// ── Dynamic Hotel Code & Name ───────────────────────────────",
               "var ts   = Date.now().toString().slice(-6);",
               "var rand = Math.random().toString(36).substr(2,4).toUpperCase();",
@@ -442,7 +461,7 @@
               "// ── Hotel Currency ──────────────────────────────────────────",
               "pm.collectionVariables.set('hotelCurrencySymbol', pm.collectionVariables.get('hotelCurrency'));",
               "",
-              "console.log('[' + testCaseId + '] Create Hotel => ' + hotelCode + ' | CorporateId: ' + pm.collectionVariables.get('corporateId') + ' | HotelGroupId: ' + pm.collectionVariables.get('hotelGroupId'));"
+              "console.log('[' + testCaseId + '] Create Hotel => ' + hotelCode + ' | Hotel TxnId: ' + hotelTxnId + ' | HotelGroupId: ' + pm.collectionVariables.get('hotelGroupId'));"
             ]
           }
         },
@@ -461,19 +480,22 @@
               "",
               "    var testCaseId = pm.collectionVariables.get('testCaseId');",
               "    console.log('============================');",
-              "    console.log('TC COMPLETED : ' + testCaseId);",
-              "    console.log('TxnId        : ' + pm.collectionVariables.get('transactionId'));",
-              "    console.log('Corp Code    : ' + pm.collectionVariables.get('corpCode'));",
-              "    console.log('Brand Code   : ' + pm.collectionVariables.get('brandCode'));",
-              "    console.log('Brand Name   : ' + pm.collectionVariables.get('brandName'));",
-              "    console.log('HG Code      : ' + pm.collectionVariables.get('hgCode'));",
-              "    console.log('HG Name      : ' + pm.collectionVariables.get('hgName'));",
-              "    console.log('Hotel Code   : ' + pm.collectionVariables.get('hotelCode'));",
-              "    console.log('Hotel Name   : ' + pm.collectionVariables.get('hotelName'));",
-              "    console.log('CorpId       : ' + pm.collectionVariables.get('corporateId'));",
-              "    console.log('BrandId      : ' + pm.collectionVariables.get('brandId'));",
-              "    console.log('HGId         : ' + pm.collectionVariables.get('hotelGroupId'));",
-              "    console.log('HotelId      : ' + json.hotelId);",
+              "    console.log('TC COMPLETED  : ' + testCaseId);",
+              "    console.log('Corp TxnId    : ' + pm.collectionVariables.get('corpTransactionId'));",
+              "    console.log('Brand TxnId   : ' + pm.collectionVariables.get('brandTransactionId'));",
+              "    console.log('HG TxnId      : ' + pm.collectionVariables.get('hgTransactionId'));",
+              "    console.log('Hotel TxnId   : ' + pm.collectionVariables.get('hotelTransactionId'));",
+              "    console.log('Corp Code     : ' + pm.collectionVariables.get('corpCode'));",
+              "    console.log('Brand Code    : ' + pm.collectionVariables.get('brandCode'));",
+              "    console.log('Brand Name    : ' + pm.collectionVariables.get('brandName'));",
+              "    console.log('HG Code       : ' + pm.collectionVariables.get('hgCode'));",
+              "    console.log('HG Name       : ' + pm.collectionVariables.get('hgName'));",
+              "    console.log('Hotel Code    : ' + pm.collectionVariables.get('hotelCode'));",
+              "    console.log('Hotel Name    : ' + pm.collectionVariables.get('hotelName'));",
+              "    console.log('CorpId        : ' + pm.collectionVariables.get('corporateId'));",
+              "    console.log('BrandId       : ' + pm.collectionVariables.get('brandId'));",
+              "    console.log('HGId          : ' + pm.collectionVariables.get('hotelGroupId'));",
+              "    console.log('HotelId       : ' + json.hotelId);",
               "    console.log('============================');",
               "",
               "    // ── Advance to next test case ───────────────────────────",
@@ -504,7 +526,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupId\": {{hotelGroupId}},\n  \"regionId\": null,\n  \"hotelCode\": \"{{hotelCode}}\",\n  \"hotelName\": \"{{hotelName}}\",\n  \"firstName\": \"Hotel\",\n  \"lastName\": \"Auto\",\n  \"addressLine1\": \"Test Hotel Address\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"{{hotelCountry}}\",\n  \"dialCode\": \"{{hotelDialCode}}\",\n  \"dialCountryCode\": \"{{hotelCountry}}\",\n  \"mobileNumber\": \"9000000004\",\n  \"email\": \"hotel.{{hotelCode}}@test.com\",\n  \"timezone\": \"{{mappedHotelTimezone}}\",\n  \"hotelStatus\": \"Active\",\n  \"currencySymbol\": \"{{hotelCurrencySymbol}}\",\n  \"currencyRoundOff\": \"{{hotelDecimals}}\",\n  \"paymentTypes\": null,\n  \"dateFormat\": \"{{hotelDateFormat}}\",\n  \"timeFormat\": \"HH:mm\",\n  \"hotelDescription\": \"Auto created hotel for {{testCaseId}} | TxnId: {{transactionId}}\",\n  \"sourceGroup\": null,\n  \"sourceSubGroup\": null,\n  \"sourceUserName\": null,\n  \"sourcePassword\": null,\n  \"systemId\": null,\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupId\": {{hotelGroupId}},\n  \"regionId\": null,\n  \"hotelCode\": \"{{hotelCode}}\",\n  \"hotelName\": \"{{hotelName}}\",\n  \"firstName\": \"Hotel\",\n  \"lastName\": \"Auto\",\n  \"addressLine1\": \"Test Hotel Address\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"{{hotelCountry}}\",\n  \"dialCode\": \"{{hotelDialCode}}\",\n  \"dialCountryCode\": \"{{hotelCountry}}\",\n  \"mobileNumber\": \"9000000004\",\n  \"email\": \"hotel.{{hotelCode}}@test.com\",\n  \"timezone\": \"{{mappedHotelTimezone}}\",\n  \"hotelStatus\": \"Active\",\n  \"currencySymbol\": \"{{hotelCurrencySymbol}}\",\n  \"currencyRoundOff\": \"{{hotelDecimals}}\",\n  \"paymentTypes\": null,\n  \"dateFormat\": \"{{hotelDateFormat}}\",\n  \"timeFormat\": \"HH:mm\",\n  \"hotelDescription\": \"Auto created hotel for {{testCaseId}} | TxnId: {{hotelTransactionId}}\",\n  \"sourceGroup\": null,\n  \"sourceSubGroup\": null,\n  \"sourceUserName\": null,\n  \"sourcePassword\": null,\n  \"systemId\": null,\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
         },
         "url": {
           "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Hotels/createhotel",
