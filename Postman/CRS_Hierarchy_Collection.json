@@ -18,21 +18,6 @@
     { "key": "hgName", "value": "" },
     { "key": "hotelCode", "value": "" },
     { "key": "hotelName", "value": "" },
-    { "key": "corpDialCode", "value": "" },
-    { "key": "brandDialCode", "value": "" },
-    { "key": "hgDialCode", "value": "" },
-    { "key": "hotelDialCode", "value": "" },
-    { "key": "mappedCorpTimezone", "value": "" },
-    { "key": "mappedHotelTimezone", "value": "" },
-    { "key": "corpCurrencySymbol", "value": "" },
-    { "key": "brandCurrencySymbol", "value": "" },
-    { "key": "hotelCurrencySymbol", "value": "" },
-    { "key": "corpCountry", "value": "" },
-    { "key": "corpDateFormat", "value": "" },
-    { "key": "brandCountry", "value": "" },
-    { "key": "hgCountry", "value": "" },
-    { "key": "hotelCountry", "value": "" },
-    { "key": "hotelDateFormat", "value": "" },
     { "key": "transactionId", "value": "" }
   ],
   "item": [
@@ -47,7 +32,6 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "// Generate a valid GUID for x-transaction-id",
                   "function generateGUID() {",
                   "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
                   "    var r = Math.random() * 16 | 0;",
@@ -55,16 +39,18 @@
                   "    return v.toString(16);",
                   "  });",
                   "}",
-                  "var txnId = generateGUID();",
-                  "pm.collectionVariables.set('transactionId', txnId);",
-                  "console.log('TC_001 Corporate - x-transaction-id: ' + txnId);",
+                  "pm.collectionVariables.set('transactionId', generateGUID());",
                   "",
+                  "// TC_001 - Same Currency USD",
+                  "// Corp Country: USA | Currency: USD | TimeZone: UTC-05:00 | DateFormat: MM/DD/YYYY | TimeFormat: 12-Hour | Decimals: 2 | CountryCode: USA",
                   "pm.collectionVariables.set('corpCode', 'CorpSameCurr_01');",
-                  "pm.collectionVariables.set('mappedCorpTimezone', 'EDT');",
-                  "pm.collectionVariables.set('corpCurrencySymbol', 'USD');",
-                  "pm.collectionVariables.set('corpDialCode', '+1');",
-                  "pm.collectionVariables.set('corpCountry', 'USA');",
+                  "pm.collectionVariables.set('corpCurrency', 'USD');",
+                  "pm.collectionVariables.set('corpTimezone', 'EDT');",
                   "pm.collectionVariables.set('corpDateFormat', 'MM/DD/YYYY');",
+                  "pm.collectionVariables.set('corpTimeFormat', 'hh:mm a');",
+                  "pm.collectionVariables.set('corpDecimals', '2');",
+                  "pm.collectionVariables.set('corpCountry', 'USA');",
+                  "pm.collectionVariables.set('corpDialCode', '+1');",
                   "console.log('TC_001 - Creating Corporate: CorpSameCurr_01');"
                 ]
               }
@@ -74,9 +60,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('TC001 Corporate - Status 200', function () {",
-                  "  pm.response.to.have.status(200);",
-                  "});",
+                  "pm.test('TC001 Corporate - Status 200', function () { pm.response.to.have.status(200); });",
                   "pm.test('TC001 Corporate - successCode = 1', function () {",
                   "  var j = pm.response.json();",
                   "  pm.expect(j.successCode).to.eql(1);",
@@ -96,7 +80,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"corporateCode\": \"CorpSameCurr_01\",\n  \"corporateName\": \"Corp CorpSameCurr_01\",\n  \"corporateDescription\": \"Auto created for TC_001\",\n  \"corporateStatus\": \"Active\",\n  \"firstName\": \"Auto\",\n  \"lastName\": \"Corp\",\n  \"addressLine1\": \"Test Address Line 1\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"USA\",\n  \"dialCode\": \"+1\",\n  \"dialCountryCode\": \"USA\",\n  \"mobileNumber\": \"9000000001\",\n  \"contactEmail\": \"corp.CorpSameCurr01@test.com\",\n  \"timezone\": \"EDT\",\n  \"dateFormat\": \"MM/DD/YYYY\",\n  \"timeFormat\": \"hh:mm a\",\n  \"enableSsoLogin\": false,\n  \"b2cInstance\": null,\n  \"b2cDomainName\": null,\n  \"b2cSigninSignupPolicy\": null,\n  \"b2cClientId\": null,\n  \"sessionTimeoutLimit\": null,\n  \"enableMfa\": false,\n  \"otpMaxAttempts\": null,\n  \"otpExpirationTime\": null,\n  \"passwordExpirationPeriod\": null,\n  \"currencySymbol\": \"USD\",\n  \"currencyRoundOff\": \"2\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+              "raw": "{\n  \"corporateCode\": \"CorpSameCurr_01\",\n  \"corporateName\": \"Corp CorpSameCurr_01\",\n  \"corporateDescription\": \"Auto created for TC_001 - Same Currency USD\",\n  \"corporateStatus\": \"Active\",\n  \"firstName\": \"Auto\",\n  \"lastName\": \"Corp\",\n  \"addressLine1\": \"Test Address Line 1\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"USA\",\n  \"dialCode\": \"+1\",\n  \"dialCountryCode\": \"USA\",\n  \"mobileNumber\": \"9000000001\",\n  \"contactEmail\": \"corp.CorpSameCurr01@test.com\",\n  \"timezone\": \"EDT\",\n  \"dateFormat\": \"MM/DD/YYYY\",\n  \"timeFormat\": \"hh:mm a\",\n  \"enableSsoLogin\": false,\n  \"b2cInstance\": null,\n  \"b2cDomainName\": null,\n  \"b2cSigninSignupPolicy\": null,\n  \"b2cClientId\": null,\n  \"sessionTimeoutLimit\": null,\n  \"enableMfa\": false,\n  \"otpMaxAttempts\": null,\n  \"otpExpirationTime\": null,\n  \"passwordExpirationPeriod\": null,\n  \"currencySymbol\": \"USD\",\n  \"currencyRoundOff\": \"2\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
             },
             "url": {
               "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Corporates/createcorporate",
@@ -114,7 +98,6 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "// Generate a valid GUID for x-transaction-id",
                   "function generateGUID() {",
                   "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
                   "    var r = Math.random() * 16 | 0;",
@@ -122,21 +105,18 @@
                   "    return v.toString(16);",
                   "  });",
                   "}",
-                  "var txnId = generateGUID();",
-                  "pm.collectionVariables.set('transactionId', txnId);",
-                  "console.log('TC_001 Brand - x-transaction-id: ' + txnId);",
+                  "pm.collectionVariables.set('transactionId', generateGUID());",
                   "",
-                  "// Generate unique BrandCode and BrandName dynamically",
-                  "var timestamp = Date.now().toString().slice(-6);",
-                  "var randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();",
-                  "var brandCode = 'BRD-TC001-' + timestamp + randomPart;",
-                  "var brandName = 'Brand TC001 ' + timestamp + randomPart;",
+                  "// TC_001 - Brand: CountryCode USA",
+                  "var ts = Date.now().toString().slice(-6);",
+                  "var rnd = Math.random().toString(36).substring(2,5).toUpperCase();",
+                  "var brandCode = 'BRD-TC001-' + ts + rnd;",
+                  "var brandName = 'Brand TC001 ' + ts + rnd;",
                   "pm.collectionVariables.set('brandCode', brandCode);",
                   "pm.collectionVariables.set('brandName', brandName);",
-                  "pm.collectionVariables.set('brandDialCode', '+1');",
                   "pm.collectionVariables.set('brandCountry', 'USA');",
-                  "console.log('TC_001 - BrandCode: ' + brandCode);",
-                  "console.log('TC_001 - BrandName: ' + brandName);"
+                  "pm.collectionVariables.set('brandDialCode', '+1');",
+                  "console.log('TC_001 - BrandCode: ' + brandCode + ' | BrandName: ' + brandName);"
                 ]
               }
             },
@@ -145,9 +125,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('TC001 Brand - Status 200', function () {",
-                  "  pm.response.to.have.status(200);",
-                  "});",
+                  "pm.test('TC001 Brand - Status 200', function () { pm.response.to.have.status(200); });",
                   "pm.test('TC001 Brand - successCode = 1', function () {",
                   "  var j = pm.response.json();",
                   "  pm.expect(j.successCode).to.eql(1);",
@@ -167,7 +145,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandCode\": \"{{brandCode}}\",\n  \"brandName\": \"{{brandName}}\",\n  \"brandDescription\": \"Auto created brand for TC_001\",\n  \"brandStatus\": \"Active\",\n  \"marketSegment\": null,\n  \"contactPersonFirstName\": \"Brand\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"+1\",\n  \"dialCountryCode\": \"USA\",\n  \"contactPersonPhone\": \"9000000002\",\n  \"contactPersonEmail\": \"brand.TC001@test.com\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandCode\": \"{{brandCode}}\",\n  \"brandName\": \"{{brandName}}\",\n  \"brandDescription\": \"Auto created brand for TC_001 - Same Currency USD\",\n  \"brandStatus\": \"Active\",\n  \"marketSegment\": null,\n  \"contactPersonFirstName\": \"Brand\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"+1\",\n  \"dialCountryCode\": \"USA\",\n  \"contactPersonPhone\": \"9000000002\",\n  \"contactPersonEmail\": \"brand.TC001@test.com\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
             },
             "url": {
               "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Brands/createbrand",
@@ -185,7 +163,6 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "// Generate a valid GUID for x-transaction-id",
                   "function generateGUID() {",
                   "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
                   "    var r = Math.random() * 16 | 0;",
@@ -193,21 +170,18 @@
                   "    return v.toString(16);",
                   "  });",
                   "}",
-                  "var txnId = generateGUID();",
-                  "pm.collectionVariables.set('transactionId', txnId);",
-                  "console.log('TC_001 HG - x-transaction-id: ' + txnId);",
+                  "pm.collectionVariables.set('transactionId', generateGUID());",
                   "",
-                  "// Generate unique HotelGroupCode and HotelGroupName dynamically",
-                  "var timestamp = Date.now().toString().slice(-6);",
-                  "var randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();",
-                  "var hgCode = 'HG-TC001-' + timestamp + randomPart;",
-                  "var hgName = 'HotelGroup TC001 ' + timestamp + randomPart;",
+                  "// TC_001 - HG: CountryCode USA",
+                  "var ts = Date.now().toString().slice(-6);",
+                  "var rnd = Math.random().toString(36).substring(2,5).toUpperCase();",
+                  "var hgCode = 'HG-TC001-' + ts + rnd;",
+                  "var hgName = 'HotelGroup TC001 ' + ts + rnd;",
                   "pm.collectionVariables.set('hgCode', hgCode);",
                   "pm.collectionVariables.set('hgName', hgName);",
-                  "pm.collectionVariables.set('hgDialCode', '+1');",
                   "pm.collectionVariables.set('hgCountry', 'USA');",
-                  "console.log('TC_001 - HGCode: ' + hgCode);",
-                  "console.log('TC_001 - HGName: ' + hgName);"
+                  "pm.collectionVariables.set('hgDialCode', '+1');",
+                  "console.log('TC_001 - HGCode: ' + hgCode + ' | HGName: ' + hgName);"
                 ]
               }
             },
@@ -216,9 +190,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('TC001 HG - Status 200', function () {",
-                  "  pm.response.to.have.status(200);",
-                  "});",
+                  "pm.test('TC001 HG - Status 200', function () { pm.response.to.have.status(200); });",
                   "pm.test('TC001 HG - successCode = 1', function () {",
                   "  var j = pm.response.json();",
                   "  pm.expect(j.successCode).to.eql(1);",
@@ -238,7 +210,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupCode\": \"{{hgCode}}\",\n  \"hotelGroupName\": \"{{hgName}}\",\n  \"hotelGroupDescription\": \"Auto created HG for TC_001\",\n  \"contactPersonFirstName\": \"HG\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"+1\",\n  \"dialCountryCode\": \"USA\",\n  \"contactPersonPhone\": \"9000000003\",\n  \"contactPersonEmail\": \"hg.TC001@test.com\",\n  \"hotelGroupStatus\": \"Active\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupCode\": \"{{hgCode}}\",\n  \"hotelGroupName\": \"{{hgName}}\",\n  \"hotelGroupDescription\": \"Auto created HG for TC_001 - Same Currency USD\",\n  \"contactPersonFirstName\": \"HG\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"+1\",\n  \"dialCountryCode\": \"USA\",\n  \"contactPersonPhone\": \"9000000003\",\n  \"contactPersonEmail\": \"hg.TC001@test.com\",\n  \"hotelGroupStatus\": \"Active\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
             },
             "url": {
               "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/HotelGroups/createhotelgroup",
@@ -256,7 +228,6 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "// Generate a valid GUID for x-transaction-id",
                   "function generateGUID() {",
                   "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
                   "    var r = Math.random() * 16 | 0;",
@@ -264,24 +235,18 @@
                   "    return v.toString(16);",
                   "  });",
                   "}",
-                  "var txnId = generateGUID();",
-                  "pm.collectionVariables.set('transactionId', txnId);",
-                  "console.log('TC_001 Hotel - x-transaction-id: ' + txnId);",
+                  "pm.collectionVariables.set('transactionId', generateGUID());",
                   "",
-                  "// Generate unique HotelCode and HotelName dynamically",
-                  "var timestamp = Date.now().toString().slice(-6);",
-                  "var randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();",
-                  "var hotelCode = 'HTL-TC001-' + timestamp + randomPart;",
-                  "var hotelName = 'Hotel TC001 ' + timestamp + randomPart;",
+                  "// TC_001 - Hotel: Country USA | Currency USD | TimeZone UTC-05:00 | DateFormat MM/DD/YYYY | TimeFormat 12-Hour | Decimals 2 | CountryCode USA",
+                  "var ts = Date.now().toString().slice(-6);",
+                  "var rnd = Math.random().toString(36).substring(2,5).toUpperCase();",
+                  "var hotelCode = 'HTL-TC001-' + ts + rnd;",
+                  "var hotelName = 'Hotel TC001 ' + ts + rnd;",
                   "pm.collectionVariables.set('hotelCode', hotelCode);",
                   "pm.collectionVariables.set('hotelName', hotelName);",
-                  "pm.collectionVariables.set('hotelDialCode', '+1');",
                   "pm.collectionVariables.set('hotelCountry', 'USA');",
-                  "pm.collectionVariables.set('mappedHotelTimezone', 'EDT');",
-                  "pm.collectionVariables.set('hotelCurrencySymbol', 'USD');",
-                  "pm.collectionVariables.set('hotelDateFormat', 'MM/DD/YYYY');",
-                  "console.log('TC_001 - HotelCode: ' + hotelCode);",
-                  "console.log('TC_001 - HotelName: ' + hotelName);"
+                  "pm.collectionVariables.set('hotelDialCode', '+1');",
+                  "console.log('TC_001 - HotelCode: ' + hotelCode + ' | HotelName: ' + hotelName);"
                 ]
               }
             },
@@ -290,9 +255,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('TC001 Hotel - Status 200', function () {",
-                  "  pm.response.to.have.status(200);",
-                  "});",
+                  "pm.test('TC001 Hotel - Status 200', function () { pm.response.to.have.status(200); });",
                   "pm.test('TC001 Hotel - successCode = 1', function () {",
                   "  var j = pm.response.json();",
                   "  pm.expect(j.successCode).to.eql(1);",
@@ -314,7 +277,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupId\": {{hotelGroupId}},\n  \"regionId\": null,\n  \"hotelCode\": \"{{hotelCode}}\",\n  \"hotelName\": \"{{hotelName}}\",\n  \"firstName\": \"Hotel\",\n  \"lastName\": \"Auto\",\n  \"addressLine1\": \"Test Hotel Address\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"USA\",\n  \"dialCode\": \"+1\",\n  \"dialCountryCode\": \"USA\",\n  \"mobileNumber\": \"9000000004\",\n  \"email\": \"hotel.TC001@test.com\",\n  \"timezone\": \"EDT\",\n  \"hotelStatus\": \"Active\",\n  \"currencySymbol\": \"USD\",\n  \"currencyRoundOff\": \"2\",\n  \"paymentTypes\": null,\n  \"dateFormat\": \"MM/DD/YYYY\",\n  \"timeFormat\": \"HH:mm\",\n  \"hotelDescription\": \"Auto created hotel for TC_001\",\n  \"sourceGroup\": null,\n  \"sourceSubGroup\": null,\n  \"sourceUserName\": null,\n  \"sourcePassword\": null,\n  \"systemId\": null,\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupId\": {{hotelGroupId}},\n  \"regionId\": null,\n  \"hotelCode\": \"{{hotelCode}}\",\n  \"hotelName\": \"{{hotelName}}\",\n  \"firstName\": \"Hotel\",\n  \"lastName\": \"Auto\",\n  \"addressLine1\": \"Test Hotel Address\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"USA\",\n  \"dialCode\": \"+1\",\n  \"dialCountryCode\": \"USA\",\n  \"mobileNumber\": \"9000000004\",\n  \"email\": \"hotel.TC001@test.com\",\n  \"timezone\": \"EDT\",\n  \"hotelStatus\": \"Active\",\n  \"currencySymbol\": \"USD\",\n  \"currencyRoundOff\": \"2\",\n  \"paymentTypes\": null,\n  \"dateFormat\": \"MM/DD/YYYY\",\n  \"timeFormat\": \"hh:mm a\",\n  \"hotelDescription\": \"Auto created hotel for TC_001 - Same Currency USD\",\n  \"sourceGroup\": null,\n  \"sourceSubGroup\": null,\n  \"sourceUserName\": null,\n  \"sourcePassword\": null,\n  \"systemId\": null,\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
             },
             "url": {
               "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Hotels/createhotel",
@@ -337,7 +300,6 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "// Generate a valid GUID for x-transaction-id",
                   "function generateGUID() {",
                   "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
                   "    var r = Math.random() * 16 | 0;",
@@ -345,16 +307,18 @@
                   "    return v.toString(16);",
                   "  });",
                   "}",
-                  "var txnId = generateGUID();",
-                  "pm.collectionVariables.set('transactionId', txnId);",
-                  "console.log('TC_002 Corporate - x-transaction-id: ' + txnId);",
+                  "pm.collectionVariables.set('transactionId', generateGUID());",
                   "",
+                  "// TC_002 - Same Currency INR",
+                  "// Corp Country: IND | Currency: INR | TimeZone: UTC+05:30 | DateFormat: DD/MM/YYYY | TimeFormat: 12-Hour | Decimals: 2 | CountryCode: IND",
                   "pm.collectionVariables.set('corpCode', 'CorpSameCurr_02');",
-                  "pm.collectionVariables.set('mappedCorpTimezone', 'IST');",
-                  "pm.collectionVariables.set('corpCurrencySymbol', 'INR');",
-                  "pm.collectionVariables.set('corpDialCode', '+91');",
-                  "pm.collectionVariables.set('corpCountry', 'IND');",
+                  "pm.collectionVariables.set('corpCurrency', 'INR');",
+                  "pm.collectionVariables.set('corpTimezone', 'IST');",
                   "pm.collectionVariables.set('corpDateFormat', 'DD/MM/YYYY');",
+                  "pm.collectionVariables.set('corpTimeFormat', 'hh:mm a');",
+                  "pm.collectionVariables.set('corpDecimals', '2');",
+                  "pm.collectionVariables.set('corpCountry', 'IND');",
+                  "pm.collectionVariables.set('corpDialCode', '+91');",
                   "console.log('TC_002 - Creating Corporate: CorpSameCurr_02');"
                 ]
               }
@@ -364,9 +328,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('TC002 Corporate - Status 200', function () {",
-                  "  pm.response.to.have.status(200);",
-                  "});",
+                  "pm.test('TC002 Corporate - Status 200', function () { pm.response.to.have.status(200); });",
                   "pm.test('TC002 Corporate - successCode = 1', function () {",
                   "  var j = pm.response.json();",
                   "  pm.expect(j.successCode).to.eql(1);",
@@ -386,7 +348,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"corporateCode\": \"CorpSameCurr_02\",\n  \"corporateName\": \"Corp CorpSameCurr_02\",\n  \"corporateDescription\": \"Auto created for TC_002\",\n  \"corporateStatus\": \"Active\",\n  \"firstName\": \"Auto\",\n  \"lastName\": \"Corp\",\n  \"addressLine1\": \"Test Address Line 1\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"IND\",\n  \"dialCode\": \"+91\",\n  \"dialCountryCode\": \"IND\",\n  \"mobileNumber\": \"9000000001\",\n  \"contactEmail\": \"corp.CorpSameCurr02@test.com\",\n  \"timezone\": \"IST\",\n  \"dateFormat\": \"DD/MM/YYYY\",\n  \"timeFormat\": \"hh:mm a\",\n  \"enableSsoLogin\": false,\n  \"b2cInstance\": null,\n  \"b2cDomainName\": null,\n  \"b2cSigninSignupPolicy\": null,\n  \"b2cClientId\": null,\n  \"sessionTimeoutLimit\": null,\n  \"enableMfa\": false,\n  \"otpMaxAttempts\": null,\n  \"otpExpirationTime\": null,\n  \"passwordExpirationPeriod\": null,\n  \"currencySymbol\": \"INR\",\n  \"currencyRoundOff\": \"2\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+              "raw": "{\n  \"corporateCode\": \"CorpSameCurr_02\",\n  \"corporateName\": \"Corp CorpSameCurr_02\",\n  \"corporateDescription\": \"Auto created for TC_002 - Same Currency INR\",\n  \"corporateStatus\": \"Active\",\n  \"firstName\": \"Auto\",\n  \"lastName\": \"Corp\",\n  \"addressLine1\": \"Test Address Line 1\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"560001\",\n  \"countryCode\": \"IND\",\n  \"dialCode\": \"+91\",\n  \"dialCountryCode\": \"IND\",\n  \"mobileNumber\": \"9000000001\",\n  \"contactEmail\": \"corp.CorpSameCurr02@test.com\",\n  \"timezone\": \"IST\",\n  \"dateFormat\": \"DD/MM/YYYY\",\n  \"timeFormat\": \"hh:mm a\",\n  \"enableSsoLogin\": false,\n  \"b2cInstance\": null,\n  \"b2cDomainName\": null,\n  \"b2cSigninSignupPolicy\": null,\n  \"b2cClientId\": null,\n  \"sessionTimeoutLimit\": null,\n  \"enableMfa\": false,\n  \"otpMaxAttempts\": null,\n  \"otpExpirationTime\": null,\n  \"passwordExpirationPeriod\": null,\n  \"currencySymbol\": \"INR\",\n  \"currencyRoundOff\": \"2\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
             },
             "url": {
               "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Corporates/createcorporate",
@@ -404,7 +366,6 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "// Generate a valid GUID for x-transaction-id",
                   "function generateGUID() {",
                   "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
                   "    var r = Math.random() * 16 | 0;",
@@ -412,21 +373,18 @@
                   "    return v.toString(16);",
                   "  });",
                   "}",
-                  "var txnId = generateGUID();",
-                  "pm.collectionVariables.set('transactionId', txnId);",
-                  "console.log('TC_002 Brand - x-transaction-id: ' + txnId);",
+                  "pm.collectionVariables.set('transactionId', generateGUID());",
                   "",
-                  "// Generate unique BrandCode and BrandName dynamically",
-                  "var timestamp = Date.now().toString().slice(-6);",
-                  "var randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();",
-                  "var brandCode = 'BRD-TC002-' + timestamp + randomPart;",
-                  "var brandName = 'Brand TC002 ' + timestamp + randomPart;",
+                  "// TC_002 - Brand: CountryCode IND",
+                  "var ts = Date.now().toString().slice(-6);",
+                  "var rnd = Math.random().toString(36).substring(2,5).toUpperCase();",
+                  "var brandCode = 'BRD-TC002-' + ts + rnd;",
+                  "var brandName = 'Brand TC002 ' + ts + rnd;",
                   "pm.collectionVariables.set('brandCode', brandCode);",
                   "pm.collectionVariables.set('brandName', brandName);",
-                  "pm.collectionVariables.set('brandDialCode', '+91');",
                   "pm.collectionVariables.set('brandCountry', 'IND');",
-                  "console.log('TC_002 - BrandCode: ' + brandCode);",
-                  "console.log('TC_002 - BrandName: ' + brandName);"
+                  "pm.collectionVariables.set('brandDialCode', '+91');",
+                  "console.log('TC_002 - BrandCode: ' + brandCode + ' | BrandName: ' + brandName);"
                 ]
               }
             },
@@ -435,9 +393,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('TC002 Brand - Status 200', function () {",
-                  "  pm.response.to.have.status(200);",
-                  "});",
+                  "pm.test('TC002 Brand - Status 200', function () { pm.response.to.have.status(200); });",
                   "pm.test('TC002 Brand - successCode = 1', function () {",
                   "  var j = pm.response.json();",
                   "  pm.expect(j.successCode).to.eql(1);",
@@ -457,7 +413,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandCode\": \"{{brandCode}}\",\n  \"brandName\": \"{{brandName}}\",\n  \"brandDescription\": \"Auto created brand for TC_002\",\n  \"brandStatus\": \"Active\",\n  \"marketSegment\": null,\n  \"contactPersonFirstName\": \"Brand\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"+91\",\n  \"dialCountryCode\": \"IND\",\n  \"contactPersonPhone\": \"9000000002\",\n  \"contactPersonEmail\": \"brand.TC002@test.com\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandCode\": \"{{brandCode}}\",\n  \"brandName\": \"{{brandName}}\",\n  \"brandDescription\": \"Auto created brand for TC_002 - Same Currency INR\",\n  \"brandStatus\": \"Active\",\n  \"marketSegment\": null,\n  \"contactPersonFirstName\": \"Brand\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"+91\",\n  \"dialCountryCode\": \"IND\",\n  \"contactPersonPhone\": \"9000000002\",\n  \"contactPersonEmail\": \"brand.TC002@test.com\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
             },
             "url": {
               "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Brands/createbrand",
@@ -475,7 +431,6 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "// Generate a valid GUID for x-transaction-id",
                   "function generateGUID() {",
                   "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
                   "    var r = Math.random() * 16 | 0;",
@@ -483,21 +438,18 @@
                   "    return v.toString(16);",
                   "  });",
                   "}",
-                  "var txnId = generateGUID();",
-                  "pm.collectionVariables.set('transactionId', txnId);",
-                  "console.log('TC_002 HG - x-transaction-id: ' + txnId);",
+                  "pm.collectionVariables.set('transactionId', generateGUID());",
                   "",
-                  "// Generate unique HotelGroupCode and HotelGroupName dynamically",
-                  "var timestamp = Date.now().toString().slice(-6);",
-                  "var randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();",
-                  "var hgCode = 'HG-TC002-' + timestamp + randomPart;",
-                  "var hgName = 'HotelGroup TC002 ' + timestamp + randomPart;",
+                  "// TC_002 - HG: CountryCode IND",
+                  "var ts = Date.now().toString().slice(-6);",
+                  "var rnd = Math.random().toString(36).substring(2,5).toUpperCase();",
+                  "var hgCode = 'HG-TC002-' + ts + rnd;",
+                  "var hgName = 'HotelGroup TC002 ' + ts + rnd;",
                   "pm.collectionVariables.set('hgCode', hgCode);",
                   "pm.collectionVariables.set('hgName', hgName);",
-                  "pm.collectionVariables.set('hgDialCode', '+91');",
                   "pm.collectionVariables.set('hgCountry', 'IND');",
-                  "console.log('TC_002 - HGCode: ' + hgCode);",
-                  "console.log('TC_002 - HGName: ' + hgName);"
+                  "pm.collectionVariables.set('hgDialCode', '+91');",
+                  "console.log('TC_002 - HGCode: ' + hgCode + ' | HGName: ' + hgName);"
                 ]
               }
             },
@@ -506,9 +458,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('TC002 HG - Status 200', function () {",
-                  "  pm.response.to.have.status(200);",
-                  "});",
+                  "pm.test('TC002 HG - Status 200', function () { pm.response.to.have.status(200); });",
                   "pm.test('TC002 HG - successCode = 1', function () {",
                   "  var j = pm.response.json();",
                   "  pm.expect(j.successCode).to.eql(1);",
@@ -528,7 +478,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupCode\": \"{{hgCode}}\",\n  \"hotelGroupName\": \"{{hgName}}\",\n  \"hotelGroupDescription\": \"Auto created HG for TC_002\",\n  \"contactPersonFirstName\": \"HG\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"+91\",\n  \"dialCountryCode\": \"IND\",\n  \"contactPersonPhone\": \"9000000003\",\n  \"contactPersonEmail\": \"hg.TC002@test.com\",\n  \"hotelGroupStatus\": \"Active\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupCode\": \"{{hgCode}}\",\n  \"hotelGroupName\": \"{{hgName}}\",\n  \"hotelGroupDescription\": \"Auto created HG for TC_002 - Same Currency INR\",\n  \"contactPersonFirstName\": \"HG\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"+91\",\n  \"dialCountryCode\": \"IND\",\n  \"contactPersonPhone\": \"9000000003\",\n  \"contactPersonEmail\": \"hg.TC002@test.com\",\n  \"hotelGroupStatus\": \"Active\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
             },
             "url": {
               "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/HotelGroups/createhotelgroup",
@@ -546,7 +496,6 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "// Generate a valid GUID for x-transaction-id",
                   "function generateGUID() {",
                   "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
                   "    var r = Math.random() * 16 | 0;",
@@ -554,24 +503,18 @@
                   "    return v.toString(16);",
                   "  });",
                   "}",
-                  "var txnId = generateGUID();",
-                  "pm.collectionVariables.set('transactionId', txnId);",
-                  "console.log('TC_002 Hotel - x-transaction-id: ' + txnId);",
+                  "pm.collectionVariables.set('transactionId', generateGUID());",
                   "",
-                  "// Generate unique HotelCode and HotelName dynamically",
-                  "var timestamp = Date.now().toString().slice(-6);",
-                  "var randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();",
-                  "var hotelCode = 'HTL-TC002-' + timestamp + randomPart;",
-                  "var hotelName = 'Hotel TC002 ' + timestamp + randomPart;",
+                  "// TC_002 - Hotel: Country IND | Currency INR | TimeZone UTC+05:30 | DateFormat DD/MM/YYYY | TimeFormat 12-Hour | Decimals 2 | CountryCode IND",
+                  "var ts = Date.now().toString().slice(-6);",
+                  "var rnd = Math.random().toString(36).substring(2,5).toUpperCase();",
+                  "var hotelCode = 'HTL-TC002-' + ts + rnd;",
+                  "var hotelName = 'Hotel TC002 ' + ts + rnd;",
                   "pm.collectionVariables.set('hotelCode', hotelCode);",
                   "pm.collectionVariables.set('hotelName', hotelName);",
-                  "pm.collectionVariables.set('hotelDialCode', '+91');",
                   "pm.collectionVariables.set('hotelCountry', 'IND');",
-                  "pm.collectionVariables.set('mappedHotelTimezone', 'IST');",
-                  "pm.collectionVariables.set('hotelCurrencySymbol', 'INR');",
-                  "pm.collectionVariables.set('hotelDateFormat', 'DD/MM/YYYY');",
-                  "console.log('TC_002 - HotelCode: ' + hotelCode);",
-                  "console.log('TC_002 - HotelName: ' + hotelName);"
+                  "pm.collectionVariables.set('hotelDialCode', '+91');",
+                  "console.log('TC_002 - HotelCode: ' + hotelCode + ' | HotelName: ' + hotelName);"
                 ]
               }
             },
@@ -580,9 +523,7 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
-                  "pm.test('TC002 Hotel - Status 200', function () {",
-                  "  pm.response.to.have.status(200);",
-                  "});",
+                  "pm.test('TC002 Hotel - Status 200', function () { pm.response.to.have.status(200); });",
                   "pm.test('TC002 Hotel - successCode = 1', function () {",
                   "  var j = pm.response.json();",
                   "  pm.expect(j.successCode).to.eql(1);",
@@ -604,7 +545,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupId\": {{hotelGroupId}},\n  \"regionId\": null,\n  \"hotelCode\": \"{{hotelCode}}\",\n  \"hotelName\": \"{{hotelName}}\",\n  \"firstName\": \"Hotel\",\n  \"lastName\": \"Auto\",\n  \"addressLine1\": \"Test Hotel Address\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"IND\",\n  \"dialCode\": \"+91\",\n  \"dialCountryCode\": \"IND\",\n  \"mobileNumber\": \"9000000004\",\n  \"email\": \"hotel.TC002@test.com\",\n  \"timezone\": \"IST\",\n  \"hotelStatus\": \"Active\",\n  \"currencySymbol\": \"INR\",\n  \"currencyRoundOff\": \"2\",\n  \"paymentTypes\": null,\n  \"dateFormat\": \"DD/MM/YYYY\",\n  \"timeFormat\": \"HH:mm\",\n  \"hotelDescription\": \"Auto created hotel for TC_002\",\n  \"sourceGroup\": null,\n  \"sourceSubGroup\": null,\n  \"sourceUserName\": null,\n  \"sourcePassword\": null,\n  \"systemId\": null,\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupId\": {{hotelGroupId}},\n  \"regionId\": null,\n  \"hotelCode\": \"{{hotelCode}}\",\n  \"hotelName\": \"{{hotelName}}\",\n  \"firstName\": \"Hotel\",\n  \"lastName\": \"Auto\",\n  \"addressLine1\": \"Test Hotel Address\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"560001\",\n  \"countryCode\": \"IND\",\n  \"dialCode\": \"+91\",\n  \"dialCountryCode\": \"IND\",\n  \"mobileNumber\": \"9000000004\",\n  \"email\": \"hotel.TC002@test.com\",\n  \"timezone\": \"IST\",\n  \"hotelStatus\": \"Active\",\n  \"currencySymbol\": \"INR\",\n  \"currencyRoundOff\": \"2\",\n  \"paymentTypes\": null,\n  \"dateFormat\": \"DD/MM/YYYY\",\n  \"timeFormat\": \"hh:mm a\",\n  \"hotelDescription\": \"Auto created hotel for TC_002 - Same Currency INR\",\n  \"sourceGroup\": null,\n  \"sourceSubGroup\": null,\n  \"sourceUserName\": null,\n  \"sourcePassword\": null,\n  \"systemId\": null,\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
             },
             "url": {
               "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Hotels/createhotel",
