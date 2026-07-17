@@ -12,6 +12,7 @@
     { "key": "hotelGroupId", "value": "" },
     { "key": "hotelId", "value": "" },
     { "key": "corpCode", "value": "" },
+    { "key": "corpName", "value": "" },
     { "key": "brandCode", "value": "" },
     { "key": "brandName", "value": "" },
     { "key": "hgCode", "value": "" },
@@ -41,17 +42,17 @@
                   "}",
                   "pm.collectionVariables.set('transactionId', generateGUID());",
                   "",
-                  "// TC_001 - Same Currency USD",
-                  "// Corp Country: USA | Currency: USD | TimeZone: UTC-05:00 | DateFormat: MM/DD/YYYY | TimeFormat: 12-Hour | Decimals: 2 | CountryCode: USA",
-                  "pm.collectionVariables.set('corpCode', 'CorpSameCurr_01');",
-                  "pm.collectionVariables.set('corpCurrency', 'USD');",
-                  "pm.collectionVariables.set('corpTimezone', 'EDT');",
-                  "pm.collectionVariables.set('corpDateFormat', 'MM/DD/YYYY');",
-                  "pm.collectionVariables.set('corpTimeFormat', 'hh:mm a');",
-                  "pm.collectionVariables.set('corpDecimals', '2');",
+                  "// TC_001 - Generate unique CorpCode and CorpName",
+                  "// Corp Country: USA | Currency: USD | TimeZone: UTC-05:00 | DateFormat: MM/DD/YYYY | TimeFormat: 12-Hour | Decimals: 2",
+                  "var ts = Date.now().toString().slice(-6);",
+                  "var rnd = Math.random().toString(36).substring(2,5).toUpperCase();",
+                  "var corpCode = 'CORP-TC001-' + ts + rnd;",
+                  "var corpName = 'Corp TC001 ' + ts + rnd;",
+                  "pm.collectionVariables.set('corpCode', corpCode);",
+                  "pm.collectionVariables.set('corpName', corpName);",
                   "pm.collectionVariables.set('corpCountry', 'USA');",
                   "pm.collectionVariables.set('corpDialCode', '+1');",
-                  "console.log('TC_001 - Creating Corporate: CorpSameCurr_01');"
+                  "console.log('TC_001 - CorpCode: ' + corpCode + ' | CorpName: ' + corpName);"
                 ]
               }
             },
@@ -80,7 +81,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"corporateCode\": \"CorpSameCurr_01\",\n  \"corporateName\": \"Corp CorpSameCurr_01\",\n  \"corporateDescription\": \"Auto created for TC_001 - Same Currency USD\",\n  \"corporateStatus\": \"Active\",\n  \"firstName\": \"Auto\",\n  \"lastName\": \"Corp\",\n  \"addressLine1\": \"Test Address Line 1\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"USA\",\n  \"dialCode\": \"+1\",\n  \"dialCountryCode\": \"USA\",\n  \"mobileNumber\": \"9000000001\",\n  \"contactEmail\": \"corp.CorpSameCurr01@test.com\",\n  \"timezone\": \"EDT\",\n  \"dateFormat\": \"MM/DD/YYYY\",\n  \"timeFormat\": \"hh:mm a\",\n  \"enableSsoLogin\": false,\n  \"b2cInstance\": null,\n  \"b2cDomainName\": null,\n  \"b2cSigninSignupPolicy\": null,\n  \"b2cClientId\": null,\n  \"sessionTimeoutLimit\": null,\n  \"enableMfa\": false,\n  \"otpMaxAttempts\": null,\n  \"otpExpirationTime\": null,\n  \"passwordExpirationPeriod\": null,\n  \"currencySymbol\": \"USD\",\n  \"currencyRoundOff\": \"2\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+              "raw": "{\n  \"corporateCode\": \"{{corpCode}}\",\n  \"corporateName\": \"{{corpName}}\",\n  \"corporateDescription\": \"Auto created for TC_001 - Same Currency USD\",\n  \"corporateStatus\": \"Active\",\n  \"firstName\": \"Auto\",\n  \"lastName\": \"Corp\",\n  \"addressLine1\": \"Test Address Line 1\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"USA\",\n  \"dialCode\": \"+1\",\n  \"dialCountryCode\": \"USA\",\n  \"mobileNumber\": \"9000000001\",\n  \"contactEmail\": \"corp.TC001@test.com\",\n  \"timezone\": \"EDT\",\n  \"dateFormat\": \"MM/DD/YYYY\",\n  \"timeFormat\": \"hh:mm a\",\n  \"enableSsoLogin\": false,\n  \"b2cInstance\": null,\n  \"b2cDomainName\": null,\n  \"b2cSigninSignupPolicy\": null,\n  \"b2cClientId\": null,\n  \"sessionTimeoutLimit\": null,\n  \"enableMfa\": false,\n  \"otpMaxAttempts\": null,\n  \"otpExpirationTime\": null,\n  \"passwordExpirationPeriod\": null,\n  \"currencySymbol\": \"USD\",\n  \"currencyRoundOff\": \"2\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
             },
             "url": {
               "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Corporates/createcorporate",
@@ -237,7 +238,7 @@
                   "}",
                   "pm.collectionVariables.set('transactionId', generateGUID());",
                   "",
-                  "// TC_001 - Hotel: Country USA | Currency USD | TimeZone UTC-05:00 | DateFormat MM/DD/YYYY | TimeFormat 12-Hour | Decimals 2 | CountryCode USA",
+                  "// TC_001 - Hotel: Country USA | Currency USD | TimeZone EDT | DateFormat MM/DD/YYYY | TimeFormat 12-Hour | Decimals 2",
                   "var ts = Date.now().toString().slice(-6);",
                   "var rnd = Math.random().toString(36).substring(2,5).toUpperCase();",
                   "var hotelCode = 'HTL-TC001-' + ts + rnd;",
@@ -309,17 +310,17 @@
                   "}",
                   "pm.collectionVariables.set('transactionId', generateGUID());",
                   "",
-                  "// TC_002 - Same Currency INR",
-                  "// Corp Country: IND | Currency: INR | TimeZone: UTC+05:30 | DateFormat: DD/MM/YYYY | TimeFormat: 12-Hour | Decimals: 2 | CountryCode: IND",
-                  "pm.collectionVariables.set('corpCode', 'CorpSameCurr_02');",
-                  "pm.collectionVariables.set('corpCurrency', 'INR');",
-                  "pm.collectionVariables.set('corpTimezone', 'IST');",
-                  "pm.collectionVariables.set('corpDateFormat', 'DD/MM/YYYY');",
-                  "pm.collectionVariables.set('corpTimeFormat', 'hh:mm a');",
-                  "pm.collectionVariables.set('corpDecimals', '2');",
+                  "// TC_002 - Generate unique CorpCode and CorpName",
+                  "// Corp Country: IND | Currency: INR | TimeZone: UTC+05:30 | DateFormat: DD/MM/YYYY | TimeFormat: 12-Hour | Decimals: 2",
+                  "var ts = Date.now().toString().slice(-6);",
+                  "var rnd = Math.random().toString(36).substring(2,5).toUpperCase();",
+                  "var corpCode = 'CORP-TC002-' + ts + rnd;",
+                  "var corpName = 'Corp TC002 ' + ts + rnd;",
+                  "pm.collectionVariables.set('corpCode', corpCode);",
+                  "pm.collectionVariables.set('corpName', corpName);",
                   "pm.collectionVariables.set('corpCountry', 'IND');",
                   "pm.collectionVariables.set('corpDialCode', '+91');",
-                  "console.log('TC_002 - Creating Corporate: CorpSameCurr_02');"
+                  "console.log('TC_002 - CorpCode: ' + corpCode + ' | CorpName: ' + corpName);"
                 ]
               }
             },
@@ -348,7 +349,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"corporateCode\": \"CorpSameCurr_02\",\n  \"corporateName\": \"Corp CorpSameCurr_02\",\n  \"corporateDescription\": \"Auto created for TC_002 - Same Currency INR\",\n  \"corporateStatus\": \"Active\",\n  \"firstName\": \"Auto\",\n  \"lastName\": \"Corp\",\n  \"addressLine1\": \"Test Address Line 1\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"560001\",\n  \"countryCode\": \"IND\",\n  \"dialCode\": \"+91\",\n  \"dialCountryCode\": \"IND\",\n  \"mobileNumber\": \"9000000001\",\n  \"contactEmail\": \"corp.CorpSameCurr02@test.com\",\n  \"timezone\": \"IST\",\n  \"dateFormat\": \"DD/MM/YYYY\",\n  \"timeFormat\": \"hh:mm a\",\n  \"enableSsoLogin\": false,\n  \"b2cInstance\": null,\n  \"b2cDomainName\": null,\n  \"b2cSigninSignupPolicy\": null,\n  \"b2cClientId\": null,\n  \"sessionTimeoutLimit\": null,\n  \"enableMfa\": false,\n  \"otpMaxAttempts\": null,\n  \"otpExpirationTime\": null,\n  \"passwordExpirationPeriod\": null,\n  \"currencySymbol\": \"INR\",\n  \"currencyRoundOff\": \"2\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+              "raw": "{\n  \"corporateCode\": \"{{corpCode}}\",\n  \"corporateName\": \"{{corpName}}\",\n  \"corporateDescription\": \"Auto created for TC_002 - Same Currency INR\",\n  \"corporateStatus\": \"Active\",\n  \"firstName\": \"Auto\",\n  \"lastName\": \"Corp\",\n  \"addressLine1\": \"Test Address Line 1\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"560001\",\n  \"countryCode\": \"IND\",\n  \"dialCode\": \"+91\",\n  \"dialCountryCode\": \"IND\",\n  \"mobileNumber\": \"9000000001\",\n  \"contactEmail\": \"corp.TC002@test.com\",\n  \"timezone\": \"IST\",\n  \"dateFormat\": \"DD/MM/YYYY\",\n  \"timeFormat\": \"hh:mm a\",\n  \"enableSsoLogin\": false,\n  \"b2cInstance\": null,\n  \"b2cDomainName\": null,\n  \"b2cSigninSignupPolicy\": null,\n  \"b2cClientId\": null,\n  \"sessionTimeoutLimit\": null,\n  \"enableMfa\": false,\n  \"otpMaxAttempts\": null,\n  \"otpExpirationTime\": null,\n  \"passwordExpirationPeriod\": null,\n  \"currencySymbol\": \"INR\",\n  \"currencyRoundOff\": \"2\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
             },
             "url": {
               "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Corporates/createcorporate",
@@ -505,7 +506,7 @@
                   "}",
                   "pm.collectionVariables.set('transactionId', generateGUID());",
                   "",
-                  "// TC_002 - Hotel: Country IND | Currency INR | TimeZone UTC+05:30 | DateFormat DD/MM/YYYY | TimeFormat 12-Hour | Decimals 2 | CountryCode IND",
+                  "// TC_002 - Hotel: Country IND | Currency INR | TimeZone IST | DateFormat DD/MM/YYYY | TimeFormat 12-Hour | Decimals 2",
                   "var ts = Date.now().toString().slice(-6);",
                   "var rnd = Math.random().toString(36).substring(2,5).toUpperCase();",
                   "var hotelCode = 'HTL-TC002-' + ts + rnd;",
