@@ -11,14 +11,6 @@
     { "key": "brandId", "value": "" },
     { "key": "hotelGroupId", "value": "" },
     { "key": "hotelId", "value": "" },
-    { "key": "corpCode", "value": "" },
-    { "key": "corpName", "value": "" },
-    { "key": "brandCode", "value": "" },
-    { "key": "brandName", "value": "" },
-    { "key": "hgCode", "value": "" },
-    { "key": "hgName", "value": "" },
-    { "key": "hotelCode", "value": "" },
-    { "key": "hotelName", "value": "" },
     { "key": "transactionId", "value": "" }
   ],
   "item": [
@@ -42,17 +34,19 @@
                   "}",
                   "pm.collectionVariables.set('transactionId', generateGUID());",
                   "",
-                  "// TC_001 - Generate unique CorpCode and CorpName",
-                  "// Corp Country: USA | Currency: USD | TimeZone: UTC-05:00 | DateFormat: MM/DD/YYYY | TimeFormat: 12-Hour | Decimals: 2",
-                  "var ts = Date.now().toString().slice(-6);",
-                  "var rnd = Math.random().toString(36).substring(2,5).toUpperCase();",
+                  "var ts = Date.now().toString().slice(-7);",
+                  "var rnd = Math.random().toString(36).substring(2, 5).toUpperCase();",
                   "var corpCode = 'CORP-TC001-' + ts + rnd;",
                   "var corpName = 'Corp TC001 ' + ts + rnd;",
+                  "",
+                  "// Force clear then set to avoid stale empty values",
+                  "pm.collectionVariables.unset('corpCode');",
+                  "pm.collectionVariables.unset('corpName');",
                   "pm.collectionVariables.set('corpCode', corpCode);",
                   "pm.collectionVariables.set('corpName', corpName);",
-                  "pm.collectionVariables.set('corpCountry', 'USA');",
-                  "pm.collectionVariables.set('corpDialCode', '+1');",
-                  "console.log('TC_001 - CorpCode: ' + corpCode + ' | CorpName: ' + corpName);"
+                  "",
+                  "console.log('[TC_001] corpCode = ' + pm.collectionVariables.get('corpCode'));",
+                  "console.log('[TC_001] corpName = ' + pm.collectionVariables.get('corpName'));"
                 ]
               }
             },
@@ -66,7 +60,7 @@
                   "  var j = pm.response.json();",
                   "  pm.expect(j.successCode).to.eql(1);",
                   "  pm.collectionVariables.set('corporateId', String(j.corporateId));",
-                  "  console.log('TC_001 Corporate ID: ' + j.corporateId);",
+                  "  console.log('[TC_001] Corporate ID: ' + j.corporateId);",
                   "});"
                 ]
               }
@@ -108,16 +102,18 @@
                   "}",
                   "pm.collectionVariables.set('transactionId', generateGUID());",
                   "",
-                  "// TC_001 - Brand: CountryCode USA",
-                  "var ts = Date.now().toString().slice(-6);",
-                  "var rnd = Math.random().toString(36).substring(2,5).toUpperCase();",
+                  "var ts = Date.now().toString().slice(-7);",
+                  "var rnd = Math.random().toString(36).substring(2, 5).toUpperCase();",
                   "var brandCode = 'BRD-TC001-' + ts + rnd;",
                   "var brandName = 'Brand TC001 ' + ts + rnd;",
+                  "",
+                  "pm.collectionVariables.unset('brandCode');",
+                  "pm.collectionVariables.unset('brandName');",
                   "pm.collectionVariables.set('brandCode', brandCode);",
                   "pm.collectionVariables.set('brandName', brandName);",
-                  "pm.collectionVariables.set('brandCountry', 'USA');",
-                  "pm.collectionVariables.set('brandDialCode', '+1');",
-                  "console.log('TC_001 - BrandCode: ' + brandCode + ' | BrandName: ' + brandName);"
+                  "",
+                  "console.log('[TC_001] brandCode = ' + pm.collectionVariables.get('brandCode'));",
+                  "console.log('[TC_001] brandName = ' + pm.collectionVariables.get('brandName'));"
                 ]
               }
             },
@@ -131,7 +127,7 @@
                   "  var j = pm.response.json();",
                   "  pm.expect(j.successCode).to.eql(1);",
                   "  pm.collectionVariables.set('brandId', String(j.brandId));",
-                  "  console.log('TC_001 Brand ID: ' + j.brandId);",
+                  "  console.log('[TC_001] Brand ID: ' + j.brandId);",
                   "});"
                 ]
               }
@@ -173,16 +169,18 @@
                   "}",
                   "pm.collectionVariables.set('transactionId', generateGUID());",
                   "",
-                  "// TC_001 - HG: CountryCode USA",
-                  "var ts = Date.now().toString().slice(-6);",
-                  "var rnd = Math.random().toString(36).substring(2,5).toUpperCase();",
+                  "var ts = Date.now().toString().slice(-7);",
+                  "var rnd = Math.random().toString(36).substring(2, 5).toUpperCase();",
                   "var hgCode = 'HG-TC001-' + ts + rnd;",
                   "var hgName = 'HotelGroup TC001 ' + ts + rnd;",
+                  "",
+                  "pm.collectionVariables.unset('hgCode');",
+                  "pm.collectionVariables.unset('hgName');",
                   "pm.collectionVariables.set('hgCode', hgCode);",
                   "pm.collectionVariables.set('hgName', hgName);",
-                  "pm.collectionVariables.set('hgCountry', 'USA');",
-                  "pm.collectionVariables.set('hgDialCode', '+1');",
-                  "console.log('TC_001 - HGCode: ' + hgCode + ' | HGName: ' + hgName);"
+                  "",
+                  "console.log('[TC_001] hgCode = ' + pm.collectionVariables.get('hgCode'));",
+                  "console.log('[TC_001] hgName = ' + pm.collectionVariables.get('hgName'));"
                 ]
               }
             },
@@ -196,7 +194,7 @@
                   "  var j = pm.response.json();",
                   "  pm.expect(j.successCode).to.eql(1);",
                   "  pm.collectionVariables.set('hotelGroupId', String(j.hotelGroupId));",
-                  "  console.log('TC_001 Hotel Group ID: ' + j.hotelGroupId);",
+                  "  console.log('[TC_001] Hotel Group ID: ' + j.hotelGroupId);",
                   "});"
                 ]
               }
@@ -238,16 +236,18 @@
                   "}",
                   "pm.collectionVariables.set('transactionId', generateGUID());",
                   "",
-                  "// TC_001 - Hotel: Country USA | Currency USD | TimeZone EDT | DateFormat MM/DD/YYYY | TimeFormat 12-Hour | Decimals 2",
-                  "var ts = Date.now().toString().slice(-6);",
-                  "var rnd = Math.random().toString(36).substring(2,5).toUpperCase();",
+                  "var ts = Date.now().toString().slice(-7);",
+                  "var rnd = Math.random().toString(36).substring(2, 5).toUpperCase();",
                   "var hotelCode = 'HTL-TC001-' + ts + rnd;",
                   "var hotelName = 'Hotel TC001 ' + ts + rnd;",
+                  "",
+                  "pm.collectionVariables.unset('hotelCode');",
+                  "pm.collectionVariables.unset('hotelName');",
                   "pm.collectionVariables.set('hotelCode', hotelCode);",
                   "pm.collectionVariables.set('hotelName', hotelName);",
-                  "pm.collectionVariables.set('hotelCountry', 'USA');",
-                  "pm.collectionVariables.set('hotelDialCode', '+1');",
-                  "console.log('TC_001 - HotelCode: ' + hotelCode + ' | HotelName: ' + hotelName);"
+                  "",
+                  "console.log('[TC_001] hotelCode = ' + pm.collectionVariables.get('hotelCode'));",
+                  "console.log('[TC_001] hotelName = ' + pm.collectionVariables.get('hotelName'));"
                 ]
               }
             },
@@ -261,9 +261,8 @@
                   "  var j = pm.response.json();",
                   "  pm.expect(j.successCode).to.eql(1);",
                   "  pm.collectionVariables.set('hotelId', String(j.hotelId));",
-                  "  console.log('TC_001 Hotel ID: ' + j.hotelId);",
-                  "  console.log('=== TC_001 COMPLETED ===');",
-                  "  console.log('CorpId: ' + pm.collectionVariables.get('corporateId') + ' | BrandId: ' + pm.collectionVariables.get('brandId') + ' | HGId: ' + pm.collectionVariables.get('hotelGroupId') + ' | HotelId: ' + j.hotelId);",
+                  "  console.log('[TC_001] Hotel ID: ' + j.hotelId);",
+                  "  console.log('=== TC_001 COMPLETED === CorpId:' + pm.collectionVariables.get('corporateId') + ' BrandId:' + pm.collectionVariables.get('brandId') + ' HGId:' + pm.collectionVariables.get('hotelGroupId') + ' HotelId:' + j.hotelId);",
                   "});"
                 ]
               }
@@ -310,17 +309,18 @@
                   "}",
                   "pm.collectionVariables.set('transactionId', generateGUID());",
                   "",
-                  "// TC_002 - Generate unique CorpCode and CorpName",
-                  "// Corp Country: IND | Currency: INR | TimeZone: UTC+05:30 | DateFormat: DD/MM/YYYY | TimeFormat: 12-Hour | Decimals: 2",
-                  "var ts = Date.now().toString().slice(-6);",
-                  "var rnd = Math.random().toString(36).substring(2,5).toUpperCase();",
+                  "var ts = Date.now().toString().slice(-7);",
+                  "var rnd = Math.random().toString(36).substring(2, 5).toUpperCase();",
                   "var corpCode = 'CORP-TC002-' + ts + rnd;",
                   "var corpName = 'Corp TC002 ' + ts + rnd;",
+                  "",
+                  "pm.collectionVariables.unset('corpCode');",
+                  "pm.collectionVariables.unset('corpName');",
                   "pm.collectionVariables.set('corpCode', corpCode);",
                   "pm.collectionVariables.set('corpName', corpName);",
-                  "pm.collectionVariables.set('corpCountry', 'IND');",
-                  "pm.collectionVariables.set('corpDialCode', '+91');",
-                  "console.log('TC_002 - CorpCode: ' + corpCode + ' | CorpName: ' + corpName);"
+                  "",
+                  "console.log('[TC_002] corpCode = ' + pm.collectionVariables.get('corpCode'));",
+                  "console.log('[TC_002] corpName = ' + pm.collectionVariables.get('corpName'));"
                 ]
               }
             },
@@ -334,7 +334,7 @@
                   "  var j = pm.response.json();",
                   "  pm.expect(j.successCode).to.eql(1);",
                   "  pm.collectionVariables.set('corporateId', String(j.corporateId));",
-                  "  console.log('TC_002 Corporate ID: ' + j.corporateId);",
+                  "  console.log('[TC_002] Corporate ID: ' + j.corporateId);",
                   "});"
                 ]
               }
@@ -376,16 +376,18 @@
                   "}",
                   "pm.collectionVariables.set('transactionId', generateGUID());",
                   "",
-                  "// TC_002 - Brand: CountryCode IND",
-                  "var ts = Date.now().toString().slice(-6);",
-                  "var rnd = Math.random().toString(36).substring(2,5).toUpperCase();",
+                  "var ts = Date.now().toString().slice(-7);",
+                  "var rnd = Math.random().toString(36).substring(2, 5).toUpperCase();",
                   "var brandCode = 'BRD-TC002-' + ts + rnd;",
                   "var brandName = 'Brand TC002 ' + ts + rnd;",
+                  "",
+                  "pm.collectionVariables.unset('brandCode');",
+                  "pm.collectionVariables.unset('brandName');",
                   "pm.collectionVariables.set('brandCode', brandCode);",
                   "pm.collectionVariables.set('brandName', brandName);",
-                  "pm.collectionVariables.set('brandCountry', 'IND');",
-                  "pm.collectionVariables.set('brandDialCode', '+91');",
-                  "console.log('TC_002 - BrandCode: ' + brandCode + ' | BrandName: ' + brandName);"
+                  "",
+                  "console.log('[TC_002] brandCode = ' + pm.collectionVariables.get('brandCode'));",
+                  "console.log('[TC_002] brandName = ' + pm.collectionVariables.get('brandName'));"
                 ]
               }
             },
@@ -399,7 +401,7 @@
                   "  var j = pm.response.json();",
                   "  pm.expect(j.successCode).to.eql(1);",
                   "  pm.collectionVariables.set('brandId', String(j.brandId));",
-                  "  console.log('TC_002 Brand ID: ' + j.brandId);",
+                  "  console.log('[TC_002] Brand ID: ' + j.brandId);",
                   "});"
                 ]
               }
@@ -441,16 +443,18 @@
                   "}",
                   "pm.collectionVariables.set('transactionId', generateGUID());",
                   "",
-                  "// TC_002 - HG: CountryCode IND",
-                  "var ts = Date.now().toString().slice(-6);",
-                  "var rnd = Math.random().toString(36).substring(2,5).toUpperCase();",
+                  "var ts = Date.now().toString().slice(-7);",
+                  "var rnd = Math.random().toString(36).substring(2, 5).toUpperCase();",
                   "var hgCode = 'HG-TC002-' + ts + rnd;",
                   "var hgName = 'HotelGroup TC002 ' + ts + rnd;",
+                  "",
+                  "pm.collectionVariables.unset('hgCode');",
+                  "pm.collectionVariables.unset('hgName');",
                   "pm.collectionVariables.set('hgCode', hgCode);",
                   "pm.collectionVariables.set('hgName', hgName);",
-                  "pm.collectionVariables.set('hgCountry', 'IND');",
-                  "pm.collectionVariables.set('hgDialCode', '+91');",
-                  "console.log('TC_002 - HGCode: ' + hgCode + ' | HGName: ' + hgName);"
+                  "",
+                  "console.log('[TC_002] hgCode = ' + pm.collectionVariables.get('hgCode'));",
+                  "console.log('[TC_002] hgName = ' + pm.collectionVariables.get('hgName'));"
                 ]
               }
             },
@@ -464,7 +468,7 @@
                   "  var j = pm.response.json();",
                   "  pm.expect(j.successCode).to.eql(1);",
                   "  pm.collectionVariables.set('hotelGroupId', String(j.hotelGroupId));",
-                  "  console.log('TC_002 Hotel Group ID: ' + j.hotelGroupId);",
+                  "  console.log('[TC_002] Hotel Group ID: ' + j.hotelGroupId);",
                   "});"
                 ]
               }
@@ -506,16 +510,18 @@
                   "}",
                   "pm.collectionVariables.set('transactionId', generateGUID());",
                   "",
-                  "// TC_002 - Hotel: Country IND | Currency INR | TimeZone IST | DateFormat DD/MM/YYYY | TimeFormat 12-Hour | Decimals 2",
-                  "var ts = Date.now().toString().slice(-6);",
-                  "var rnd = Math.random().toString(36).substring(2,5).toUpperCase();",
+                  "var ts = Date.now().toString().slice(-7);",
+                  "var rnd = Math.random().toString(36).substring(2, 5).toUpperCase();",
                   "var hotelCode = 'HTL-TC002-' + ts + rnd;",
                   "var hotelName = 'Hotel TC002 ' + ts + rnd;",
+                  "",
+                  "pm.collectionVariables.unset('hotelCode');",
+                  "pm.collectionVariables.unset('hotelName');",
                   "pm.collectionVariables.set('hotelCode', hotelCode);",
                   "pm.collectionVariables.set('hotelName', hotelName);",
-                  "pm.collectionVariables.set('hotelCountry', 'IND');",
-                  "pm.collectionVariables.set('hotelDialCode', '+91');",
-                  "console.log('TC_002 - HotelCode: ' + hotelCode + ' | HotelName: ' + hotelName);"
+                  "",
+                  "console.log('[TC_002] hotelCode = ' + pm.collectionVariables.get('hotelCode'));",
+                  "console.log('[TC_002] hotelName = ' + pm.collectionVariables.get('hotelName'));"
                 ]
               }
             },
@@ -529,9 +535,8 @@
                   "  var j = pm.response.json();",
                   "  pm.expect(j.successCode).to.eql(1);",
                   "  pm.collectionVariables.set('hotelId', String(j.hotelId));",
-                  "  console.log('TC_002 Hotel ID: ' + j.hotelId);",
-                  "  console.log('=== TC_002 COMPLETED ===');",
-                  "  console.log('CorpId: ' + pm.collectionVariables.get('corporateId') + ' | BrandId: ' + pm.collectionVariables.get('brandId') + ' | HGId: ' + pm.collectionVariables.get('hotelGroupId') + ' | HotelId: ' + j.hotelId);",
+                  "  console.log('[TC_002] Hotel ID: ' + j.hotelId);",
+                  "  console.log('=== TC_002 COMPLETED === CorpId:' + pm.collectionVariables.get('corporateId') + ' BrandId:' + pm.collectionVariables.get('brandId') + ' HGId:' + pm.collectionVariables.get('hotelGroupId') + ' HotelId:' + j.hotelId);",
                   "});"
                 ]
               }
