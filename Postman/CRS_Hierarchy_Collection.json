@@ -32,7 +32,8 @@
     { "key": "brandCountry", "value": "" },
     { "key": "hgCountry", "value": "" },
     { "key": "hotelCountry", "value": "" },
-    { "key": "hotelDateFormat", "value": "" }
+    { "key": "hotelDateFormat", "value": "" },
+    { "key": "transactionId", "value": "" }
   ],
   "item": [
     {
@@ -46,6 +47,18 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "// Generate a valid GUID for x-transaction-id",
+                  "function generateGUID() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0;",
+                  "    var v = c === 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  "var txnId = generateGUID();",
+                  "pm.collectionVariables.set('transactionId', txnId);",
+                  "console.log('TC_001 Corporate - x-transaction-id: ' + txnId);",
+                  "",
                   "pm.collectionVariables.set('corpCode', 'CorpSameCurr_01');",
                   "pm.collectionVariables.set('mappedCorpTimezone', 'EDT');",
                   "pm.collectionVariables.set('corpCurrencySymbol', 'USD');",
@@ -78,7 +91,8 @@
             "method": "POST",
             "header": [
               { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "x-transaction-id", "value": "{{transactionId}}" }
             ],
             "body": {
               "mode": "raw",
@@ -100,6 +114,18 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "// Generate a valid GUID for x-transaction-id",
+                  "function generateGUID() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0;",
+                  "    var v = c === 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  "var txnId = generateGUID();",
+                  "pm.collectionVariables.set('transactionId', txnId);",
+                  "console.log('TC_001 Brand - x-transaction-id: ' + txnId);",
+                  "",
                   "// Generate unique BrandCode and BrandName dynamically",
                   "var timestamp = Date.now().toString().slice(-6);",
                   "var randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();",
@@ -136,7 +162,8 @@
             "method": "POST",
             "header": [
               { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "x-transaction-id", "value": "{{transactionId}}" }
             ],
             "body": {
               "mode": "raw",
@@ -158,6 +185,18 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "// Generate a valid GUID for x-transaction-id",
+                  "function generateGUID() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0;",
+                  "    var v = c === 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  "var txnId = generateGUID();",
+                  "pm.collectionVariables.set('transactionId', txnId);",
+                  "console.log('TC_001 HG - x-transaction-id: ' + txnId);",
+                  "",
                   "// Generate unique HotelGroupCode and HotelGroupName dynamically",
                   "var timestamp = Date.now().toString().slice(-6);",
                   "var randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();",
@@ -194,7 +233,8 @@
             "method": "POST",
             "header": [
               { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "x-transaction-id", "value": "{{transactionId}}" }
             ],
             "body": {
               "mode": "raw",
@@ -216,6 +256,18 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "// Generate a valid GUID for x-transaction-id",
+                  "function generateGUID() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0;",
+                  "    var v = c === 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  "var txnId = generateGUID();",
+                  "pm.collectionVariables.set('transactionId', txnId);",
+                  "console.log('TC_001 Hotel - x-transaction-id: ' + txnId);",
+                  "",
                   "// Generate unique HotelCode and HotelName dynamically",
                   "var timestamp = Date.now().toString().slice(-6);",
                   "var randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();",
@@ -257,7 +309,8 @@
             "method": "POST",
             "header": [
               { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "x-transaction-id", "value": "{{transactionId}}" }
             ],
             "body": {
               "mode": "raw",
@@ -284,6 +337,18 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "// Generate a valid GUID for x-transaction-id",
+                  "function generateGUID() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0;",
+                  "    var v = c === 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  "var txnId = generateGUID();",
+                  "pm.collectionVariables.set('transactionId', txnId);",
+                  "console.log('TC_002 Corporate - x-transaction-id: ' + txnId);",
+                  "",
                   "pm.collectionVariables.set('corpCode', 'CorpSameCurr_02');",
                   "pm.collectionVariables.set('mappedCorpTimezone', 'IST');",
                   "pm.collectionVariables.set('corpCurrencySymbol', 'INR');",
@@ -316,7 +381,8 @@
             "method": "POST",
             "header": [
               { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "x-transaction-id", "value": "{{transactionId}}" }
             ],
             "body": {
               "mode": "raw",
@@ -338,6 +404,18 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "// Generate a valid GUID for x-transaction-id",
+                  "function generateGUID() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0;",
+                  "    var v = c === 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  "var txnId = generateGUID();",
+                  "pm.collectionVariables.set('transactionId', txnId);",
+                  "console.log('TC_002 Brand - x-transaction-id: ' + txnId);",
+                  "",
                   "// Generate unique BrandCode and BrandName dynamically",
                   "var timestamp = Date.now().toString().slice(-6);",
                   "var randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();",
@@ -374,7 +452,8 @@
             "method": "POST",
             "header": [
               { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "x-transaction-id", "value": "{{transactionId}}" }
             ],
             "body": {
               "mode": "raw",
@@ -396,6 +475,18 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "// Generate a valid GUID for x-transaction-id",
+                  "function generateGUID() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0;",
+                  "    var v = c === 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  "var txnId = generateGUID();",
+                  "pm.collectionVariables.set('transactionId', txnId);",
+                  "console.log('TC_002 HG - x-transaction-id: ' + txnId);",
+                  "",
                   "// Generate unique HotelGroupCode and HotelGroupName dynamically",
                   "var timestamp = Date.now().toString().slice(-6);",
                   "var randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();",
@@ -432,7 +523,8 @@
             "method": "POST",
             "header": [
               { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "x-transaction-id", "value": "{{transactionId}}" }
             ],
             "body": {
               "mode": "raw",
@@ -454,6 +546,18 @@
               "script": {
                 "type": "text/javascript",
                 "exec": [
+                  "// Generate a valid GUID for x-transaction-id",
+                  "function generateGUID() {",
+                  "  return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+                  "    var r = Math.random() * 16 | 0;",
+                  "    var v = c === 'x' ? r : (r & 0x3 | 0x8);",
+                  "    return v.toString(16);",
+                  "  });",
+                  "}",
+                  "var txnId = generateGUID();",
+                  "pm.collectionVariables.set('transactionId', txnId);",
+                  "console.log('TC_002 Hotel - x-transaction-id: ' + txnId);",
+                  "",
                   "// Generate unique HotelCode and HotelName dynamically",
                   "var timestamp = Date.now().toString().slice(-6);",
                   "var randomPart = Math.random().toString(36).substring(2, 5).toUpperCase();",
@@ -495,7 +599,8 @@
             "method": "POST",
             "header": [
               { "key": "Content-Type", "value": "application/json" },
-              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+              { "key": "Authorization", "value": "Bearer {{authToken}}" },
+              { "key": "x-transaction-id", "value": "{{transactionId}}" }
             ],
             "body": {
               "mode": "raw",
