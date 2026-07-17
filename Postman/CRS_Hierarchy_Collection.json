@@ -1,0 +1,482 @@
+{
+  "info": {
+    "name": "CRS - Hierarchy Creation - Hardcoded Data",
+    "_postman_id": "crs-hierarchy-001",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "authToken", "value": "" },
+    { "key": "loggedInUserId", "value": "" },
+    { "key": "corporateId", "value": "" },
+    { "key": "brandId", "value": "" },
+    { "key": "hotelGroupId", "value": "" },
+    { "key": "hotelId", "value": "" },
+    { "key": "corpCode", "value": "" },
+    { "key": "brandCode", "value": "" },
+    { "key": "hgCode", "value": "" },
+    { "key": "hotelCode", "value": "" },
+    { "key": "corpDialCode", "value": "" },
+    { "key": "brandDialCode", "value": "" },
+    { "key": "hgDialCode", "value": "" },
+    { "key": "hotelDialCode", "value": "" },
+    { "key": "mappedCorpTimezone", "value": "" },
+    { "key": "mappedHotelTimezone", "value": "" },
+    { "key": "corpCurrencySymbol", "value": "" },
+    { "key": "brandCurrencySymbol", "value": "" },
+    { "key": "hotelCurrencySymbol", "value": "" },
+    { "key": "corpCountry", "value": "" },
+    { "key": "corpDateFormat", "value": "" },
+    { "key": "brandCountry", "value": "" },
+    { "key": "hgCountry", "value": "" },
+    { "key": "hotelCountry", "value": "" },
+    { "key": "hotelDateFormat", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "TC_001 - Same Currency USD",
+      "item": [
+        {
+          "name": "01 - Create Corporate",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('corpCode', 'CorpSameCurr_01');",
+                  "pm.collectionVariables.set('mappedCorpTimezone', 'EDT');",
+                  "pm.collectionVariables.set('corpCurrencySymbol', 'USD');",
+                  "pm.collectionVariables.set('corpDialCode', '+1');",
+                  "pm.collectionVariables.set('corpCountry', 'USA');",
+                  "pm.collectionVariables.set('corpDateFormat', 'MM/DD/YYYY');",
+                  "console.log('TC_001 - Creating Corporate: CorpSameCurr_01');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('TC001 Corporate - Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('TC001 Corporate - successCode = 1', function () {",
+                  "  var j = pm.response.json();",
+                  "  pm.expect(j.successCode).to.eql(1);",
+                  "  pm.collectionVariables.set('corporateId', String(j.corporateId));",
+                  "  console.log('TC_001 Corporate ID: ' + j.corporateId);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"corporateCode\": \"CorpSameCurr_01\",\n  \"corporateName\": \"Corp CorpSameCurr_01\",\n  \"corporateDescription\": \"Auto created for TC_001\",\n  \"corporateStatus\": \"Active\",\n  \"firstName\": \"Auto\",\n  \"lastName\": \"Corp\",\n  \"addressLine1\": \"Test Address Line 1\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"USA\",\n  \"dialCode\": \"+1\",\n  \"dialCountryCode\": \"USA\",\n  \"mobileNumber\": \"9000000001\",\n  \"contactEmail\": \"corp.CorpSameCurr01@test.com\",\n  \"timezone\": \"EDT\",\n  \"dateFormat\": \"MM/DD/YYYY\",\n  \"timeFormat\": \"hh:mm a\",\n  \"enableSsoLogin\": false,\n  \"b2cInstance\": null,\n  \"b2cDomainName\": null,\n  \"b2cSigninSignupPolicy\": null,\n  \"b2cClientId\": null,\n  \"sessionTimeoutLimit\": null,\n  \"enableMfa\": false,\n  \"otpMaxAttempts\": null,\n  \"otpExpirationTime\": null,\n  \"passwordExpirationPeriod\": null,\n  \"currencySymbol\": \"USD\",\n  \"currencyRoundOff\": \"2\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+            },
+            "url": {
+              "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Corporates/createcorporate",
+              "protocol": "https",
+              "host": ["aks-crs-qa", "hospitalityrevolution", "com"],
+              "path": ["api", "v1.0", "Corporates", "createcorporate"]
+            }
+          }
+        },
+        {
+          "name": "02 - Create Brand",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var suffix = Date.now().toString().slice(-5);",
+                  "var brandCode = 'Brand_01_' + suffix;",
+                  "pm.collectionVariables.set('brandCode', brandCode);",
+                  "pm.collectionVariables.set('brandDialCode', '+1');",
+                  "pm.collectionVariables.set('brandCountry', 'USA');",
+                  "console.log('TC_001 - Creating Brand: ' + brandCode);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('TC001 Brand - Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('TC001 Brand - successCode = 1', function () {",
+                  "  var j = pm.response.json();",
+                  "  pm.expect(j.successCode).to.eql(1);",
+                  "  pm.collectionVariables.set('brandId', String(j.brandId));",
+                  "  console.log('TC_001 Brand ID: ' + j.brandId);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandCode\": \"{{brandCode}}\",\n  \"brandName\": \"Brand {{brandCode}}\",\n  \"brandDescription\": \"Auto created brand for TC_001\",\n  \"brandStatus\": \"Active\",\n  \"marketSegment\": null,\n  \"contactPersonFirstName\": \"Brand\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"+1\",\n  \"dialCountryCode\": \"USA\",\n  \"contactPersonPhone\": \"9000000002\",\n  \"contactPersonEmail\": \"brand.TC001@test.com\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+            },
+            "url": {
+              "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Brands/createbrand",
+              "protocol": "https",
+              "host": ["aks-crs-qa", "hospitalityrevolution", "com"],
+              "path": ["api", "v1.0", "Brands", "createbrand"]
+            }
+          }
+        },
+        {
+          "name": "03 - Create Hotel Group",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var suffix = Date.now().toString().slice(-5);",
+                  "var hgCode = 'HG_01_' + suffix;",
+                  "pm.collectionVariables.set('hgCode', hgCode);",
+                  "pm.collectionVariables.set('hgDialCode', '+1');",
+                  "pm.collectionVariables.set('hgCountry', 'USA');",
+                  "console.log('TC_001 - Creating Hotel Group: ' + hgCode);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('TC001 HG - Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('TC001 HG - successCode = 1', function () {",
+                  "  var j = pm.response.json();",
+                  "  pm.expect(j.successCode).to.eql(1);",
+                  "  pm.collectionVariables.set('hotelGroupId', String(j.hotelGroupId));",
+                  "  console.log('TC_001 Hotel Group ID: ' + j.hotelGroupId);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupCode\": \"{{hgCode}}\",\n  \"hotelGroupName\": \"HG {{hgCode}}\",\n  \"hotelGroupDescription\": \"Auto created HG for TC_001\",\n  \"contactPersonFirstName\": \"HG\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"+1\",\n  \"dialCountryCode\": \"USA\",\n  \"contactPersonPhone\": \"9000000003\",\n  \"contactPersonEmail\": \"hg.TC001@test.com\",\n  \"hotelGroupStatus\": \"Active\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+            },
+            "url": {
+              "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/HotelGroups/createhotelgroup",
+              "protocol": "https",
+              "host": ["aks-crs-qa", "hospitalityrevolution", "com"],
+              "path": ["api", "v1.0", "HotelGroups", "createhotelgroup"]
+            }
+          }
+        },
+        {
+          "name": "04 - Create Hotel",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var suffix = Date.now().toString().slice(-5);",
+                  "var hotelCode = 'HTL_01_' + suffix;",
+                  "pm.collectionVariables.set('hotelCode', hotelCode);",
+                  "pm.collectionVariables.set('hotelDialCode', '+1');",
+                  "pm.collectionVariables.set('hotelCountry', 'USA');",
+                  "pm.collectionVariables.set('mappedHotelTimezone', 'EDT');",
+                  "pm.collectionVariables.set('hotelCurrencySymbol', 'USD');",
+                  "pm.collectionVariables.set('hotelDateFormat', 'MM/DD/YYYY');",
+                  "console.log('TC_001 - Creating Hotel: ' + hotelCode);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('TC001 Hotel - Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('TC001 Hotel - successCode = 1', function () {",
+                  "  var j = pm.response.json();",
+                  "  pm.expect(j.successCode).to.eql(1);",
+                  "  pm.collectionVariables.set('hotelId', String(j.hotelId));",
+                  "  console.log('TC_001 Hotel ID: ' + j.hotelId);",
+                  "  console.log('=== TC_001 COMPLETED ===');",
+                  "  console.log('CorpId: ' + pm.collectionVariables.get('corporateId') + ' | BrandId: ' + pm.collectionVariables.get('brandId') + ' | HGId: ' + pm.collectionVariables.get('hotelGroupId') + ' | HotelId: ' + j.hotelId);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupId\": {{hotelGroupId}},\n  \"regionId\": null,\n  \"hotelCode\": \"{{hotelCode}}\",\n  \"hotelName\": \"Hotel {{hotelCode}}\",\n  \"firstName\": \"Hotel\",\n  \"lastName\": \"Auto\",\n  \"addressLine1\": \"Test Hotel Address\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"USA\",\n  \"dialCode\": \"+1\",\n  \"dialCountryCode\": \"USA\",\n  \"mobileNumber\": \"9000000004\",\n  \"email\": \"hotel.TC001@test.com\",\n  \"timezone\": \"EDT\",\n  \"hotelStatus\": \"Active\",\n  \"currencySymbol\": \"USD\",\n  \"currencyRoundOff\": \"2\",\n  \"paymentTypes\": null,\n  \"dateFormat\": \"MM/DD/YYYY\",\n  \"timeFormat\": \"HH:mm\",\n  \"hotelDescription\": \"Auto created hotel for TC_001\",\n  \"sourceGroup\": null,\n  \"sourceSubGroup\": null,\n  \"sourceUserName\": null,\n  \"sourcePassword\": null,\n  \"systemId\": null,\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+            },
+            "url": {
+              "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Hotels/createhotel",
+              "protocol": "https",
+              "host": ["aks-crs-qa", "hospitalityrevolution", "com"],
+              "path": ["api", "v1.0", "Hotels", "createhotel"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "TC_002 - Same Currency INR",
+      "item": [
+        {
+          "name": "01 - Create Corporate",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.collectionVariables.set('corpCode', 'CorpSameCurr_02');",
+                  "pm.collectionVariables.set('mappedCorpTimezone', 'IST');",
+                  "pm.collectionVariables.set('corpCurrencySymbol', 'INR');",
+                  "pm.collectionVariables.set('corpDialCode', '+91');",
+                  "pm.collectionVariables.set('corpCountry', 'IND');",
+                  "pm.collectionVariables.set('corpDateFormat', 'DD/MM/YYYY');",
+                  "console.log('TC_002 - Creating Corporate: CorpSameCurr_02');"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('TC002 Corporate - Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('TC002 Corporate - successCode = 1', function () {",
+                  "  var j = pm.response.json();",
+                  "  pm.expect(j.successCode).to.eql(1);",
+                  "  pm.collectionVariables.set('corporateId', String(j.corporateId));",
+                  "  console.log('TC_002 Corporate ID: ' + j.corporateId);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"corporateCode\": \"CorpSameCurr_02\",\n  \"corporateName\": \"Corp CorpSameCurr_02\",\n  \"corporateDescription\": \"Auto created for TC_002\",\n  \"corporateStatus\": \"Active\",\n  \"firstName\": \"Auto\",\n  \"lastName\": \"Corp\",\n  \"addressLine1\": \"Test Address Line 1\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"IND\",\n  \"dialCode\": \"+91\",\n  \"dialCountryCode\": \"IND\",\n  \"mobileNumber\": \"9000000001\",\n  \"contactEmail\": \"corp.CorpSameCurr02@test.com\",\n  \"timezone\": \"IST\",\n  \"dateFormat\": \"DD/MM/YYYY\",\n  \"timeFormat\": \"hh:mm a\",\n  \"enableSsoLogin\": false,\n  \"b2cInstance\": null,\n  \"b2cDomainName\": null,\n  \"b2cSigninSignupPolicy\": null,\n  \"b2cClientId\": null,\n  \"sessionTimeoutLimit\": null,\n  \"enableMfa\": false,\n  \"otpMaxAttempts\": null,\n  \"otpExpirationTime\": null,\n  \"passwordExpirationPeriod\": null,\n  \"currencySymbol\": \"INR\",\n  \"currencyRoundOff\": \"2\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+            },
+            "url": {
+              "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Corporates/createcorporate",
+              "protocol": "https",
+              "host": ["aks-crs-qa", "hospitalityrevolution", "com"],
+              "path": ["api", "v1.0", "Corporates", "createcorporate"]
+            }
+          }
+        },
+        {
+          "name": "02 - Create Brand",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var suffix = Date.now().toString().slice(-5);",
+                  "var brandCode = 'Brand_02_' + suffix;",
+                  "pm.collectionVariables.set('brandCode', brandCode);",
+                  "pm.collectionVariables.set('brandDialCode', '+91');",
+                  "pm.collectionVariables.set('brandCountry', 'IND');",
+                  "console.log('TC_002 - Creating Brand: ' + brandCode);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('TC002 Brand - Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('TC002 Brand - successCode = 1', function () {",
+                  "  var j = pm.response.json();",
+                  "  pm.expect(j.successCode).to.eql(1);",
+                  "  pm.collectionVariables.set('brandId', String(j.brandId));",
+                  "  console.log('TC_002 Brand ID: ' + j.brandId);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandCode\": \"{{brandCode}}\",\n  \"brandName\": \"Brand {{brandCode}}\",\n  \"brandDescription\": \"Auto created brand for TC_002\",\n  \"brandStatus\": \"Active\",\n  \"marketSegment\": null,\n  \"contactPersonFirstName\": \"Brand\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"+91\",\n  \"dialCountryCode\": \"IND\",\n  \"contactPersonPhone\": \"9000000002\",\n  \"contactPersonEmail\": \"brand.TC002@test.com\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+            },
+            "url": {
+              "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Brands/createbrand",
+              "protocol": "https",
+              "host": ["aks-crs-qa", "hospitalityrevolution", "com"],
+              "path": ["api", "v1.0", "Brands", "createbrand"]
+            }
+          }
+        },
+        {
+          "name": "03 - Create Hotel Group",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var suffix = Date.now().toString().slice(-5);",
+                  "var hgCode = 'HG_02_' + suffix;",
+                  "pm.collectionVariables.set('hgCode', hgCode);",
+                  "pm.collectionVariables.set('hgDialCode', '+91');",
+                  "pm.collectionVariables.set('hgCountry', 'IND');",
+                  "console.log('TC_002 - Creating Hotel Group: ' + hgCode);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('TC002 HG - Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('TC002 HG - successCode = 1', function () {",
+                  "  var j = pm.response.json();",
+                  "  pm.expect(j.successCode).to.eql(1);",
+                  "  pm.collectionVariables.set('hotelGroupId', String(j.hotelGroupId));",
+                  "  console.log('TC_002 Hotel Group ID: ' + j.hotelGroupId);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupCode\": \"{{hgCode}}\",\n  \"hotelGroupName\": \"HG {{hgCode}}\",\n  \"hotelGroupDescription\": \"Auto created HG for TC_002\",\n  \"contactPersonFirstName\": \"HG\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"+91\",\n  \"dialCountryCode\": \"IND\",\n  \"contactPersonPhone\": \"9000000003\",\n  \"contactPersonEmail\": \"hg.TC002@test.com\",\n  \"hotelGroupStatus\": \"Active\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+            },
+            "url": {
+              "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/HotelGroups/createhotelgroup",
+              "protocol": "https",
+              "host": ["aks-crs-qa", "hospitalityrevolution", "com"],
+              "path": ["api", "v1.0", "HotelGroups", "createhotelgroup"]
+            }
+          }
+        },
+        {
+          "name": "04 - Create Hotel",
+          "event": [
+            {
+              "listen": "prerequest",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "var suffix = Date.now().toString().slice(-5);",
+                  "var hotelCode = 'HTL_02_' + suffix;",
+                  "pm.collectionVariables.set('hotelCode', hotelCode);",
+                  "pm.collectionVariables.set('hotelDialCode', '+91');",
+                  "pm.collectionVariables.set('hotelCountry', 'IND');",
+                  "pm.collectionVariables.set('mappedHotelTimezone', 'IST');",
+                  "pm.collectionVariables.set('hotelCurrencySymbol', 'INR');",
+                  "pm.collectionVariables.set('hotelDateFormat', 'DD/MM/YYYY');",
+                  "console.log('TC_002 - Creating Hotel: ' + hotelCode);"
+                ]
+              }
+            },
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "pm.test('TC002 Hotel - Status 200', function () {",
+                  "  pm.response.to.have.status(200);",
+                  "});",
+                  "pm.test('TC002 Hotel - successCode = 1', function () {",
+                  "  var j = pm.response.json();",
+                  "  pm.expect(j.successCode).to.eql(1);",
+                  "  pm.collectionVariables.set('hotelId', String(j.hotelId));",
+                  "  console.log('TC_002 Hotel ID: ' + j.hotelId);",
+                  "  console.log('=== TC_002 COMPLETED ===');",
+                  "  console.log('CorpId: ' + pm.collectionVariables.get('corporateId') + ' | BrandId: ' + pm.collectionVariables.get('brandId') + ' | HGId: ' + pm.collectionVariables.get('hotelGroupId') + ' | HotelId: ' + j.hotelId);",
+                  "});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              { "key": "Content-Type", "value": "application/json" },
+              { "key": "Authorization", "value": "Bearer {{authToken}}" }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupId\": {{hotelGroupId}},\n  \"regionId\": null,\n  \"hotelCode\": \"{{hotelCode}}\",\n  \"hotelName\": \"Hotel {{hotelCode}}\",\n  \"firstName\": \"Hotel\",\n  \"lastName\": \"Auto\",\n  \"addressLine1\": \"Test Hotel Address\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"IND\",\n  \"dialCode\": \"+91\",\n  \"dialCountryCode\": \"IND\",\n  \"mobileNumber\": \"9000000004\",\n  \"email\": \"hotel.TC002@test.com\",\n  \"timezone\": \"IST\",\n  \"hotelStatus\": \"Active\",\n  \"currencySymbol\": \"INR\",\n  \"currencyRoundOff\": \"2\",\n  \"paymentTypes\": null,\n  \"dateFormat\": \"DD/MM/YYYY\",\n  \"timeFormat\": \"HH:mm\",\n  \"hotelDescription\": \"Auto created hotel for TC_002\",\n  \"sourceGroup\": null,\n  \"sourceSubGroup\": null,\n  \"sourceUserName\": null,\n  \"sourcePassword\": null,\n  \"systemId\": null,\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}"
+            },
+            "url": {
+              "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Hotels/createhotel",
+              "protocol": "https",
+              "host": ["aks-crs-qa", "hospitalityrevolution", "com"],
+              "path": ["api", "v1.0", "Hotels", "createhotel"]
+            }
+          }
+        }
+      ]
+    }
+  ]
+}
