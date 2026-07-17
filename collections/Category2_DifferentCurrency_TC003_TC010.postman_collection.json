@@ -2,12 +2,15 @@
   "info": {
     "name": "Category 2 - Different Currency (TC_003 to TC_010)",
     "_postman_id": "cat2-diff-currency-tc003-tc010",
-    "description": "Data-driven Postman collection for Category 2: Different Currency at Each Screen. Covers TC_003 to TC_010. Login is done manually - set authToken and loggedInUserId in collection variables before running. Each API generates its own unique transactionId.",
+    "description": "Data-driven Postman collection for Category 2: Different Currency at Each Screen. Covers TC_003 to TC_010. Login API auto-fetches authToken (sessionId) and loggedInUserId. Each API generates its own unique transactionId.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
     { "key": "authToken",              "value": "", "type": "string" },
     { "key": "loggedInUserId",         "value": "", "type": "string" },
+    { "key": "loginUsername",          "value": "jdoe", "type": "string" },
+    { "key": "loginPassword",          "value": "P@ssw0rd!", "type": "string" },
+    { "key": "loginCorporateId",       "value": "12345", "type": "string" },
     { "key": "corporateId",            "value": "", "type": "string" },
     { "key": "brandId",                "value": "", "type": "string" },
     { "key": "hotelGroupId",           "value": "", "type": "string" },
@@ -177,10 +180,8 @@
           "  }",
           "];",
           "",
-          "// Persist testData for use in response scripts",
           "pm.collectionVariables.set('__testData__', JSON.stringify(testData));",
           "",
-          "// Load current row into collection variables",
           "var idx = parseInt(pm.collectionVariables.get('currentTestCaseIndex') || '0');",
           "if (isNaN(idx) || idx >= testData.length) idx = 0;",
           "var row = testData[idx];",
@@ -188,7 +189,6 @@
           "    pm.collectionVariables.set(k, row[k]);",
           "});",
           "",
-          "// Shared dial code map",
           "var dialCodeMap = {",
           "    'USA': '+1',  'GBR': '+44', 'DEU': '+49', 'JPN': '+81',",
           "    'SGP': '+65', 'AUS': '+61', 'IND': '+91', 'ZAF': '+27',",
@@ -198,7 +198,6 @@
           "};",
           "pm.collectionVariables.set('__dialCodeMap__', JSON.stringify(dialCodeMap));",
           "",
-          "// Shared timezone map",
           "var timezoneMap = {",
           "    'UTC-05:00': 'EDT', 'UTC+05:30': 'IST', 'UTC+00:00': 'UTC',",
           "    'UTC+08:00': 'SGT', 'UTC+09:00': 'JST', 'UTC+01:00': 'CET',",
@@ -214,6 +213,77 @@
   ],
   "item": [
     {
+      "name": "0. Login",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// ── Login is called ONCE before the first test case only ─────",
+              "// If authToken is already set and valid, skip re-login.",
+              "// To force re-login: clear the 'authToken' collection variable.",
+              "var existingToken = pm.collectionVariables.get('authToken');",
+              "if (existingToken && existingToken.trim() !== '') {",
+              "    console.log('[Login] authToken already set — skipping login request.');",
+              "    // Skip by setting a flag; actual skip handled in test script",
+              "} else {",
+              "    console.log('[Login] No authToken found — proceeding with login.');",
+              "}"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Login - Status 200', function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test('Login - Success and extract credentials', function () {",
+              "    var json = pm.response.json();",
+              "    pm.expect(json.successCode).to.eql(1);",
+              "",
+              "    // ── Extract authToken from sessionId ────────────────────",
+              "    // NOTE: If your API returns the token in a different field",
+              "    //       (e.g. 'token', 'accessToken'), update the line below.",
+              "    var authToken = json.sessionId;",
+              "    pm.collectionVariables.set('authToken', authToken);",
+              "",
+              "    // ── Extract loggedInUserId ──────────────────────────────",
+              "    var userId = json.userId;",
+              "    pm.collectionVariables.set('loggedInUserId', userId);",
+              "",
+              "    console.log('[Login] authToken (sessionId) set: ' + authToken);",
+              "    console.log('[Login] loggedInUserId (userId) set: ' + userId);",
+              "    console.log('[Login] Logged in as: ' + json.firstName + ' ' + json.lastName + ' (' + json.email + ')');",
+              "    console.log('[Login] corporateId from login: ' + json.corporateId);",
+              "    console.log('[Login] Token expires at: ' + json.expiresAt);",
+              "});"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{loginUsername}}\",\n  \"password\": \"{{loginPassword}}\",\n  \"corporateId\": {{loginCorporateId}}\n}"
+        },
+        "url": {
+          "raw": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Auth/login",
+          "protocol": "https",
+          "host": ["aks-crs-qa", "hospitalityrevolution", "com"],
+          "path": ["api", "v1.0", "Auth", "login"]
+        }
+      }
+    },
+    {
       "name": "1. Create Corporate",
       "event": [
         {
@@ -225,8 +295,13 @@
               "var dialCodeMap = JSON.parse(pm.collectionVariables.get('__dialCodeMap__'));",
               "var timezoneMap = JSON.parse(pm.collectionVariables.get('__timezoneMap__'));",
               "",
+              "// ── Guard: ensure login has run ─────────────────────────────",
+              "var authToken = pm.collectionVariables.get('authToken');",
+              "if (!authToken || authToken.trim() === '') {",
+              "    throw new Error('authToken is not set. Please ensure the Login request ran successfully before this request.');",
+              "}",
+              "",
               "// ── Unique Transaction ID for Create Corporate ──────────────",
-              "// Generated fresh on every execution of this specific request",
               "var corpTxnId = 'CORP_TXN_' + Date.now() + '_' + Math.random().toString(36).substr(2,6).toUpperCase();",
               "pm.collectionVariables.set('corpTransactionId', corpTxnId);",
               "",
@@ -262,7 +337,7 @@
               "    var json = pm.response.json();",
               "    pm.expect(json.successCode).to.eql(1);",
               "    pm.collectionVariables.set('corporateId', json.corporateId);",
-              "    console.log('[' + pm.collectionVariables.get('testCaseId') + '] Corporate ID: ' + json.corporateId + ' | TxnId used: ' + pm.collectionVariables.get('corpTransactionId'));",
+              "    console.log('[' + pm.collectionVariables.get('testCaseId') + '] Corporate ID: ' + json.corporateId + ' | TxnId: ' + pm.collectionVariables.get('corpTransactionId'));",
               "});"
             ]
           }
@@ -298,7 +373,6 @@
               "var dialCodeMap = JSON.parse(pm.collectionVariables.get('__dialCodeMap__'));",
               "",
               "// ── Unique Transaction ID for Create Brand ──────────────────",
-              "// Generated fresh on every execution of this specific request",
               "var brandTxnId = 'BRAND_TXN_' + Date.now() + '_' + Math.random().toString(36).substr(2,6).toUpperCase();",
               "pm.collectionVariables.set('brandTransactionId', brandTxnId);",
               "",
@@ -333,7 +407,7 @@
               "    var json = pm.response.json();",
               "    pm.expect(json.successCode).to.eql(1);",
               "    pm.collectionVariables.set('brandId', json.brandId);",
-              "    console.log('[' + pm.collectionVariables.get('testCaseId') + '] Brand ID: ' + json.brandId + ' | TxnId used: ' + pm.collectionVariables.get('brandTransactionId'));",
+              "    console.log('[' + pm.collectionVariables.get('testCaseId') + '] Brand ID: ' + json.brandId + ' | TxnId: ' + pm.collectionVariables.get('brandTransactionId'));",
               "});"
             ]
           }
@@ -369,7 +443,6 @@
               "var dialCodeMap = JSON.parse(pm.collectionVariables.get('__dialCodeMap__'));",
               "",
               "// ── Unique Transaction ID for Create Hotel Group ────────────",
-              "// Generated fresh on every execution of this specific request",
               "var hgTxnId = 'HG_TXN_' + Date.now() + '_' + Math.random().toString(36).substr(2,6).toUpperCase();",
               "pm.collectionVariables.set('hgTransactionId', hgTxnId);",
               "",
@@ -401,7 +474,7 @@
               "    var json = pm.response.json();",
               "    pm.expect(json.successCode).to.eql(1);",
               "    pm.collectionVariables.set('hotelGroupId', json.hotelGroupId);",
-              "    console.log('[' + pm.collectionVariables.get('testCaseId') + '] Hotel Group ID: ' + json.hotelGroupId + ' | TxnId used: ' + pm.collectionVariables.get('hgTransactionId'));",
+              "    console.log('[' + pm.collectionVariables.get('testCaseId') + '] Hotel Group ID: ' + json.hotelGroupId + ' | TxnId: ' + pm.collectionVariables.get('hgTransactionId'));",
               "});"
             ]
           }
@@ -438,7 +511,6 @@
               "var timezoneMap = JSON.parse(pm.collectionVariables.get('__timezoneMap__'));",
               "",
               "// ── Unique Transaction ID for Create Hotel ──────────────────",
-              "// Generated fresh on every execution of this specific request",
               "var hotelTxnId = 'HTL_TXN_' + Date.now() + '_' + Math.random().toString(36).substr(2,6).toUpperCase();",
               "pm.collectionVariables.set('hotelTransactionId', hotelTxnId);",
               "",
@@ -496,6 +568,7 @@
               "    console.log('BrandId       : ' + pm.collectionVariables.get('brandId'));",
               "    console.log('HGId          : ' + pm.collectionVariables.get('hotelGroupId'));",
               "    console.log('HotelId       : ' + json.hotelId);",
+              "    console.log('LoggedInUser  : ' + pm.collectionVariables.get('loggedInUserId'));",
               "    console.log('============================');",
               "",
               "    // ── Advance to next test case ───────────────────────────",
