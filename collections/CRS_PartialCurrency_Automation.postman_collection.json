@@ -6,62 +6,273 @@
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
-    { "key": "authToken",              "value": "", "type": "string" },
-    { "key": "loggedInUserId",         "value": "", "type": "string" },
-    { "key": "corporateId",            "value": "", "type": "string" },
-    { "key": "brandId",                "value": "", "type": "string" },
-    { "key": "hotelGroupId",           "value": "", "type": "string" },
-    { "key": "hotelId",                "value": "", "type": "string" },
-    { "key": "ratePlanId",             "value": "", "type": "string" },
-    { "key": "corporateChannelId",     "value": "", "type": "string" },
-    { "key": "corpCode",               "value": "", "type": "string" },
-    { "key": "brandCode",              "value": "", "type": "string" },
-    { "key": "brandName",              "value": "", "type": "string" },
-    { "key": "hgCode",                 "value": "", "type": "string" },
-    { "key": "hgName",                 "value": "", "type": "string" },
-    { "key": "hotelCode",              "value": "", "type": "string" },
-    { "key": "hotelName",              "value": "", "type": "string" },
-    { "key": "ratePlanCode",           "value": "", "type": "string" },
-    { "key": "ratePlanName",           "value": "", "type": "string" },
-    { "key": "channelCode",            "value": "", "type": "string" },
-    { "key": "corpDialCode",           "value": "", "type": "string" },
-    { "key": "corpDialCountryCode",    "value": "", "type": "string" },
-    { "key": "corpCountryCode",        "value": "", "type": "string" },
-    { "key": "brandDialCode",          "value": "", "type": "string" },
-    { "key": "brandDialCountryCode",   "value": "", "type": "string" },
-    { "key": "hgDialCode",             "value": "", "type": "string" },
-    { "key": "hgDialCountryCode",      "value": "", "type": "string" },
-    { "key": "hotelDialCode",          "value": "", "type": "string" },
-    { "key": "hotelDialCountryCode",   "value": "", "type": "string" },
-    { "key": "hotelCountryCode",       "value": "", "type": "string" },
-    { "key": "channelDialCode",        "value": "", "type": "string" },
-    { "key": "channelDialCountryCode", "value": "", "type": "string" },
-    { "key": "mappedCorpTimezone",     "value": "", "type": "string" },
-    { "key": "mappedHotelTimezone",    "value": "", "type": "string" },
-    { "key": "corpCurrencySymbol",     "value": "", "type": "string" },
-    { "key": "brandCurrencySymbol",    "value": "", "type": "string" },
-    { "key": "hotelCurrencySymbol",    "value": "", "type": "string" },
-    { "key": "corpDateFormat",         "value": "", "type": "string" },
-    { "key": "corpDecimals",           "value": "", "type": "string" },
-    { "key": "hotelDateFormat",        "value": "", "type": "string" },
-    { "key": "hotelDecimals",          "value": "", "type": "string" },
-    { "key": "hotelTimeFormat",        "value": "", "type": "string" },
-    { "key": "rpCurrencyCode",         "value": "", "type": "string" },
-    { "key": "rpEffectiveStartDate",   "value": "", "type": "string" },
-    { "key": "txnId_login",            "value": "", "type": "string" },
-    { "key": "txnId_corp",             "value": "", "type": "string" },
-    { "key": "txnId_brand",            "value": "", "type": "string" },
-    { "key": "txnId_hg",               "value": "", "type": "string" },
-    { "key": "txnId_hotel",            "value": "", "type": "string" },
-    { "key": "txnId_rp",               "value": "", "type": "string" },
-    { "key": "txnId_ch",               "value": "", "type": "string" },
-    { "key": "baseUrl",                "value": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0", "type": "string" },
-    { "key": "loginUsername",          "value": "jdoe",      "type": "string" },
-    { "key": "loginPassword",          "value": "P@ssw0rd!", "type": "string" },
-    { "key": "loginCorporateId",       "value": "12345",     "type": "string" }
+    {
+      "key": "authToken",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "loggedInUserId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "corporateId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "brandId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "hotelGroupId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "hotelId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "ratePlanId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "corporateChannelId",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "corpCode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "brandCode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "brandName",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "hgCode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "hgName",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "hotelCode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "hotelName",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "ratePlanCode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "ratePlanName",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "channelCode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "corpDialCode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "corpDialCountryCode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "corpCountryCode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "brandDialCode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "brandDialCountryCode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "hgDialCode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "hgDialCountryCode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "hotelDialCode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "hotelDialCountryCode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "hotelCountryCode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "channelDialCode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "channelDialCountryCode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "mappedCorpTimezone",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "mappedHotelTimezone",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "corpCurrencySymbol",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "brandCurrencySymbol",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "hotelCurrencySymbol",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "corpDateFormat",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "corpDecimals",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "hotelDateFormat",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "hotelDecimals",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "hotelTimeFormat",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "rpCurrencyCode",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "rpEffectiveStartDate",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "txnId_login",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "txnId_corp",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "txnId_brand",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "txnId_hg",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "txnId_hotel",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "txnId_rp",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "txnId_ch",
+      "value": "",
+      "type": "string"
+    },
+    {
+      "key": "baseUrl",
+      "value": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0",
+      "type": "string"
+    },
+    {
+      "key": "loginUsername",
+      "value": "jdoe",
+      "type": "string"
+    },
+    {
+      "key": "loginPassword",
+      "value": "P@ssw0rd!",
+      "type": "string"
+    },
+    {
+      "key": "loginCorporateId",
+      "value": "12345",
+      "type": "string"
+    }
   ],
   "item": [
-
     {
       "name": "1. Login",
       "event": [
@@ -100,23 +311,40 @@
       "request": {
         "method": "POST",
         "header": [
-          { "key": "Content-Type",     "value": "application/json" },
-          { "key": "x-transaction-id", "value": "{{txnId_login}}" },
-          { "key": "x-session-id",     "value": "session-login" }
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "x-transaction-id",
+            "value": "{{txnId_login}}"
+          },
+          {
+            "key": "x-session-id",
+            "value": "session-login"
+          }
         ],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"username\": \"{{loginUsername}}\",\n  \"password\": \"{{loginPassword}}\",\n  \"corporateId\": {{loginCorporateId}}\n}",
-          "options": { "raw": { "language": "json" } }
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
         "url": {
           "raw": "{{baseUrl}}/Auth/login",
-          "host": ["{{baseUrl}}"],
-          "path": ["Auth", "login"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "Auth",
+            "login"
+          ]
         }
       }
     },
-
     {
       "name": "2. Create Corporate",
       "event": [
@@ -199,24 +427,44 @@
       "request": {
         "method": "POST",
         "header": [
-          { "key": "Content-Type",     "value": "application/json" },
-          { "key": "Authorization",    "value": "Bearer {{authToken}}" },
-          { "key": "x-transaction-id", "value": "{{txnId_corp}}" },
-          { "key": "x-session-id",     "value": "session-{{corpCode}}" }
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          },
+          {
+            "key": "x-transaction-id",
+            "value": "{{txnId_corp}}"
+          },
+          {
+            "key": "x-session-id",
+            "value": "session-{{corpCode}}"
+          }
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"corporateCode\": \"{{corpCode}}\",\n  \"corporateName\": \"Corp {{corpCode}}\",\n  \"corporateDescription\": \"Auto created for {{testCaseId}}\",\n  \"corporateStatus\": \"Active\",\n  \"firstName\": \"Auto\",\n  \"lastName\": \"Corp\",\n  \"addressLine1\": \"Test Address Line 1\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"{{corpCountryCode}}\",\n  \"dialCode\": \"{{corpDialCode}}\",\n  \"dialCountryCode\": \"{{corpDialCountryCode}}\",\n  \"mobileNumber\": \"9000000001\",\n  \"contactEmail\": \"corp.{{corpCode}}@test.com\",\n  \"timezone\": \"{{mappedCorpTimezone}}\",\n  \"dateFormat\": \"{{corpDateFormat}}\",\n  \"timeFormat\": \"hh:mm a\",\n  \"enableSsoLogin\": false,\n  \"b2cInstance\": null,\n  \"b2cDomainName\": null,\n  \"b2cSigninSignupPolicy\": null,\n  \"b2cClientId\": null,\n  \"sessionTimeoutLimit\": null,\n  \"enableMfa\": false,\n  \"otpMaxAttempts\": null,\n  \"otpExpirationTime\": null,\n  \"passwordExpirationPeriod\": null,\n  \"currencySymbol\": \"{{corpCurrencySymbol}}\",\n  \"currencyRoundOff\": {{corpDecimals}},\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
-          "options": { "raw": { "language": "json" } }
+          "raw": "{\n  \"corporateCode\": \"{{corpCode}}\",\n  \"corporateName\": \"Corp {{corpCode}}\",\n  \"corporateDescription\": \"Auto created for {{testCaseId}}\",\n  \"corporateStatus\": \"Active\",\n  \"firstName\": \"Auto\",\n  \"lastName\": \"Corp\",\n  \"addressLine1\": \"Test Address Line 1\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"{{corpCountryCode}}\",\n  \"dialCode\": \"{{corpDialCode}}\",\n  \"dialCountryCode\": \"{{corpDialCountryCode}}\",\n  \"mobileNumber\": \"9000000001\",\n  \"contactEmail\": \"corp.{{corpCode}}@test.com\",\n  \"timezone\": \"{{mappedCorpTimezone}}\",\n  \"dateFormat\": \"{{corpDateFormat}}\",\n  \"timeFormat\": \"hh:mm a\",\n  \"enableSsoLogin\": false,\n  \"b2cInstance\": null,\n  \"b2cDomainName\": null,\n  \"b2cSigninSignupPolicy\": null,\n  \"b2cClientId\": null,\n  \"sessionTimeoutLimit\": null,\n  \"enableMfa\": false,\n  \"otpMaxAttempts\": null,\n  \"otpExpirationTime\": null,\n  \"passwordExpirationPeriod\": null,\n  \"currencySymbol\": \"{{corpCurrencySymbol}}\",\n  \"currencyRoundOff\": \"{{corpDecimals}}\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
         "url": {
           "raw": "{{baseUrl}}/Corporates/createcorporate",
-          "host": ["{{baseUrl}}"],
-          "path": ["Corporates", "createcorporate"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "Corporates",
+            "createcorporate"
+          ]
         }
       }
     },
-
     {
       "name": "3. Create Brand",
       "event": [
@@ -255,6 +503,7 @@
               "pm.collectionVariables.set('brandDialCode',        dialCode);",
               "pm.collectionVariables.set('brandDialCountryCode', alpha2);",
               "pm.collectionVariables.set('brandCurrencySymbol',  brandCurrency);",
+              "pm.collectionVariables.set('brandCountry',        brandCountry);",
               "",
               "console.log('[' + testCaseId + '] Creating Brand: ' + brandCode +",
               "    ' | dialCC=' + alpha2 + ' | CorporateId: ' + pm.collectionVariables.get('corporateId'));"
@@ -282,24 +531,44 @@
       "request": {
         "method": "POST",
         "header": [
-          { "key": "Content-Type",     "value": "application/json" },
-          { "key": "Authorization",    "value": "Bearer {{authToken}}" },
-          { "key": "x-transaction-id", "value": "{{txnId_brand}}" },
-          { "key": "x-session-id",     "value": "session-{{brandCode}}" }
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          },
+          {
+            "key": "x-transaction-id",
+            "value": "{{txnId_brand}}"
+          },
+          {
+            "key": "x-session-id",
+            "value": "session-{{brandCode}}"
+          }
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandCode\": \"{{brandCode}}\",\n  \"brandName\": \"{{brandName}}\",\n  \"brandDescription\": \"Auto created brand for {{testCaseId}}\",\n  \"brandStatus\": \"Active\",\n  \"marketSegment\": null,\n  \"contactPersonFirstName\": \"Brand\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"{{brandDialCode}}\",\n  \"dialCountryCode\": \"{{brandDialCountryCode}}\",\n  \"contactPersonPhone\": \"9000000002\",\n  \"contactPersonEmail\": \"brand.{{brandCode}}@test.com\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
-          "options": { "raw": { "language": "json" } }
+          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandCode\": \"{{brandCode}}\",\n  \"brandName\": \"{{brandName}}\",\n  \"brandDescription\": \"Auto created brand for {{testCaseId}}\",\n  \"brandStatus\": \"Active\",\n  \"marketSegment\": \"{{brandCountry}}\",\n  \"contactPersonFirstName\": \"Brand\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"{{brandDialCode}}\",\n  \"dialCountryCode\": \"{{brandDialCountryCode}}\",\n  \"contactPersonPhone\": \"9000000002\",\n  \"contactPersonEmail\": \"brand.{{brandCode}}@test.com\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
         "url": {
           "raw": "{{baseUrl}}/Brands/createbrand",
-          "host": ["{{baseUrl}}"],
-          "path": ["Brands", "createbrand"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "Brands",
+            "createbrand"
+          ]
         }
       }
     },
-
     {
       "name": "4. Create Hotel Group",
       "event": [
@@ -308,6 +577,8 @@
           "script": {
             "type": "text/javascript",
             "exec": [
+              "  var brandId = pm.collectionVariables.get('brandId');",
+              "  if (!brandId) { console.warn('⚠️ brandId is empty! Create Brand may have failed.'); }",
               "var uuid = require('uuid');",
               "pm.collectionVariables.set('txnId_hg', uuid.v4());",
               "",
@@ -365,24 +636,44 @@
       "request": {
         "method": "POST",
         "header": [
-          { "key": "Content-Type",     "value": "application/json" },
-          { "key": "Authorization",    "value": "Bearer {{authToken}}" },
-          { "key": "x-transaction-id", "value": "{{txnId_hg}}" },
-          { "key": "x-session-id",     "value": "session-{{hgCode}}" }
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          },
+          {
+            "key": "x-transaction-id",
+            "value": "{{txnId_hg}}"
+          },
+          {
+            "key": "x-session-id",
+            "value": "session-{{hgCode}}"
+          }
         ],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupCode\": \"{{hgCode}}\",\n  \"hotelGroupName\": \"{{hgName}}\",\n  \"hotelGroupDescription\": \"Auto created HG for {{testCaseId}}\",\n  \"contactPersonFirstName\": \"HG\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"{{hgDialCode}}\",\n  \"dialCountryCode\": \"{{hgDialCountryCode}}\",\n  \"contactPersonPhone\": \"9000000003\",\n  \"contactPersonEmail\": \"hg.{{hgCode}}@test.com\",\n  \"hotelGroupStatus\": \"Active\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
-          "options": { "raw": { "language": "json" } }
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
         "url": {
           "raw": "{{baseUrl}}/HotelGroups/createhotelgroup",
-          "host": ["{{baseUrl}}"],
-          "path": ["HotelGroups", "createhotelgroup"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "HotelGroups",
+            "createhotelgroup"
+          ]
         }
       }
     },
-
     {
       "name": "5. Create Hotel",
       "event": [
@@ -391,6 +682,8 @@
           "script": {
             "type": "text/javascript",
             "exec": [
+              "  var brandId = pm.collectionVariables.get('brandId');",
+              "  if (!brandId) { console.warn('⚠️ brandId is empty! Create Brand may have failed.'); }",
               "var uuid = require('uuid');",
               "pm.collectionVariables.set('txnId_hotel', uuid.v4());",
               "",
@@ -470,24 +763,44 @@
       "request": {
         "method": "POST",
         "header": [
-          { "key": "Content-Type",     "value": "application/json" },
-          { "key": "Authorization",    "value": "Bearer {{authToken}}" },
-          { "key": "x-transaction-id", "value": "{{txnId_hotel}}" },
-          { "key": "x-session-id",     "value": "session-{{hotelCode}}" }
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          },
+          {
+            "key": "x-transaction-id",
+            "value": "{{txnId_hotel}}"
+          },
+          {
+            "key": "x-session-id",
+            "value": "session-{{hotelCode}}"
+          }
         ],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupId\": {{hotelGroupId}},\n  \"regionId\": null,\n  \"hotelCode\": \"{{hotelCode}}\",\n  \"hotelName\": \"{{hotelName}}\",\n  \"firstName\": \"Hotel\",\n  \"lastName\": \"Auto\",\n  \"addressLine1\": \"Test Hotel Address\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"{{hotelCountryCode}}\",\n  \"dialCode\": \"{{hotelDialCode}}\",\n  \"dialCountryCode\": \"{{hotelDialCountryCode}}\",\n  \"mobileNumber\": \"9000000004\",\n  \"email\": \"hotel.{{hotelCode}}@test.com\",\n  \"timezone\": \"{{mappedHotelTimezone}}\",\n  \"hotelStatus\": \"Active\",\n  \"currencySymbol\": \"{{hotelCurrencySymbol}}\",\n  \"currencyRoundOff\": {{hotelDecimals}},\n  \"paymentTypes\": null,\n  \"dateFormat\": \"{{hotelDateFormat}}\",\n  \"timeFormat\": \"{{hotelTimeFormat}}\",\n  \"hotelDescription\": \"Auto created hotel for {{testCaseId}}\",\n  \"sourceGroup\": null,\n  \"sourceSubGroup\": null,\n  \"sourceUserName\": null,\n  \"sourcePassword\": null,\n  \"systemId\": null,\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
-          "options": { "raw": { "language": "json" } }
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
         "url": {
           "raw": "{{baseUrl}}/Hotels/createhotel",
-          "host": ["{{baseUrl}}"],
-          "path": ["Hotels", "createhotel"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "Hotels",
+            "createhotel"
+          ]
         }
       }
     },
-
     {
       "name": "6. Create Rate Plan",
       "event": [
@@ -496,6 +809,8 @@
           "script": {
             "type": "text/javascript",
             "exec": [
+              "  var brandId = pm.collectionVariables.get('brandId');",
+              "  if (!brandId) { console.warn('⚠️ brandId is empty! Create Brand may have failed.'); }",
               "var uuid = require('uuid');",
               "pm.collectionVariables.set('txnId_rp', uuid.v4());",
               "",
@@ -545,24 +860,44 @@
       "request": {
         "method": "POST",
         "header": [
-          { "key": "Content-Type",     "value": "application/json" },
-          { "key": "Authorization",    "value": "Bearer {{authToken}}" },
-          { "key": "x-transaction-id", "value": "{{txnId_rp}}" },
-          { "key": "x-session-id",     "value": "session-{{ratePlanCode}}" }
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          },
+          {
+            "key": "x-transaction-id",
+            "value": "{{txnId_rp}}"
+          },
+          {
+            "key": "x-session-id",
+            "value": "session-{{ratePlanCode}}"
+          }
         ],
         "body": {
           "mode": "raw",
           "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupId\": {{hotelGroupId}},\n  \"hotelId\": {{hotelId}},\n  \"ratePlanCode\": \"{{ratePlanCode}}\",\n  \"ratePlanName\": \"{{ratePlanName}}\",\n  \"ratePlanStatus\": 10,\n  \"effectiveStartDate\": \"{{rpEffectiveStartDate}}\",\n  \"effectiveEndDate\": null,\n  \"currencyCode\": \"{{rpCurrencyCode}}\",\n  \"createdBy\": {{loggedInUserId}}\n}",
-          "options": { "raw": { "language": "json" } }
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
         "url": {
           "raw": "{{baseUrl}}/RatePlans/createRatePlan",
-          "host": ["{{baseUrl}}"],
-          "path": ["RatePlans", "createRatePlan"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "RatePlans",
+            "createRatePlan"
+          ]
         }
       }
     },
-
     {
       "name": "7. Create Channel",
       "event": [
@@ -630,29 +965,53 @@
       "request": {
         "method": "POST",
         "header": [
-          { "key": "Content-Type",     "value": "application/json" },
-          { "key": "Authorization",    "value": "Bearer {{authToken}}" },
-          { "key": "x-transaction-id", "value": "{{txnId_ch}}" },
-          { "key": "x-session-id",     "value": "session-{{channelCode}}" }
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "Authorization",
+            "value": "Bearer {{authToken}}"
+          },
+          {
+            "key": "x-transaction-id",
+            "value": "{{txnId_ch}}"
+          },
+          {
+            "key": "x-session-id",
+            "value": "session-{{channelCode}}"
+          }
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"connectivityPartner\": \"CRS\",\n  \"channelCode\": \"{{channelCode}}\",\n  \"channelName\": \"Channel {{channelCode}}\",\n  \"channelType\": \"OTA\",\n  \"channelMode\": \"Push\",\n  \"source\": \"CRS\",\n  \"region\": null,\n  \"corporateChannelStatus\": \"Active\",\n  \"priorityRanking\": true,\n  \"channelDescription\": \"Auto created channel for {{testCaseId}}\",\n  \"channelContactFirstName\": \"Channel\",\n  \"channelContactLastName\": \"Auto\",\n  \"channelContactEmail\": \"channel.{{channelCode}}@test.com\",\n  \"dialCode\": \"{{channelDialCode}}\",\n  \"dialCountryCode\": \"{{channelDialCountryCode}}\",\n  \"channelContactPhone\": \"9000000005\",\n  \"createdBy\": {{loggedInUserId}},\n  \"settings\": null,\n  \"connectivity\": null\n}",
-          "options": { "raw": { "language": "json" } }
+          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"connectivityPartner\": \"CRS\",\n  \"channelCode\": \"{{channelCode}}\",\n  \"channelName\": \"Channel {{channelCode}}\",\n  \"channelType\": \"OTA\",\n  \"channelMode\": \"Push\",\n  \"source\": \"CRS\",\n  \"region\": null,\n  \"corporateChannelStatus\": \"Active\",\n  \"priorityRanking\": true,\n  \"channelDescription\": \"Auto created channel for {{testCaseId}}\",\n  \"channelContactFirstName\": \"Channel\",\n  \"channelContactLastName\": \"Auto\",\n  \"channelContactEmail\": \"channel.{{channelCode}}@test.com\",\n  \"dialCode\": \"{{channelDialCode}}\",\n  \"dialCountryCode\": \"{{channelDialCountryCode}}\",\n  \"channelContactPhone\": \"9000000005\",\n  \"createdBy\": {{loggedInUserId}},\n  \"settings\": {\n    \"isActive\": true,\n    \"allowInstantBooking\": false,\n    \"commissionPercent\": 0\n  },\n  \"connectivity\": {\n    \"connectionType\": \"API\",\n    \"endpointUrl\": null,\n    \"authType\": \"None\"\n  }\n}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
         },
         "url": {
           "raw": "{{baseUrl}}/CorporateChannels/createcorporatechannel",
-          "host": ["{{baseUrl}}"],
-          "path": ["CorporateChannels", "createcorporatechannel"]
+          "host": [
+            "{{baseUrl}}"
+          ],
+          "path": [
+            "CorporateChannels",
+            "createcorporatechannel"
+          ]
         }
       }
     }
-
   ],
   "auth": {
     "type": "bearer",
     "bearer": [
-      { "key": "token", "value": "{{authToken}}", "type": "string" }
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
     ]
   }
 }
