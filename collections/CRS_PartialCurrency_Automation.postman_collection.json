@@ -503,7 +503,7 @@
               "pm.collectionVariables.set('brandDialCode',        dialCode);",
               "pm.collectionVariables.set('brandDialCountryCode', alpha2);",
               "pm.collectionVariables.set('brandCurrencySymbol',  brandCurrency);",
-              "  pm.collectionVariables.set('brandCountry',        brandCountry);",
+              "pm.collectionVariables.set('brandCountry',        brandCountry);",
               "",
               "console.log('[' + testCaseId + '] Creating Brand: ' + brandCode +",
               "    ' | dialCC=' + alpha2 + ' | CorporateId: ' + pm.collectionVariables.get('corporateId'));"
