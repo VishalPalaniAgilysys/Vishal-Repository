@@ -2,7 +2,7 @@
   "info": {
     "name": "CRS Partial Currency Automation - TC_011 to TC_020",
     "_postman_id": "crs-partial-currency-automation-v1",
-    "description": "Data-driven Postman collection for CRS automation covering TC_011 to TC_020. Run via Collection Runner with JSON data file. All dynamic fields generated at runtime. Login auto-fetches userId, corporateId and authToken.",
+    "description": "Data-driven Postman collection for CRS automation covering TC_011 to TC_020. Run via Collection Runner with JSON data file. All dynamic fields generated at runtime. Login auto-fetches token and userId.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "variable": [
@@ -17,6 +17,7 @@
     { "key": "corpCode",               "value": "", "type": "string" },
     { "key": "brandCode",              "value": "", "type": "string" },
     { "key": "brandName",              "value": "", "type": "string" },
+    { "key": "brandCountry",           "value": "", "type": "string" },
     { "key": "hgCode",                 "value": "", "type": "string" },
     { "key": "hgName",                 "value": "", "type": "string" },
     { "key": "hotelCode",              "value": "", "type": "string" },
@@ -206,7 +207,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"corporateCode\": \"{{corpCode}}\",\n  \"corporateName\": \"Corp {{corpCode}}\",\n  \"corporateDescription\": \"Auto created for {{testCaseId}}\",\n  \"corporateStatus\": \"Active\",\n  \"firstName\": \"Auto\",\n  \"lastName\": \"Corp\",\n  \"addressLine1\": \"Test Address Line 1\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"{{corpCountryCode}}\",\n  \"dialCode\": \"{{corpDialCode}}\",\n  \"dialCountryCode\": \"{{corpDialCountryCode}}\",\n  \"mobileNumber\": \"9000000001\",\n  \"contactEmail\": \"corp.{{corpCode}}@test.com\",\n  \"timezone\": \"{{mappedCorpTimezone}}\",\n  \"dateFormat\": \"{{corpDateFormat}}\",\n  \"timeFormat\": \"hh:mm a\",\n  \"enableSsoLogin\": false,\n  \"b2cInstance\": null,\n  \"b2cDomainName\": null,\n  \"b2cSigninSignupPolicy\": null,\n  \"b2cClientId\": null,\n  \"sessionTimeoutLimit\": null,\n  \"enableMfa\": false,\n  \"otpMaxAttempts\": null,\n  \"otpExpirationTime\": null,\n  \"passwordExpirationPeriod\": null,\n  \"currencySymbol\": \"{{corpCurrencySymbol}}\",\n  \"currencyRoundOff\": {{corpDecimals}},\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
+          "raw": "{\n  \"corporateCode\": \"{{corpCode}}\",\n  \"corporateName\": \"Corp {{corpCode}}\",\n  \"corporateDescription\": \"Auto created for {{testCaseId}}\",\n  \"corporateStatus\": \"Active\",\n  \"contactPersonFirstName\": \"Corp\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"{{corpDialCode}}\",\n  \"dialCountryCode\": \"{{corpDialCountryCode}}\",\n  \"contactPersonPhone\": \"9000000001\",\n  \"contactPersonEmail\": \"corp.{{corpCode}}@test.com\",\n  \"countryCode\": \"{{corpCountryCode}}\",\n  \"timezone\": \"{{mappedCorpTimezone}}\",\n  \"currencySymbol\": \"{{corpCurrencySymbol}}\",\n  \"currencyRoundOff\": \"{{corpDecimals}}\",\n  \"dateFormat\": \"{{corpDateFormat}}\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
           "options": { "raw": { "language": "json" } }
         },
         "url": {
@@ -252,12 +253,13 @@
               "",
               "pm.collectionVariables.set('brandCode',            brandCode);",
               "pm.collectionVariables.set('brandName',            brandName);",
+              "pm.collectionVariables.set('brandCountry',         brandCountry);",
               "pm.collectionVariables.set('brandDialCode',        dialCode);",
               "pm.collectionVariables.set('brandDialCountryCode', alpha2);",
               "pm.collectionVariables.set('brandCurrencySymbol',  brandCurrency);",
               "",
               "console.log('[' + testCaseId + '] Creating Brand: ' + brandCode +",
-              "    ' | dialCC=' + alpha2 + ' | CorporateId: ' + pm.collectionVariables.get('corporateId'));"
+              "    ' | country=' + brandCountry + ' | dialCC=' + alpha2 + ' | CorporateId: ' + pm.collectionVariables.get('corporateId'));"
             ]
           }
         },
@@ -289,7 +291,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandCode\": \"{{brandCode}}\",\n  \"brandName\": \"{{brandName}}\",\n  \"brandDescription\": \"Auto created brand for {{testCaseId}}\",\n  \"brandStatus\": \"Active\",\n  \"marketSegment\": null,\n  \"contactPersonFirstName\": \"Brand\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"{{brandDialCode}}\",\n  \"dialCountryCode\": \"{{brandDialCountryCode}}\",\n  \"contactPersonPhone\": \"9000000002\",\n  \"contactPersonEmail\": \"brand.{{brandCode}}@test.com\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
+          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandCode\": \"{{brandCode}}\",\n  \"brandName\": \"{{brandName}}\",\n  \"brandDescription\": \"Auto created brand for {{testCaseId}}\",\n  \"brandStatus\": \"Active\",\n  \"marketSegment\": \"{{brandCountry}}\",\n  \"contactPersonFirstName\": \"Brand\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"{{brandDialCode}}\",\n  \"dialCountryCode\": \"{{brandDialCountryCode}}\",\n  \"contactPersonPhone\": \"9000000002\",\n  \"contactPersonEmail\": \"brand.{{brandCode}}@test.com\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
           "options": { "raw": { "language": "json" } }
         },
         "url": {
@@ -323,6 +325,10 @@
               "// ── NULL-SAFE fetch ───────────────────────────────────────────",
               "var testCaseId = pm.iterationData.get('testCaseId') || 'STANDALONE';",
               "var hgCountry  = pm.iterationData.get('hgCountry')  || 'USA';",
+              "",
+              "// ── Guard: warn if brandId is missing ────────────────────────",
+              "var brandId = pm.collectionVariables.get('brandId');",
+              "if (!brandId) { console.warn('⚠️ brandId is empty! Create Brand may have failed.'); }",
               "",
               "// ── Dynamic HG code & name ────────────────────────────────────",
               "var suffix = Date.now().toString().slice(-5);",
@@ -372,7 +378,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupCode\": \"{{hgCode}}\",\n  \"hotelGroupName\": \"{{hgName}}\",\n  \"hotelGroupDescription\": \"Auto created HG for {{testCaseId}}\",\n  \"contactPersonFirstName\": \"HG\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"{{hgDialCode}}\",\n  \"dialCountryCode\": \"{{hgDialCountryCode}}\",\n  \"contactPersonPhone\": \"9000000003\",\n  \"contactPersonEmail\": \"hg.{{hgCode}}@test.com\",\n  \"hotelGroupStatus\": \"Active\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
+          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupCode\": \"{{hgCode}}\",\n  \"hotelGroupName\": \"{{hgName}}\",\n  \"hotelGroupDescription\": \"Auto created hotel group for {{testCaseId}}\",\n  \"hotelGroupStatus\": \"Active\",\n  \"contactPersonFirstName\": \"HG\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"{{hgDialCode}}\",\n  \"dialCountryCode\": \"{{hgDialCountryCode}}\",\n  \"contactPersonPhone\": \"9000000003\",\n  \"contactPersonEmail\": \"hg.{{hgCode}}@test.com\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
           "options": { "raw": { "language": "json" } }
         },
         "url": {
@@ -417,6 +423,10 @@
               "var hotelTimeFmt  = pm.iterationData.get('hotelTimeFormat')|| 'HH:mm';",
               "var hotelDecimals = pm.iterationData.get('hotelDecimals') != null",
               "                    ? String(pm.iterationData.get('hotelDecimals')) : '2';",
+              "",
+              "// ── Guard: warn if brandId is missing ────────────────────────",
+              "var brandId = pm.collectionVariables.get('brandId');",
+              "if (!brandId) { console.warn('⚠️ brandId is empty! Create Brand may have failed.'); }",
               "",
               "// ── Dynamic hotel code & name ─────────────────────────────────",
               "var suffix    = Date.now().toString().slice(-5);",
@@ -477,7 +487,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupId\": {{hotelGroupId}},\n  \"regionId\": null,\n  \"hotelCode\": \"{{hotelCode}}\",\n  \"hotelName\": \"{{hotelName}}\",\n  \"firstName\": \"Hotel\",\n  \"lastName\": \"Auto\",\n  \"addressLine1\": \"Test Hotel Address\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"{{hotelCountryCode}}\",\n  \"dialCode\": \"{{hotelDialCode}}\",\n  \"dialCountryCode\": \"{{hotelDialCountryCode}}\",\n  \"mobileNumber\": \"9000000004\",\n  \"email\": \"hotel.{{hotelCode}}@test.com\",\n  \"timezone\": \"{{mappedHotelTimezone}}\",\n  \"hotelStatus\": \"Active\",\n  \"currencySymbol\": \"{{hotelCurrencySymbol}}\",\n  \"currencyRoundOff\": {{hotelDecimals}},\n  \"paymentTypes\": null,\n  \"dateFormat\": \"{{hotelDateFormat}}\",\n  \"timeFormat\": \"{{hotelTimeFormat}}\",\n  \"hotelDescription\": \"Auto created hotel for {{testCaseId}}\",\n  \"sourceGroup\": null,\n  \"sourceSubGroup\": null,\n  \"sourceUserName\": null,\n  \"sourcePassword\": null,\n  \"systemId\": null,\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
+          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupId\": {{hotelGroupId}},\n  \"regionId\": null,\n  \"hotelCode\": \"{{hotelCode}}\",\n  \"hotelName\": \"{{hotelName}}\",\n  \"firstName\": \"Hotel\",\n  \"lastName\": \"Auto\",\n  \"addressLine1\": \"Test Hotel Address\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"{{hotelCountryCode}}\",\n  \"dialCode\": \"{{hotelDialCode}}\",\n  \"dialCountryCode\": \"{{hotelDialCountryCode}}\",\n  \"mobileNumber\": \"9000000004\",\n  \"email\": \"hotel.{{hotelCode}}@test.com\",\n  \"timezone\": \"{{mappedHotelTimezone}}\",\n  \"hotelStatus\": \"Active\",\n  \"currencySymbol\": \"{{hotelCurrencySymbol}}\",\n  \"currencyRoundOff\": \"{{hotelDecimals}}\",\n  \"paymentTypes\": null,\n  \"dateFormat\": \"{{hotelDateFormat}}\",\n  \"timeFormat\": \"{{hotelTimeFormat}}\",\n  \"hotelDescription\": \"Auto created hotel for {{testCaseId}}\",\n  \"sourceGroup\": null,\n  \"sourceSubGroup\": null,\n  \"sourceUserName\": null,\n  \"sourcePassword\": null,\n  \"systemId\": null,\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
           "options": { "raw": { "language": "json" } }
         },
         "url": {
@@ -502,6 +512,10 @@
               "// ── NULL-SAFE fetch ───────────────────────────────────────────",
               "var testCaseId = pm.iterationData.get('testCaseId') || 'STANDALONE';",
               "var rpCurrency = pm.iterationData.get('rpCurrency') || 'USD';",
+              "",
+              "// ── Guard: warn if brandId is missing ────────────────────────",
+              "var brandId = pm.collectionVariables.get('brandId');",
+              "if (!brandId) { console.warn('⚠️ brandId is empty! Create Brand may have failed.'); }",
               "",
               "// ── Dynamic rate plan code & name ─────────────────────────────",
               "var suffix = Date.now().toString().slice(-5);",
@@ -552,7 +566,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupId\": {{hotelGroupId}},\n  \"hotelId\": {{hotelId}},\n  \"ratePlanCode\": \"{{ratePlanCode}}\",\n  \"ratePlanName\": \"{{ratePlanName}}\",\n  \"ratePlanStatus\": 10,\n  \"effectiveStartDate\": \"{{rpEffectiveStartDate}}\",\n  \"effectiveEndDate\": null,\n  \"currencyCode\": \"{{rpCurrencyCode}}\",\n  \"createdBy\": {{loggedInUserId}}\n}",
+          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupId\": {{hotelGroupId}},\n  \"hotelId\": {{hotelId}},\n  \"ratePlanCode\": \"{{ratePlanCode}}\",\n  \"ratePlanName\": \"{{ratePlanName}}\",\n  \"ratePlanDescription\": \"Auto created rate plan for {{testCaseId}}\",\n  \"ratePlanStatus\": \"Active\",\n  \"currencyCode\": \"{{rpCurrencyCode}}\",\n  \"effectiveStartDate\": \"{{rpEffectiveStartDate}}\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
           "options": { "raw": { "language": "json" } }
         },
         "url": {
@@ -586,6 +600,10 @@
               "// ── NULL-SAFE fetch ───────────────────────────────────────────",
               "var testCaseId  = pm.iterationData.get('testCaseId')  || 'STANDALONE';",
               "var corpCountry = pm.iterationData.get('corpCountry') || 'USA';",
+              "",
+              "// ── Guard: warn if brandId is missing ────────────────────────",
+              "var brandId = pm.collectionVariables.get('brandId');",
+              "if (!brandId) { console.warn('⚠️ brandId is empty! Create Brand may have failed.'); }",
               "",
               "// ── Dynamic channel code ──────────────────────────────────────",
               "var suffix      = Date.now().toString().slice(-5);",
@@ -637,7 +655,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"connectivityPartner\": \"CRS\",\n  \"channelCode\": \"{{channelCode}}\",\n  \"channelName\": \"Channel {{channelCode}}\",\n  \"channelType\": \"OTA\",\n  \"channelMode\": \"Push\",\n  \"source\": \"CRS\",\n  \"region\": null,\n  \"corporateChannelStatus\": \"Active\",\n  \"priorityRanking\": true,\n  \"channelDescription\": \"Auto created channel for {{testCaseId}}\",\n  \"channelContactFirstName\": \"Channel\",\n  \"channelContactLastName\": \"Auto\",\n  \"channelContactEmail\": \"channel.{{channelCode}}@test.com\",\n  \"dialCode\": \"{{channelDialCode}}\",\n  \"dialCountryCode\": \"{{channelDialCountryCode}}\",\n  \"channelContactPhone\": \"9000000005\",\n  \"createdBy\": {{loggedInUserId}},\n  \"settings\": null,\n  \"connectivity\": null\n}",
+          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"connectivityPartner\": \"CRS\",\n  \"channelCode\": \"{{channelCode}}\",\n  \"channelName\": \"Channel {{channelCode}}\",\n  \"channelType\": \"OTA\",\n  \"channelMode\": \"Push\",\n  \"source\": \"CRS\",\n  \"region\": null,\n  \"corporateChannelStatus\": \"Active\",\n  \"priorityRanking\": true,\n  \"channelDescription\": \"Auto created channel for {{testCaseId}}\",\n  \"channelContactFirstName\": \"Channel\",\n  \"channelContactLastName\": \"Auto\",\n  \"channelContactEmail\": \"channel.{{channelCode}}@test.com\",\n  \"dialCode\": \"{{channelDialCode}}\",\n  \"dialCountryCode\": \"{{channelDialCountryCode}}\",\n  \"channelContactPhone\": \"9000000005\",\n  \"createdBy\": {{loggedInUserId}},\n  \"settings\": {\n    \"isActive\": true,\n    \"allowInstantBooking\": false,\n    \"commissionPercent\": 0\n  },\n  \"connectivity\": {\n    \"connectionType\": \"API\",\n    \"endpointUrl\": null,\n    \"authType\": \"None\"\n  }\n}",
           "options": { "raw": { "language": "json" } }
         },
         "url": {
