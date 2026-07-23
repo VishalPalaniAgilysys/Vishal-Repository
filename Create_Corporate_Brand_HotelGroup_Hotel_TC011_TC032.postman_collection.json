@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "7e0b7f52-9f0a-4f2d-9e7d-011032011032",
     "name": "Create Corporate Brand HotelGroup Hotel - TC011 to TC032",
-    "description": "Data-driven Postman collection for TC_011 to TC_032. Login is manual. Set authToken and loggedInUserId before running. Includes GUID-based x-transaction-id and stops execution when a dependency request fails.",
+    "description": "Data-driven Postman collection for TC_011 to TC_032. Login is manual. Set authToken and loggedInUserId before running. Creates a fresh Corporate for each test case and maps that newly created Corporate ID into Brand, Hotel Group, and Hotel requests. Includes GUID-based x-transaction-id and stops execution when a dependency request fails.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -64,6 +64,7 @@
     { "key": "authToken", "value": "" },
     { "key": "loggedInUserId", "value": "" },
     { "key": "corporateId", "value": "" },
+    { "key": "createdCorporateId", "value": "" },
     { "key": "brandId", "value": "" },
     { "key": "hotelGroupId", "value": "" },
     { "key": "hotelId", "value": "" },
@@ -96,6 +97,11 @@
           "script": {
             "type": "text/javascript",
             "exec": [
+              "pm.collectionVariables.set('corporateId', '');",
+              "pm.collectionVariables.set('createdCorporateId', '');",
+              "pm.collectionVariables.set('brandId', '');",
+              "pm.collectionVariables.set('hotelGroupId', '');",
+              "pm.collectionVariables.set('hotelId', '');",
               "var testCaseId = pm.collectionVariables.get('testCaseId');",
               "var suffix = testCaseId.replace('TC_', '');",
               "var uniquePart = Date.now().toString().slice(-6) + Math.floor(Math.random() * 1000);",
@@ -106,7 +112,7 @@
               "pm.collectionVariables.set('corpCurrencySymbol', pm.collectionVariables.get('corpCurrency'));",
               "var dialCodeMap = { 'USA': '+1', 'IND': '+91', 'GBR': '+44', 'SGP': '+65', 'AUS': '+61', 'DEU': '+49', 'ARE': '+971', 'JPN': '+81', 'KOR': '+82', 'MEX': '+52', 'ZAF': '+27', 'BRA': '+55' };",
               "pm.collectionVariables.set('corpDialCode', dialCodeMap[pm.collectionVariables.get('corpCountry')] || '+1');",
-              "console.log('Creating Corporate: ' + corpCode + ' for ' + testCaseId);"
+              "console.log('Creating NEW Corporate for this test case: ' + corpCode + ' for ' + testCaseId);"
             ]
           }
         },
@@ -119,7 +125,7 @@
               "try { jsonData = pm.response.json(); } catch (e) { console.log('Create Corporate response is not valid JSON: ' + pm.response.text()); }",
               "pm.test('Create Corporate - Status 200', function () { pm.response.to.have.status(200); });",
               "pm.test('Create Corporate - Success', function () { pm.expect(jsonData.successCode).to.eql(1); pm.expect(jsonData.corporateId, 'corporateId should be present').to.exist; });",
-              "if (pm.response.code === 200 && jsonData.successCode === 1 && jsonData.corporateId) { pm.collectionVariables.set('corporateId', jsonData.corporateId); console.log('Corporate ID set: ' + jsonData.corporateId); } else { console.log('Stopping run because Create Corporate failed. Response: ' + pm.response.text()); pm.execution.setNextRequest(null); }"
+              "if (pm.response.code === 200 && jsonData.successCode === 1 && jsonData.corporateId) { pm.collectionVariables.set('corporateId', jsonData.corporateId); pm.collectionVariables.set('createdCorporateId', jsonData.corporateId); console.log('Newly created Corporate ID mapped for downstream requests: ' + jsonData.corporateId); } else { console.log('Stopping run because Create Corporate failed. Response: ' + pm.response.text()); pm.execution.setNextRequest(null); }"
             ]
           }
         }
@@ -148,6 +154,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
+              "if (!pm.collectionVariables.get('createdCorporateId')) { console.log('Missing createdCorporateId. Brand must be created only after Create Corporate succeeds.'); pm.execution.setNextRequest(null); }",
               "var testCaseId = pm.collectionVariables.get('testCaseId');",
               "var suffix = testCaseId.replace('TC_', '');",
               "var uniquePart = Date.now().toString().slice(-6) + Math.floor(Math.random() * 1000);",
@@ -160,7 +167,7 @@
               "pm.collectionVariables.set('brandCountry', brandCountry);",
               "pm.collectionVariables.set('brandDialCode', dialCodeMap[brandCountry] || '+1');",
               "pm.collectionVariables.set('brandCurrencySymbol', pm.collectionVariables.get('corpCurrency'));",
-              "console.log('Creating Brand: ' + brandCode + ' / ' + brandName + ' under CorporateId: ' + pm.collectionVariables.get('corporateId'));"
+              "console.log('Creating Brand: ' + brandCode + ' / ' + brandName + ' under newly created CorporateId: ' + pm.collectionVariables.get('createdCorporateId'));"
             ]
           }
         },
@@ -173,7 +180,7 @@
               "try { jsonData = pm.response.json(); } catch (e) { console.log('Create Brand response is not valid JSON: ' + pm.response.text()); }",
               "pm.test('Create Brand - Status 200', function () { pm.response.to.have.status(200); });",
               "pm.test('Create Brand - Success', function () { pm.expect(jsonData.successCode).to.eql(1); pm.expect(jsonData.brandId, 'brandId should be present').to.exist; });",
-              "if (pm.response.code === 200 && jsonData.successCode === 1 && jsonData.brandId) { pm.collectionVariables.set('brandId', jsonData.brandId); console.log('Brand ID set: ' + jsonData.brandId); } else { console.log('Stopping run because Create Brand failed. Response: ' + pm.response.text()); pm.execution.setNextRequest(null); }"
+              "if (pm.response.code === 200 && jsonData.successCode === 1 && jsonData.brandId) { pm.collectionVariables.set('brandId', jsonData.brandId); console.log('Brand ID set under newly created CorporateId ' + pm.collectionVariables.get('createdCorporateId') + ': ' + jsonData.brandId); } else { console.log('Stopping run because Create Brand failed. Response: ' + pm.response.text()); pm.execution.setNextRequest(null); }"
             ]
           }
         }
@@ -187,7 +194,7 @@
         "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandCode\": \"{{brandCode}}\",\n  \"brandName\": \"{{brandName}}\",\n  \"brandDescription\": \"Auto created brand for {{testCaseId}} - {{subCategory}}\",\n  \"brandStatus\": \"Active\",\n  \"marketSegment\": null,\n  \"contactPersonFirstName\": \"Brand\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"{{brandDialCode}}\",\n  \"dialCountryCode\": \"{{brandCountry}}\",\n  \"contactPersonPhone\": \"9000000002\",\n  \"contactPersonEmail\": \"brand.{{brandCode}}@test.com\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
+          "raw": "{\n  \"corporateId\": {{createdCorporateId}},\n  \"brandCode\": \"{{brandCode}}\",\n  \"brandName\": \"{{brandName}}\",\n  \"brandDescription\": \"Auto created brand for {{testCaseId}} - {{subCategory}}\",\n  \"brandStatus\": \"Active\",\n  \"marketSegment\": null,\n  \"contactPersonFirstName\": \"Brand\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"{{brandDialCode}}\",\n  \"dialCountryCode\": \"{{brandCountry}}\",\n  \"contactPersonPhone\": \"9000000002\",\n  \"contactPersonEmail\": \"brand.{{brandCode}}@test.com\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
           "options": { "raw": { "language": "json" } }
         },
         "url": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Brands/createbrand"
@@ -202,6 +209,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
+              "if (!pm.collectionVariables.get('createdCorporateId') || !pm.collectionVariables.get('brandId')) { console.log('Missing createdCorporateId or brandId. Hotel Group must be created only after Create Corporate and Create Brand succeed.'); pm.execution.setNextRequest(null); }",
               "var testCaseId = pm.collectionVariables.get('testCaseId');",
               "var suffix = testCaseId.replace('TC_', '');",
               "var uniquePart = Date.now().toString().slice(-6) + Math.floor(Math.random() * 1000);",
@@ -213,7 +221,7 @@
               "var hgCountry = pm.collectionVariables.get('hgCountryCode') || pm.collectionVariables.get('corpCountry');",
               "pm.collectionVariables.set('hgCountry', hgCountry);",
               "pm.collectionVariables.set('hgDialCode', dialCodeMap[hgCountry] || '+1');",
-              "console.log('Creating Hotel Group: ' + hgCode + ' / ' + hgName + ' under CorporateId: ' + pm.collectionVariables.get('corporateId') + ' BrandId: ' + pm.collectionVariables.get('brandId'));"
+              "console.log('Creating Hotel Group: ' + hgCode + ' / ' + hgName + ' under newly created CorporateId: ' + pm.collectionVariables.get('createdCorporateId') + ' BrandId: ' + pm.collectionVariables.get('brandId'));"
             ]
           }
         },
@@ -226,7 +234,7 @@
               "try { jsonData = pm.response.json(); } catch (e) { console.log('Create Hotel Group response is not valid JSON: ' + pm.response.text()); }",
               "pm.test('Create Hotel Group - Status 200', function () { pm.response.to.have.status(200); });",
               "pm.test('Create Hotel Group - Success', function () { pm.expect(jsonData.successCode).to.eql(1); pm.expect(jsonData.hotelGroupId, 'hotelGroupId should be present').to.exist; });",
-              "if (pm.response.code === 200 && jsonData.successCode === 1 && jsonData.hotelGroupId) { pm.collectionVariables.set('hotelGroupId', jsonData.hotelGroupId); console.log('Hotel Group ID set: ' + jsonData.hotelGroupId); } else { console.log('Stopping run because Create Hotel Group failed. Response: ' + pm.response.text()); pm.execution.setNextRequest(null); }"
+              "if (pm.response.code === 200 && jsonData.successCode === 1 && jsonData.hotelGroupId) { pm.collectionVariables.set('hotelGroupId', jsonData.hotelGroupId); console.log('Hotel Group ID set under newly created CorporateId ' + pm.collectionVariables.get('createdCorporateId') + ': ' + jsonData.hotelGroupId); } else { console.log('Stopping run because Create Hotel Group failed. Response: ' + pm.response.text()); pm.execution.setNextRequest(null); }"
             ]
           }
         }
@@ -240,7 +248,7 @@
         "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupCode\": \"{{hgCode}}\",\n  \"hotelGroupName\": \"{{hgName}}\",\n  \"hotelGroupDescription\": \"Auto created HG for {{testCaseId}} - {{subCategory}}\",\n  \"contactPersonFirstName\": \"HG\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"{{hgDialCode}}\",\n  \"dialCountryCode\": \"{{hgCountry}}\",\n  \"contactPersonPhone\": \"9000000003\",\n  \"contactPersonEmail\": \"hg.{{hgCode}}@test.com\",\n  \"hotelGroupStatus\": \"Active\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
+          "raw": "{\n  \"corporateId\": {{createdCorporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupCode\": \"{{hgCode}}\",\n  \"hotelGroupName\": \"{{hgName}}\",\n  \"hotelGroupDescription\": \"Auto created HG for {{testCaseId}} - {{subCategory}}\",\n  \"contactPersonFirstName\": \"HG\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"{{hgDialCode}}\",\n  \"dialCountryCode\": \"{{hgCountry}}\",\n  \"contactPersonPhone\": \"9000000003\",\n  \"contactPersonEmail\": \"hg.{{hgCode}}@test.com\",\n  \"hotelGroupStatus\": \"Active\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
           "options": { "raw": { "language": "json" } }
         },
         "url": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/HotelGroups/createhotelgroup"
@@ -255,6 +263,7 @@
           "script": {
             "type": "text/javascript",
             "exec": [
+              "if (!pm.collectionVariables.get('createdCorporateId') || !pm.collectionVariables.get('brandId') || !pm.collectionVariables.get('hotelGroupId')) { console.log('Missing createdCorporateId, brandId, or hotelGroupId. Hotel must be created only after previous requests succeed.'); pm.execution.setNextRequest(null); }",
               "var testCaseId = pm.collectionVariables.get('testCaseId');",
               "var suffix = testCaseId.replace('TC_', '');",
               "var uniquePart = Date.now().toString().slice(-6) + Math.floor(Math.random() * 1000);",
@@ -268,7 +277,7 @@
               "var timezoneMap = { 'UTC-05:00': 'EDT', 'UTC-06:00': 'CST', 'UTC+00:00': 'UTC', 'UTC+01:00': 'CET', 'UTC+02:00': 'SAST', 'UTC+04:00': 'GST', 'UTC+05:30': 'IST', 'UTC+08:00': 'SGT', 'UTC+09:00': 'JST', 'UTC+10:00': 'AEST' };",
               "pm.collectionVariables.set('mappedHotelTimezone', timezoneMap[pm.collectionVariables.get('hotelTimezone')] || 'UTC');",
               "pm.collectionVariables.set('hotelCurrencySymbol', pm.collectionVariables.get('hotelCurrency'));",
-              "console.log('Creating Hotel: ' + hotelCode + ' / ' + hotelName + ' under CorporateId: ' + pm.collectionVariables.get('corporateId') + ' BrandId: ' + pm.collectionVariables.get('brandId') + ' HotelGroupId: ' + pm.collectionVariables.get('hotelGroupId'));"
+              "console.log('Creating Hotel: ' + hotelCode + ' / ' + hotelName + ' under newly created CorporateId: ' + pm.collectionVariables.get('createdCorporateId') + ' BrandId: ' + pm.collectionVariables.get('brandId') + ' HotelGroupId: ' + pm.collectionVariables.get('hotelGroupId'));"
             ]
           }
         },
@@ -281,7 +290,7 @@
               "try { jsonData = pm.response.json(); } catch (e) { console.log('Create Hotel response is not valid JSON: ' + pm.response.text()); }",
               "pm.test('Create Hotel - Status 200', function () { pm.response.to.have.status(200); });",
               "pm.test('Create Hotel - Success', function () { pm.expect(jsonData.successCode).to.eql(1); pm.expect(jsonData.hotelId, 'hotelId should be present').to.exist; });",
-              "if (pm.response.code === 200 && jsonData.successCode === 1 && jsonData.hotelId) { pm.collectionVariables.set('hotelId', jsonData.hotelId); var currentIndex = parseInt(pm.collectionVariables.get('currentCaseIndex') || '0', 10); var total = parseInt(pm.collectionVariables.get('embeddedTestCaseCount') || '0', 10); console.log('=== TC COMPLETED: ' + pm.collectionVariables.get('testCaseId') + ' ==='); console.log('Summary => CorpId: ' + pm.collectionVariables.get('corporateId') + ' | BrandId: ' + pm.collectionVariables.get('brandId') + ' | HGId: ' + pm.collectionVariables.get('hotelGroupId') + ' | HotelId: ' + jsonData.hotelId + ' | x-transaction-id: ' + pm.collectionVariables.get('transactionId')); var nextIndex = currentIndex + 1; if (nextIndex < total) { pm.collectionVariables.set('currentCaseIndex', String(nextIndex)); console.log('Moving to next test case index: ' + nextIndex); pm.execution.setNextRequest('Create Corporate'); } else { console.log('All embedded test cases completed. Total completed: ' + total); pm.collectionVariables.set('currentCaseIndex', '0'); pm.execution.setNextRequest(null); } } else { console.log('Stopping run because Create Hotel failed. Response: ' + pm.response.text()); pm.execution.setNextRequest(null); }"
+              "if (pm.response.code === 200 && jsonData.successCode === 1 && jsonData.hotelId) { pm.collectionVariables.set('hotelId', jsonData.hotelId); var currentIndex = parseInt(pm.collectionVariables.get('currentCaseIndex') || '0', 10); var total = parseInt(pm.collectionVariables.get('embeddedTestCaseCount') || '0', 10); console.log('=== TC COMPLETED: ' + pm.collectionVariables.get('testCaseId') + ' ==='); console.log('Summary => New CorpId: ' + pm.collectionVariables.get('createdCorporateId') + ' | BrandId: ' + pm.collectionVariables.get('brandId') + ' | HGId: ' + pm.collectionVariables.get('hotelGroupId') + ' | HotelId: ' + jsonData.hotelId + ' | x-transaction-id: ' + pm.collectionVariables.get('transactionId')); var nextIndex = currentIndex + 1; if (nextIndex < total) { pm.collectionVariables.set('currentCaseIndex', String(nextIndex)); console.log('Moving to next test case index: ' + nextIndex); pm.execution.setNextRequest('Create Corporate'); } else { console.log('All embedded test cases completed. Total completed: ' + total); pm.collectionVariables.set('currentCaseIndex', '0'); pm.execution.setNextRequest(null); } } else { console.log('Stopping run because Create Hotel failed. Response: ' + pm.response.text()); pm.execution.setNextRequest(null); }"
             ]
           }
         }
@@ -295,7 +304,7 @@
         "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] },
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupId\": {{hotelGroupId}},\n  \"regionId\": null,\n  \"hotelCode\": \"{{hotelCode}}\",\n  \"hotelName\": \"{{hotelName}}\",\n  \"firstName\": \"Hotel\",\n  \"lastName\": \"Auto\",\n  \"addressLine1\": \"Test Hotel Address\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"{{hotelCountry}}\",\n  \"dialCode\": \"{{hotelDialCode}}\",\n  \"dialCountryCode\": \"{{hotelCountry}}\",\n  \"mobileNumber\": \"9000000004\",\n  \"email\": \"hotel.{{hotelCode}}@test.com\",\n  \"timezone\": \"{{mappedHotelTimezone}}\",\n  \"hotelStatus\": \"Active\",\n  \"currencySymbol\": \"{{hotelCurrencySymbol}}\",\n  \"currencyRoundOff\": \"{{hotelDecimals}}\",\n  \"paymentTypes\": null,\n  \"dateFormat\": \"{{hotelDateFormat}}\",\n  \"timeFormat\": \"{{hotelTimeFormat}}\",\n  \"hotelDescription\": \"Auto created hotel for {{testCaseId}} - {{subCategory}}\",\n  \"sourceGroup\": null,\n  \"sourceSubGroup\": null,\n  \"sourceUserName\": null,\n  \"sourcePassword\": null,\n  \"systemId\": null,\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
+          "raw": "{\n  \"corporateId\": {{createdCorporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupId\": {{hotelGroupId}},\n  \"regionId\": null,\n  \"hotelCode\": \"{{hotelCode}}\",\n  \"hotelName\": \"{{hotelName}}\",\n  \"firstName\": \"Hotel\",\n  \"lastName\": \"Auto\",\n  \"addressLine1\": \"Test Hotel Address\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"{{hotelCountry}}\",\n  \"dialCode\": \"{{hotelDialCode}}\",\n  \"dialCountryCode\": \"{{hotelCountry}}\",\n  \"mobileNumber\": \"9000000004\",\n  \"email\": \"hotel.{{hotelCode}}@test.com\",\n  \"timezone\": \"{{mappedHotelTimezone}}\",\n  \"hotelStatus\": \"Active\",\n  \"currencySymbol\": \"{{hotelCurrencySymbol}}\",\n  \"currencyRoundOff\": \"{{hotelDecimals}}\",\n  \"paymentTypes\": null,\n  \"dateFormat\": \"{{hotelDateFormat}}\",\n  \"timeFormat\": \"{{hotelTimeFormat}}\",\n  \"hotelDescription\": \"Auto created hotel for {{testCaseId}} - {{subCategory}}\",\n  \"sourceGroup\": null,\n  \"sourceSubGroup\": null,\n  \"sourceUserName\": null,\n  \"sourcePassword\": null,\n  \"systemId\": null,\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
           "options": { "raw": { "language": "json" } }
         },
         "url": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Hotels/createhotel"
