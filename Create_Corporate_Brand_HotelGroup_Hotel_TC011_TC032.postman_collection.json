@@ -2,7 +2,7 @@
   "info": {
     "_postman_id": "7e0b7f52-9f0a-4f2d-9e7d-011032011032",
     "name": "Create Corporate Brand HotelGroup Hotel - TC011 to TC032",
-    "description": "Data-driven Postman collection for TC_011 to TC_032. Login is manual. Set authToken and loggedInUserId before running. The collection contains exactly 4 requests and loops through all embedded test cases automatically.",
+    "description": "Data-driven Postman collection for TC_011 to TC_032. Login is manual. Set authToken and loggedInUserId before running. Includes GUID-based x-transaction-id and stops execution when a dependency request fails.",
     "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
   },
   "auth": {
@@ -53,7 +53,7 @@
           "function timeFormatFromLabel(label) { return label === '24-Hour' ? 'HH:mm' : 'hh:mm a'; }",
           "pm.collectionVariables.set('corpTimeFormat', timeFormatFromLabel(current.corpTimeFormatLabel));",
           "pm.collectionVariables.set('hotelTimeFormat', timeFormatFromLabel(current.hotelTimeFormatLabel));",
-          "const transactionId = current.testCaseId + '-' + pm.info.requestName.replace(/\\s+/g, '-') + '-' + Date.now() + '-' + Math.floor(Math.random() * 10000);",
+          "const transactionId = pm.variables.replaceIn('{{$guid}}');",
           "pm.collectionVariables.set('transactionId', transactionId);",
           "console.log('Executing test case index ' + index + ' of ' + testData.length + ': ' + current.testCaseId + ' | Request: ' + pm.info.requestName + ' | x-transaction-id: ' + transactionId);"
         ]
@@ -115,8 +115,11 @@
           "script": {
             "type": "text/javascript",
             "exec": [
+              "let jsonData = {};",
+              "try { jsonData = pm.response.json(); } catch (e) { console.log('Create Corporate response is not valid JSON: ' + pm.response.text()); }",
               "pm.test('Create Corporate - Status 200', function () { pm.response.to.have.status(200); });",
-              "pm.test('Create Corporate - Success', function () { var jsonData = pm.response.json(); pm.expect(jsonData.successCode).to.eql(1); pm.expect(jsonData.corporateId, 'corporateId should be present').to.exist; pm.collectionVariables.set('corporateId', jsonData.corporateId); console.log('Corporate ID set: ' + jsonData.corporateId); });"
+              "pm.test('Create Corporate - Success', function () { pm.expect(jsonData.successCode).to.eql(1); pm.expect(jsonData.corporateId, 'corporateId should be present').to.exist; });",
+              "if (pm.response.code === 200 && jsonData.successCode === 1 && jsonData.corporateId) { pm.collectionVariables.set('corporateId', jsonData.corporateId); console.log('Corporate ID set: ' + jsonData.corporateId); } else { console.log('Stopping run because Create Corporate failed. Response: ' + pm.response.text()); pm.execution.setNextRequest(null); }"
             ]
           }
         }
@@ -166,8 +169,11 @@
           "script": {
             "type": "text/javascript",
             "exec": [
+              "let jsonData = {};",
+              "try { jsonData = pm.response.json(); } catch (e) { console.log('Create Brand response is not valid JSON: ' + pm.response.text()); }",
               "pm.test('Create Brand - Status 200', function () { pm.response.to.have.status(200); });",
-              "pm.test('Create Brand - Success', function () { var jsonData = pm.response.json(); pm.expect(jsonData.successCode).to.eql(1); pm.expect(jsonData.brandId, 'brandId should be present').to.exist; pm.collectionVariables.set('brandId', jsonData.brandId); console.log('Brand ID set: ' + jsonData.brandId); });"
+              "pm.test('Create Brand - Success', function () { pm.expect(jsonData.successCode).to.eql(1); pm.expect(jsonData.brandId, 'brandId should be present').to.exist; });",
+              "if (pm.response.code === 200 && jsonData.successCode === 1 && jsonData.brandId) { pm.collectionVariables.set('brandId', jsonData.brandId); console.log('Brand ID set: ' + jsonData.brandId); } else { console.log('Stopping run because Create Brand failed. Response: ' + pm.response.text()); pm.execution.setNextRequest(null); }"
             ]
           }
         }
@@ -216,8 +222,11 @@
           "script": {
             "type": "text/javascript",
             "exec": [
+              "let jsonData = {};",
+              "try { jsonData = pm.response.json(); } catch (e) { console.log('Create Hotel Group response is not valid JSON: ' + pm.response.text()); }",
               "pm.test('Create Hotel Group - Status 200', function () { pm.response.to.have.status(200); });",
-              "pm.test('Create Hotel Group - Success', function () { var jsonData = pm.response.json(); pm.expect(jsonData.successCode).to.eql(1); pm.expect(jsonData.hotelGroupId, 'hotelGroupId should be present').to.exist; pm.collectionVariables.set('hotelGroupId', jsonData.hotelGroupId); console.log('Hotel Group ID set: ' + jsonData.hotelGroupId); });"
+              "pm.test('Create Hotel Group - Success', function () { pm.expect(jsonData.successCode).to.eql(1); pm.expect(jsonData.hotelGroupId, 'hotelGroupId should be present').to.exist; });",
+              "if (pm.response.code === 200 && jsonData.successCode === 1 && jsonData.hotelGroupId) { pm.collectionVariables.set('hotelGroupId', jsonData.hotelGroupId); console.log('Hotel Group ID set: ' + jsonData.hotelGroupId); } else { console.log('Stopping run because Create Hotel Group failed. Response: ' + pm.response.text()); pm.execution.setNextRequest(null); }"
             ]
           }
         }
@@ -268,8 +277,11 @@
           "script": {
             "type": "text/javascript",
             "exec": [
+              "let jsonData = {};",
+              "try { jsonData = pm.response.json(); } catch (e) { console.log('Create Hotel response is not valid JSON: ' + pm.response.text()); }",
               "pm.test('Create Hotel - Status 200', function () { pm.response.to.have.status(200); });",
-              "pm.test('Create Hotel - Success', function () { var jsonData = pm.response.json(); pm.expect(jsonData.successCode).to.eql(1); pm.expect(jsonData.hotelId, 'hotelId should be present').to.exist; pm.collectionVariables.set('hotelId', jsonData.hotelId); var currentIndex = parseInt(pm.collectionVariables.get('currentCaseIndex') || '0', 10); var total = parseInt(pm.collectionVariables.get('embeddedTestCaseCount') || '0', 10); console.log('=== TC COMPLETED: ' + pm.collectionVariables.get('testCaseId') + ' ==='); console.log('Summary => CorpId: ' + pm.collectionVariables.get('corporateId') + ' | BrandId: ' + pm.collectionVariables.get('brandId') + ' | HGId: ' + pm.collectionVariables.get('hotelGroupId') + ' | HotelId: ' + jsonData.hotelId + ' | x-transaction-id: ' + pm.collectionVariables.get('transactionId')); var nextIndex = currentIndex + 1; if (nextIndex < total) { pm.collectionVariables.set('currentCaseIndex', String(nextIndex)); console.log('Moving to next test case index: ' + nextIndex); pm.execution.setNextRequest('Create Corporate'); } else { console.log('All embedded test cases completed. Total completed: ' + total); pm.collectionVariables.set('currentCaseIndex', '0'); pm.execution.setNextRequest(null); } });"
+              "pm.test('Create Hotel - Success', function () { pm.expect(jsonData.successCode).to.eql(1); pm.expect(jsonData.hotelId, 'hotelId should be present').to.exist; });",
+              "if (pm.response.code === 200 && jsonData.successCode === 1 && jsonData.hotelId) { pm.collectionVariables.set('hotelId', jsonData.hotelId); var currentIndex = parseInt(pm.collectionVariables.get('currentCaseIndex') || '0', 10); var total = parseInt(pm.collectionVariables.get('embeddedTestCaseCount') || '0', 10); console.log('=== TC COMPLETED: ' + pm.collectionVariables.get('testCaseId') + ' ==='); console.log('Summary => CorpId: ' + pm.collectionVariables.get('corporateId') + ' | BrandId: ' + pm.collectionVariables.get('brandId') + ' | HGId: ' + pm.collectionVariables.get('hotelGroupId') + ' | HotelId: ' + jsonData.hotelId + ' | x-transaction-id: ' + pm.collectionVariables.get('transactionId')); var nextIndex = currentIndex + 1; if (nextIndex < total) { pm.collectionVariables.set('currentCaseIndex', String(nextIndex)); console.log('Moving to next test case index: ' + nextIndex); pm.execution.setNextRequest('Create Corporate'); } else { console.log('All embedded test cases completed. Total completed: ' + total); pm.collectionVariables.set('currentCaseIndex', '0'); pm.execution.setNextRequest(null); } } else { console.log('Stopping run because Create Hotel failed. Response: ' + pm.response.text()); pm.execution.setNextRequest(null); }"
             ]
           }
         }
