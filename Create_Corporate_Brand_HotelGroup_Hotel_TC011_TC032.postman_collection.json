@@ -1,0 +1,294 @@
+{
+  "info": {
+    "_postman_id": "7e0b7f52-9f0a-4f2d-9e7d-011032011032",
+    "name": "Create Corporate Brand HotelGroup Hotel - TC011 to TC032",
+    "description": "Data-driven Postman collection for TC_011 to TC_032. Login is manual. Set authToken and loggedInUserId before running. The collection contains exactly 4 requests and loops through all embedded test cases automatically.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "auth": {
+    "type": "bearer",
+    "bearer": [
+      {
+        "key": "token",
+        "value": "{{authToken}}",
+        "type": "string"
+      }
+    ]
+  },
+  "event": [
+    {
+      "listen": "prerequest",
+      "script": {
+        "type": "text/javascript",
+        "exec": [
+          "const testData = [",
+          "  { testCaseId: 'TC_011', category: 'Partial Currency', subCategory: 'Corp=Hotel, RP Different', corpCountry: 'USA', corpCurrency: 'USD', corpTimezone: 'UTC-05:00', corpDateFormat: 'MM/DD/YYYY', corpTimeFormatLabel: '12-Hour', corpDecimals: '2', corpCountryCode: 'USA', hotelCountry: 'USA', hotelCurrency: 'USD', hotelTimezone: 'UTC-05:00', hotelDateFormat: 'MM/DD/YYYY', hotelTimeFormatLabel: '12-Hour', hotelDecimals: '2', hotelCountryCode: 'USA', brandCountryCode: 'USA', hgCountryCode: 'USA', channelCountryCode: 'USA', rpCurrency: 'CAD' },",
+          "  { testCaseId: 'TC_012', category: 'Partial Currency', subCategory: 'Corp=Hotel, RP Different', corpCountry: 'DEU', corpCurrency: 'EUR', corpTimezone: 'UTC+01:00', corpDateFormat: 'DD/MM/YYYY', corpTimeFormatLabel: '24-Hour', corpDecimals: '2', corpCountryCode: 'DEU', hotelCountry: 'DEU', hotelCurrency: 'EUR', hotelTimezone: 'UTC+01:00', hotelDateFormat: 'DD/MM/YYYY', hotelTimeFormatLabel: '24-Hour', hotelDecimals: '2', hotelCountryCode: 'DEU', brandCountryCode: 'DEU', hgCountryCode: 'DEU', channelCountryCode: 'DEU', rpCurrency: 'GBP' },",
+          "  { testCaseId: 'TC_013', category: 'Partial Currency', subCategory: 'Corp=Hotel, RP Different', corpCountry: 'IND', corpCurrency: 'INR', corpTimezone: 'UTC+05:30', corpDateFormat: 'DD/MM/YYYY', corpTimeFormatLabel: '12-Hour', corpDecimals: '2', corpCountryCode: 'IND', hotelCountry: 'IND', hotelCurrency: 'INR', hotelTimezone: 'UTC+05:30', hotelDateFormat: 'DD/MM/YYYY', hotelTimeFormatLabel: '12-Hour', hotelDecimals: '2', hotelCountryCode: 'IND', brandCountryCode: 'IND', hgCountryCode: 'IND', channelCountryCode: 'IND', rpCurrency: 'USD' },",
+          "  { testCaseId: 'TC_014', category: 'Partial Currency', subCategory: 'Corp=Hotel, RP Different', corpCountry: 'ARE', corpCurrency: 'AED', corpTimezone: 'UTC+04:00', corpDateFormat: 'DD/MMM/YYYY', corpTimeFormatLabel: '12-Hour', corpDecimals: '2', corpCountryCode: 'ARE', hotelCountry: 'ARE', hotelCurrency: 'AED', hotelTimezone: 'UTC+04:00', hotelDateFormat: 'DD/MMM/YYYY', hotelTimeFormatLabel: '12-Hour', hotelDecimals: '2', hotelCountryCode: 'ARE', brandCountryCode: 'ARE', hgCountryCode: 'ARE', channelCountryCode: 'ARE', rpCurrency: 'USD' },",
+          "  { testCaseId: 'TC_015', category: 'Partial Currency', subCategory: 'Corp=Hotel, RP Different', corpCountry: 'SGP', corpCurrency: 'SGD', corpTimezone: 'UTC+08:00', corpDateFormat: 'DD/MM/YYYY', corpTimeFormatLabel: '24-Hour', corpDecimals: '2', corpCountryCode: 'SGP', hotelCountry: 'SGP', hotelCurrency: 'SGD', hotelTimezone: 'UTC+08:00', hotelDateFormat: 'DD/MM/YYYY', hotelTimeFormatLabel: '24-Hour', hotelDecimals: '2', hotelCountryCode: 'SGP', brandCountryCode: 'SGP', hgCountryCode: 'SGP', channelCountryCode: 'SGP', rpCurrency: 'USD' },",
+          "  { testCaseId: 'TC_016', category: 'Partial Currency', subCategory: 'Corp=Hotel, RP Different', corpCountry: 'AUS', corpCurrency: 'AUD', corpTimezone: 'UTC+10:00', corpDateFormat: 'DD/MM/YYYY', corpTimeFormatLabel: '12-Hour', corpDecimals: '2', corpCountryCode: 'AUS', hotelCountry: 'AUS', hotelCurrency: 'AUD', hotelTimezone: 'UTC+10:00', hotelDateFormat: 'DD/MM/YYYY', hotelTimeFormatLabel: '12-Hour', hotelDecimals: '2', hotelCountryCode: 'AUS', brandCountryCode: 'AUS', hgCountryCode: 'AUS', channelCountryCode: 'AUS', rpCurrency: 'USD' },",
+          "  { testCaseId: 'TC_017', category: 'Partial Currency', subCategory: 'Corp=Hotel, RP Different', corpCountry: 'JPN', corpCurrency: 'JPY', corpTimezone: 'UTC+09:00', corpDateFormat: 'YYYY-MM-DD', corpTimeFormatLabel: '24-Hour', corpDecimals: '0', corpCountryCode: 'JPN', hotelCountry: 'JPN', hotelCurrency: 'JPY', hotelTimezone: 'UTC+09:00', hotelDateFormat: 'YYYY-MM-DD', hotelTimeFormatLabel: '24-Hour', hotelDecimals: '0', hotelCountryCode: 'JPN', brandCountryCode: 'JPN', hgCountryCode: 'JPN', channelCountryCode: 'JPN', rpCurrency: 'USD' },",
+          "  { testCaseId: 'TC_018', category: 'Partial Currency', subCategory: 'Corp=Hotel, RP Different', corpCountry: 'KOR', corpCurrency: 'KRW', corpTimezone: 'UTC+09:00', corpDateFormat: 'YYYY-MM-DD', corpTimeFormatLabel: '24-Hour', corpDecimals: '0', corpCountryCode: 'KOR', hotelCountry: 'KOR', hotelCurrency: 'KRW', hotelTimezone: 'UTC+09:00', hotelDateFormat: 'YYYY-MM-DD', hotelTimeFormatLabel: '24-Hour', hotelDecimals: '0', hotelCountryCode: 'KOR', brandCountryCode: 'KOR', hgCountryCode: 'KOR', channelCountryCode: 'KOR', rpCurrency: 'USD' },",
+          "  { testCaseId: 'TC_019', category: 'Partial Currency', subCategory: 'Corp=RP, Hotel Different', corpCountry: 'USA', corpCurrency: 'USD', corpTimezone: 'UTC-05:00', corpDateFormat: 'MM/DD/YYYY', corpTimeFormatLabel: '12-Hour', corpDecimals: '2', corpCountryCode: 'USA', hotelCountry: 'IND', hotelCurrency: 'INR', hotelTimezone: 'UTC+05:30', hotelDateFormat: 'DD/MM/YYYY', hotelTimeFormatLabel: '12-Hour', hotelDecimals: '2', hotelCountryCode: 'USA', brandCountryCode: 'USA', hgCountryCode: 'USA', channelCountryCode: 'IND', rpCurrency: 'USD' },",
+          "  { testCaseId: 'TC_020', category: 'Partial Currency', subCategory: 'Corp=RP, Hotel Different', corpCountry: 'GBR', corpCurrency: 'GBP', corpTimezone: 'UTC+00:00', corpDateFormat: 'DD/MM/YYYY', corpTimeFormatLabel: '12-Hour', corpDecimals: '2', corpCountryCode: 'GBR', hotelCountry: 'ARE', hotelCurrency: 'AED', hotelTimezone: 'UTC+04:00', hotelDateFormat: 'DD/MMM/YYYY', hotelTimeFormatLabel: '12-Hour', hotelDecimals: '2', hotelCountryCode: 'GBR', brandCountryCode: 'GBR', hgCountryCode: 'GBR', channelCountryCode: 'ARE', rpCurrency: 'GBP' },",
+          "  { testCaseId: 'TC_021', category: 'Partial Currency', subCategory: 'Corp=RP, Hotel Different', corpCountry: 'DEU', corpCurrency: 'EUR', corpTimezone: 'UTC+01:00', corpDateFormat: 'DD/MM/YYYY', corpTimeFormatLabel: '24-Hour', corpDecimals: '2', corpCountryCode: 'DEU', hotelCountry: 'JPN', hotelCurrency: 'JPY', hotelTimezone: 'UTC+09:00', hotelDateFormat: 'YYYY-MM-DD', hotelTimeFormatLabel: '24-Hour', hotelDecimals: '0', hotelCountryCode: 'DEU', brandCountryCode: 'DEU', hgCountryCode: 'DEU', channelCountryCode: 'JPN', rpCurrency: 'EUR' },",
+          "  { testCaseId: 'TC_022', category: 'Partial Currency', subCategory: 'Corp Only Different', corpCountry: 'JPN', corpCurrency: 'JPY', corpTimezone: 'UTC+09:00', corpDateFormat: 'YYYY-MM-DD', corpTimeFormatLabel: '24-Hour', corpDecimals: '0', corpCountryCode: 'JPN', hotelCountry: 'USA', hotelCurrency: 'USD', hotelTimezone: 'UTC-05:00', hotelDateFormat: 'MM/DD/YYYY', hotelTimeFormatLabel: '12-Hour', hotelDecimals: '2', hotelCountryCode: 'JPN', brandCountryCode: 'JPN', hgCountryCode: 'JPN', channelCountryCode: 'USA', rpCurrency: 'USD' },",
+          "  { testCaseId: 'TC_023', category: 'Partial Currency', subCategory: 'Corp Only Different', corpCountry: 'ARE', corpCurrency: 'AED', corpTimezone: 'UTC+04:00', corpDateFormat: 'DD/MMM/YYYY', corpTimeFormatLabel: '12-Hour', corpDecimals: '2', corpCountryCode: 'ARE', hotelCountry: 'GBR', hotelCurrency: 'GBP', hotelTimezone: 'UTC+00:00', hotelDateFormat: 'DD/MM/YYYY', hotelTimeFormatLabel: '12-Hour', hotelDecimals: '2', hotelCountryCode: 'ARE', brandCountryCode: 'ARE', hgCountryCode: 'ARE', channelCountryCode: 'GBR', rpCurrency: 'GBP' },",
+          "  { testCaseId: 'TC_024', category: 'Partial Currency', subCategory: 'Hotel Only Different', corpCountry: 'USA', corpCurrency: 'USD', corpTimezone: 'UTC-05:00', corpDateFormat: 'MM/DD/YYYY', corpTimeFormatLabel: '12-Hour', corpDecimals: '2', corpCountryCode: 'USA', hotelCountry: 'MEX', hotelCurrency: 'MXN', hotelTimezone: 'UTC-06:00', hotelDateFormat: 'DD/MM/YYYY', hotelTimeFormatLabel: '12-Hour', hotelDecimals: '2', hotelCountryCode: 'USA', brandCountryCode: 'USA', hgCountryCode: 'USA', channelCountryCode: 'MEX', rpCurrency: 'USD' },",
+          "  { testCaseId: 'TC_025', category: 'Partial Currency', subCategory: 'Hotel Only Different', corpCountry: 'GBR', corpCurrency: 'GBP', corpTimezone: 'UTC+00:00', corpDateFormat: 'DD/MM/YYYY', corpTimeFormatLabel: '12-Hour', corpDecimals: '2', corpCountryCode: 'GBR', hotelCountry: 'ARE', hotelCurrency: 'AED', hotelTimezone: 'UTC+04:00', hotelDateFormat: 'DD/MMM/YYYY', hotelTimeFormatLabel: '12-Hour', hotelDecimals: '2', hotelCountryCode: 'GBR', brandCountryCode: 'GBR', hgCountryCode: 'GBR', channelCountryCode: 'ARE', rpCurrency: 'GBP' },",
+          "  { testCaseId: 'TC_026', category: 'Partial Currency', subCategory: 'RP Only Different', corpCountry: 'USA', corpCurrency: 'USD', corpTimezone: 'UTC-05:00', corpDateFormat: 'MM/DD/YYYY', corpTimeFormatLabel: '12-Hour', corpDecimals: '2', corpCountryCode: 'USA', hotelCountry: 'USA', hotelCurrency: 'USD', hotelTimezone: 'UTC-05:00', hotelDateFormat: 'MM/DD/YYYY', hotelTimeFormatLabel: '12-Hour', hotelDecimals: '2', hotelCountryCode: 'USA', brandCountryCode: 'USA', hgCountryCode: 'USA', channelCountryCode: 'USA', rpCurrency: 'EUR' },",
+          "  { testCaseId: 'TC_027', category: 'Partial Currency', subCategory: 'RP Only Different', corpCountry: 'IND', corpCurrency: 'INR', corpTimezone: 'UTC+05:30', corpDateFormat: 'DD/MM/YYYY', corpTimeFormatLabel: '12-Hour', corpDecimals: '2', corpCountryCode: 'IND', hotelCountry: 'IND', hotelCurrency: 'INR', hotelTimezone: 'UTC+05:30', hotelDateFormat: 'DD/MM/YYYY', hotelTimeFormatLabel: '12-Hour', hotelDecimals: '2', hotelCountryCode: 'IND', brandCountryCode: 'IND', hgCountryCode: 'IND', channelCountryCode: 'IND', rpCurrency: 'USD' },",
+          "  { testCaseId: 'TC_028', category: 'Partial Currency', subCategory: 'RP Only Different', corpCountry: 'ARE', corpCurrency: 'AED', corpTimezone: 'UTC+04:00', corpDateFormat: 'DD/MMM/YYYY', corpTimeFormatLabel: '12-Hour', corpDecimals: '2', corpCountryCode: 'ARE', hotelCountry: 'ARE', hotelCurrency: 'AED', hotelTimezone: 'UTC+04:00', hotelDateFormat: 'DD/MMM/YYYY', hotelTimeFormatLabel: '12-Hour', hotelDecimals: '2', hotelCountryCode: 'ARE', brandCountryCode: 'ARE', hgCountryCode: 'ARE', channelCountryCode: 'ARE', rpCurrency: 'EUR' },",
+          "  { testCaseId: 'TC_029', category: 'Partial Currency', subCategory: 'Three-Way Split Corp, Hotel, RP All Different', corpCountry: 'USA', corpCurrency: 'USD', corpTimezone: 'UTC-05:00', corpDateFormat: 'MM/DD/YYYY', corpTimeFormatLabel: '12-Hour', corpDecimals: '2', corpCountryCode: 'USA', hotelCountry: 'IND', hotelCurrency: 'INR', hotelTimezone: 'UTC+05:30', hotelDateFormat: 'DD/MM/YYYY', hotelTimeFormatLabel: '12-Hour', hotelDecimals: '2', hotelCountryCode: 'USA', brandCountryCode: 'USA', hgCountryCode: 'USA', channelCountryCode: 'IND', rpCurrency: 'AED' },",
+          "  { testCaseId: 'TC_030', category: 'Partial Currency', subCategory: 'Three-Way Split Corp, Hotel, RP All Different', corpCountry: 'GBR', corpCurrency: 'GBP', corpTimezone: 'UTC+00:00', corpDateFormat: 'DD/MM/YYYY', corpTimeFormatLabel: '12-Hour', corpDecimals: '2', corpCountryCode: 'GBR', hotelCountry: 'JPN', hotelCurrency: 'JPY', hotelTimezone: 'UTC+09:00', hotelDateFormat: 'YYYY-MM-DD', hotelTimeFormatLabel: '24-Hour', hotelDecimals: '0', hotelCountryCode: 'GBR', brandCountryCode: 'GBR', hgCountryCode: 'GBR', channelCountryCode: 'JPN', rpCurrency: 'EUR' },",
+          "  { testCaseId: 'TC_031', category: 'Partial Currency', subCategory: 'Three-Way Split Corp, Hotel, RP All Different', corpCountry: 'ARE', corpCurrency: 'AED', corpTimezone: 'UTC+04:00', corpDateFormat: 'DD/MMM/YYYY', corpTimeFormatLabel: '12-Hour', corpDecimals: '2', corpCountryCode: 'ARE', hotelCountry: 'AUS', hotelCurrency: 'AUD', hotelTimezone: 'UTC+10:00', hotelDateFormat: 'DD/MM/YYYY', hotelTimeFormatLabel: '12-Hour', hotelDecimals: '2', hotelCountryCode: 'ARE', brandCountryCode: 'ARE', hgCountryCode: 'ARE', channelCountryCode: 'AUS', rpCurrency: 'SGD' },",
+          "  { testCaseId: 'TC_032', category: 'Partial Currency', subCategory: 'Three-Way Split Corp, Hotel, RP All Different', corpCountry: 'KOR', corpCurrency: 'KRW', corpTimezone: 'UTC+09:00', corpDateFormat: 'YYYY-MM-DD', corpTimeFormatLabel: '24-Hour', corpDecimals: '0', corpCountryCode: 'KOR', hotelCountry: 'ZAF', hotelCurrency: 'ZAR', hotelTimezone: 'UTC+02:00', hotelDateFormat: 'DD/MM/YYYY', hotelTimeFormatLabel: '24-Hour', hotelDecimals: '2', hotelCountryCode: 'KOR', brandCountryCode: 'KOR', hgCountryCode: 'KOR', channelCountryCode: 'ZAF', rpCurrency: 'BRL' }",
+          "];",
+          "pm.collectionVariables.set('embeddedTestCaseCount', String(testData.length));",
+          "let index = parseInt(pm.collectionVariables.get('currentCaseIndex') || '0', 10);",
+          "if (isNaN(index) || index < 0 || index >= testData.length) { index = 0; pm.collectionVariables.set('currentCaseIndex', '0'); }",
+          "const current = testData[index];",
+          "Object.keys(current).forEach(function (key) { pm.collectionVariables.set(key, String(current[key])); });",
+          "function timeFormatFromLabel(label) { return label === '24-Hour' ? 'HH:mm' : 'hh:mm a'; }",
+          "pm.collectionVariables.set('corpTimeFormat', timeFormatFromLabel(current.corpTimeFormatLabel));",
+          "pm.collectionVariables.set('hotelTimeFormat', timeFormatFromLabel(current.hotelTimeFormatLabel));",
+          "const transactionId = current.testCaseId + '-' + pm.info.requestName.replace(/\\s+/g, '-') + '-' + Date.now() + '-' + Math.floor(Math.random() * 10000);",
+          "pm.collectionVariables.set('transactionId', transactionId);",
+          "console.log('Executing test case index ' + index + ' of ' + testData.length + ': ' + current.testCaseId + ' | Request: ' + pm.info.requestName + ' | x-transaction-id: ' + transactionId);"
+        ]
+      }
+    }
+  ],
+  "variable": [
+    { "key": "authToken", "value": "" },
+    { "key": "loggedInUserId", "value": "" },
+    { "key": "corporateId", "value": "" },
+    { "key": "brandId", "value": "" },
+    { "key": "hotelGroupId", "value": "" },
+    { "key": "hotelId", "value": "" },
+    { "key": "corpCode", "value": "" },
+    { "key": "brandCode", "value": "" },
+    { "key": "brandName", "value": "" },
+    { "key": "hgCode", "value": "" },
+    { "key": "hgName", "value": "" },
+    { "key": "hotelCode", "value": "" },
+    { "key": "hotelName", "value": "" },
+    { "key": "corpDialCode", "value": "" },
+    { "key": "brandDialCode", "value": "" },
+    { "key": "hgDialCode", "value": "" },
+    { "key": "hotelDialCode", "value": "" },
+    { "key": "mappedCorpTimezone", "value": "" },
+    { "key": "mappedHotelTimezone", "value": "" },
+    { "key": "corpCurrencySymbol", "value": "" },
+    { "key": "brandCurrencySymbol", "value": "" },
+    { "key": "hotelCurrencySymbol", "value": "" },
+    { "key": "transactionId", "value": "" },
+    { "key": "currentCaseIndex", "value": "0" },
+    { "key": "embeddedTestCaseCount", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "Create Corporate",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var testCaseId = pm.collectionVariables.get('testCaseId');",
+              "var suffix = testCaseId.replace('TC_', '');",
+              "var uniquePart = Date.now().toString().slice(-6) + Math.floor(Math.random() * 1000);",
+              "var corpCode = 'CorpPC_' + suffix + '_' + uniquePart;",
+              "pm.collectionVariables.set('corpCode', corpCode);",
+              "var timezoneMap = { 'UTC-05:00': 'EDT', 'UTC-06:00': 'CST', 'UTC+00:00': 'UTC', 'UTC+01:00': 'CET', 'UTC+02:00': 'SAST', 'UTC+04:00': 'GST', 'UTC+05:30': 'IST', 'UTC+08:00': 'SGT', 'UTC+09:00': 'JST', 'UTC+10:00': 'AEST' };",
+              "pm.collectionVariables.set('mappedCorpTimezone', timezoneMap[pm.collectionVariables.get('corpTimezone')] || 'UTC');",
+              "pm.collectionVariables.set('corpCurrencySymbol', pm.collectionVariables.get('corpCurrency'));",
+              "var dialCodeMap = { 'USA': '+1', 'IND': '+91', 'GBR': '+44', 'SGP': '+65', 'AUS': '+61', 'DEU': '+49', 'ARE': '+971', 'JPN': '+81', 'KOR': '+82', 'MEX': '+52', 'ZAF': '+27', 'BRA': '+55' };",
+              "pm.collectionVariables.set('corpDialCode', dialCodeMap[pm.collectionVariables.get('corpCountry')] || '+1');",
+              "console.log('Creating Corporate: ' + corpCode + ' for ' + testCaseId);"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Create Corporate - Status 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Create Corporate - Success', function () { var jsonData = pm.response.json(); pm.expect(jsonData.successCode).to.eql(1); pm.expect(jsonData.corporateId, 'corporateId should be present').to.exist; pm.collectionVariables.set('corporateId', jsonData.corporateId); console.log('Corporate ID set: ' + jsonData.corporateId); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "x-transaction-id", "value": "{{transactionId}}" }
+        ],
+        "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"corporateCode\": \"{{corpCode}}\",\n  \"corporateName\": \"Corp {{corpCode}}\",\n  \"corporateDescription\": \"Auto created for {{testCaseId}} - {{subCategory}}\",\n  \"corporateStatus\": \"Active\",\n  \"firstName\": \"Auto\",\n  \"lastName\": \"Corp\",\n  \"addressLine1\": \"Test Address Line 1\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"{{corpCountry}}\",\n  \"dialCode\": \"{{corpDialCode}}\",\n  \"dialCountryCode\": \"{{corpCountry}}\",\n  \"mobileNumber\": \"9000000001\",\n  \"contactEmail\": \"corp.{{corpCode}}@test.com\",\n  \"timezone\": \"{{mappedCorpTimezone}}\",\n  \"dateFormat\": \"{{corpDateFormat}}\",\n  \"timeFormat\": \"{{corpTimeFormat}}\",\n  \"enableSsoLogin\": false,\n  \"b2cInstance\": null,\n  \"b2cDomainName\": null,\n  \"b2cSigninSignupPolicy\": null,\n  \"b2cClientId\": null,\n  \"sessionTimeoutLimit\": null,\n  \"enableMfa\": false,\n  \"otpMaxAttempts\": null,\n  \"otpExpirationTime\": null,\n  \"passwordExpirationPeriod\": null,\n  \"currencySymbol\": \"{{corpCurrencySymbol}}\",\n  \"currencyRoundOff\": \"{{corpDecimals}}\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Corporates/createcorporate"
+      },
+      "response": []
+    },
+    {
+      "name": "Create Brand",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var testCaseId = pm.collectionVariables.get('testCaseId');",
+              "var suffix = testCaseId.replace('TC_', '');",
+              "var uniquePart = Date.now().toString().slice(-6) + Math.floor(Math.random() * 1000);",
+              "var brandCode = 'Brand_' + suffix + '_' + uniquePart;",
+              "var brandName = 'Brand ' + brandCode;",
+              "pm.collectionVariables.set('brandCode', brandCode);",
+              "pm.collectionVariables.set('brandName', brandName);",
+              "var dialCodeMap = { 'USA': '+1', 'IND': '+91', 'GBR': '+44', 'SGP': '+65', 'AUS': '+61', 'DEU': '+49', 'ARE': '+971', 'JPN': '+81', 'KOR': '+82', 'MEX': '+52', 'ZAF': '+27', 'BRA': '+55' };",
+              "var brandCountry = pm.collectionVariables.get('brandCountryCode') || pm.collectionVariables.get('corpCountry');",
+              "pm.collectionVariables.set('brandCountry', brandCountry);",
+              "pm.collectionVariables.set('brandDialCode', dialCodeMap[brandCountry] || '+1');",
+              "pm.collectionVariables.set('brandCurrencySymbol', pm.collectionVariables.get('corpCurrency'));",
+              "console.log('Creating Brand: ' + brandCode + ' / ' + brandName + ' under CorporateId: ' + pm.collectionVariables.get('corporateId'));"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Create Brand - Status 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Create Brand - Success', function () { var jsonData = pm.response.json(); pm.expect(jsonData.successCode).to.eql(1); pm.expect(jsonData.brandId, 'brandId should be present').to.exist; pm.collectionVariables.set('brandId', jsonData.brandId); console.log('Brand ID set: ' + jsonData.brandId); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "x-transaction-id", "value": "{{transactionId}}" }
+        ],
+        "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandCode\": \"{{brandCode}}\",\n  \"brandName\": \"{{brandName}}\",\n  \"brandDescription\": \"Auto created brand for {{testCaseId}} - {{subCategory}}\",\n  \"brandStatus\": \"Active\",\n  \"marketSegment\": null,\n  \"contactPersonFirstName\": \"Brand\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"{{brandDialCode}}\",\n  \"dialCountryCode\": \"{{brandCountry}}\",\n  \"contactPersonPhone\": \"9000000002\",\n  \"contactPersonEmail\": \"brand.{{brandCode}}@test.com\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Brands/createbrand"
+      },
+      "response": []
+    },
+    {
+      "name": "Create Hotel Group",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var testCaseId = pm.collectionVariables.get('testCaseId');",
+              "var suffix = testCaseId.replace('TC_', '');",
+              "var uniquePart = Date.now().toString().slice(-6) + Math.floor(Math.random() * 1000);",
+              "var hgCode = 'HG_' + suffix + '_' + uniquePart;",
+              "var hgName = 'HG ' + hgCode;",
+              "pm.collectionVariables.set('hgCode', hgCode);",
+              "pm.collectionVariables.set('hgName', hgName);",
+              "var dialCodeMap = { 'USA': '+1', 'IND': '+91', 'GBR': '+44', 'SGP': '+65', 'AUS': '+61', 'DEU': '+49', 'ARE': '+971', 'JPN': '+81', 'KOR': '+82', 'MEX': '+52', 'ZAF': '+27', 'BRA': '+55' };",
+              "var hgCountry = pm.collectionVariables.get('hgCountryCode') || pm.collectionVariables.get('corpCountry');",
+              "pm.collectionVariables.set('hgCountry', hgCountry);",
+              "pm.collectionVariables.set('hgDialCode', dialCodeMap[hgCountry] || '+1');",
+              "console.log('Creating Hotel Group: ' + hgCode + ' / ' + hgName + ' under CorporateId: ' + pm.collectionVariables.get('corporateId') + ' BrandId: ' + pm.collectionVariables.get('brandId'));"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Create Hotel Group - Status 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Create Hotel Group - Success', function () { var jsonData = pm.response.json(); pm.expect(jsonData.successCode).to.eql(1); pm.expect(jsonData.hotelGroupId, 'hotelGroupId should be present').to.exist; pm.collectionVariables.set('hotelGroupId', jsonData.hotelGroupId); console.log('Hotel Group ID set: ' + jsonData.hotelGroupId); });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "x-transaction-id", "value": "{{transactionId}}" }
+        ],
+        "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupCode\": \"{{hgCode}}\",\n  \"hotelGroupName\": \"{{hgName}}\",\n  \"hotelGroupDescription\": \"Auto created HG for {{testCaseId}} - {{subCategory}}\",\n  \"contactPersonFirstName\": \"HG\",\n  \"contactPersonLastName\": \"Auto\",\n  \"dialCode\": \"{{hgDialCode}}\",\n  \"dialCountryCode\": \"{{hgCountry}}\",\n  \"contactPersonPhone\": \"9000000003\",\n  \"contactPersonEmail\": \"hg.{{hgCode}}@test.com\",\n  \"hotelGroupStatus\": \"Active\",\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/HotelGroups/createhotelgroup"
+      },
+      "response": []
+    },
+    {
+      "name": "Create Hotel",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "var testCaseId = pm.collectionVariables.get('testCaseId');",
+              "var suffix = testCaseId.replace('TC_', '');",
+              "var uniquePart = Date.now().toString().slice(-6) + Math.floor(Math.random() * 1000);",
+              "var hotelCode = 'HTL_' + suffix + '_' + uniquePart;",
+              "var hotelName = 'Hotel ' + hotelCode;",
+              "pm.collectionVariables.set('hotelCode', hotelCode);",
+              "pm.collectionVariables.set('hotelName', hotelName);",
+              "var dialCodeMap = { 'USA': '+1', 'IND': '+91', 'GBR': '+44', 'SGP': '+65', 'AUS': '+61', 'DEU': '+49', 'ARE': '+971', 'JPN': '+81', 'KOR': '+82', 'MEX': '+52', 'ZAF': '+27', 'BRA': '+55' };",
+              "var hotelCountry = pm.collectionVariables.get('hotelCountry');",
+              "pm.collectionVariables.set('hotelDialCode', dialCodeMap[hotelCountry] || '+1');",
+              "var timezoneMap = { 'UTC-05:00': 'EDT', 'UTC-06:00': 'CST', 'UTC+00:00': 'UTC', 'UTC+01:00': 'CET', 'UTC+02:00': 'SAST', 'UTC+04:00': 'GST', 'UTC+05:30': 'IST', 'UTC+08:00': 'SGT', 'UTC+09:00': 'JST', 'UTC+10:00': 'AEST' };",
+              "pm.collectionVariables.set('mappedHotelTimezone', timezoneMap[pm.collectionVariables.get('hotelTimezone')] || 'UTC');",
+              "pm.collectionVariables.set('hotelCurrencySymbol', pm.collectionVariables.get('hotelCurrency'));",
+              "console.log('Creating Hotel: ' + hotelCode + ' / ' + hotelName + ' under CorporateId: ' + pm.collectionVariables.get('corporateId') + ' BrandId: ' + pm.collectionVariables.get('brandId') + ' HotelGroupId: ' + pm.collectionVariables.get('hotelGroupId'));"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test('Create Hotel - Status 200', function () { pm.response.to.have.status(200); });",
+              "pm.test('Create Hotel - Success', function () { var jsonData = pm.response.json(); pm.expect(jsonData.successCode).to.eql(1); pm.expect(jsonData.hotelId, 'hotelId should be present').to.exist; pm.collectionVariables.set('hotelId', jsonData.hotelId); var currentIndex = parseInt(pm.collectionVariables.get('currentCaseIndex') || '0', 10); var total = parseInt(pm.collectionVariables.get('embeddedTestCaseCount') || '0', 10); console.log('=== TC COMPLETED: ' + pm.collectionVariables.get('testCaseId') + ' ==='); console.log('Summary => CorpId: ' + pm.collectionVariables.get('corporateId') + ' | BrandId: ' + pm.collectionVariables.get('brandId') + ' | HGId: ' + pm.collectionVariables.get('hotelGroupId') + ' | HotelId: ' + jsonData.hotelId + ' | x-transaction-id: ' + pm.collectionVariables.get('transactionId')); var nextIndex = currentIndex + 1; if (nextIndex < total) { pm.collectionVariables.set('currentCaseIndex', String(nextIndex)); console.log('Moving to next test case index: ' + nextIndex); pm.execution.setNextRequest('Create Corporate'); } else { console.log('All embedded test cases completed. Total completed: ' + total); pm.collectionVariables.set('currentCaseIndex', '0'); pm.execution.setNextRequest(null); } });"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "x-transaction-id", "value": "{{transactionId}}" }
+        ],
+        "auth": { "type": "bearer", "bearer": [ { "key": "token", "value": "{{authToken}}", "type": "string" } ] },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"corporateId\": {{corporateId}},\n  \"brandId\": {{brandId}},\n  \"hotelGroupId\": {{hotelGroupId}},\n  \"regionId\": null,\n  \"hotelCode\": \"{{hotelCode}}\",\n  \"hotelName\": \"{{hotelName}}\",\n  \"firstName\": \"Hotel\",\n  \"lastName\": \"Auto\",\n  \"addressLine1\": \"Test Hotel Address\",\n  \"addressLine2\": null,\n  \"city\": \"Test City\",\n  \"stateProvince\": \"Test State\",\n  \"postalCode\": \"10001\",\n  \"countryCode\": \"{{hotelCountry}}\",\n  \"dialCode\": \"{{hotelDialCode}}\",\n  \"dialCountryCode\": \"{{hotelCountry}}\",\n  \"mobileNumber\": \"9000000004\",\n  \"email\": \"hotel.{{hotelCode}}@test.com\",\n  \"timezone\": \"{{mappedHotelTimezone}}\",\n  \"hotelStatus\": \"Active\",\n  \"currencySymbol\": \"{{hotelCurrencySymbol}}\",\n  \"currencyRoundOff\": \"{{hotelDecimals}}\",\n  \"paymentTypes\": null,\n  \"dateFormat\": \"{{hotelDateFormat}}\",\n  \"timeFormat\": \"{{hotelTimeFormat}}\",\n  \"hotelDescription\": \"Auto created hotel for {{testCaseId}} - {{subCategory}}\",\n  \"sourceGroup\": null,\n  \"sourceSubGroup\": null,\n  \"sourceUserName\": null,\n  \"sourcePassword\": null,\n  \"systemId\": null,\n  \"createdBy\": {{loggedInUserId}},\n  \"requestedBy\": {{loggedInUserId}}\n}",
+          "options": { "raw": { "language": "json" } }
+        },
+        "url": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0/Hotels/createhotel"
+      },
+      "response": []
+    }
+  ]
+}
