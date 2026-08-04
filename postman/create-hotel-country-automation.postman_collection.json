@@ -23,9 +23,12 @@
               "}",
               "",
               "const transactionId = generateGuid();",
-              "pm.collectionVariables.set(\"x_transaction_id_login\", transactionId);",
+              "const sessionId = generateGuid();",
               "",
-              "console.log(`Login request - x-transaction-id: ${transactionId}`);"
+              "pm.collectionVariables.set(\"x_transaction_id_login\", transactionId);",
+              "pm.collectionVariables.set(\"x_session_id\", sessionId);",
+              "",
+              "console.log(`Login request - x-transaction-id: ${transactionId}, x-session-id: ${sessionId}`);"
             ]
           }
         },
@@ -59,7 +62,8 @@
               "pm.collectionVariables.set(\"login_corporate_id_from_response\", String(loginJson.corporateId));",
               "",
               "if (loginJson.sessionId) {",
-              "    pm.collectionVariables.set(\"login_session_id\", String(loginJson.sessionId));",
+              "    pm.collectionVariables.set(\"login_session_id_from_response\", String(loginJson.sessionId));",
+              "    console.log(\"Login response sessionId:\", loginJson.sessionId);",
               "}",
               "",
               "console.log(\"Login completed. corporateId:\", loginJson.corporateId, \"userId:\", loginJson.userId);",
@@ -79,7 +83,13 @@
             "key": "x-transaction-id",
             "value": "{{x_transaction_id_login}}",
             "type": "text",
-            "description": "Required GUID for transaction tracking. Auto-generated in pre-request script."
+            "description": "Mandatory transaction correlation ID. Must be a valid UUID (GUID) format."
+          },
+          {
+            "key": "x-session-id",
+            "value": "{{x_session_id}}",
+            "type": "text",
+            "description": "Optional session correlation ID for tracking user sessions across requests."
           }
         ],
         "body": {
@@ -246,7 +256,7 @@
               "const transactionId = generateGuid();",
               "pm.collectionVariables.set(\"x_transaction_id\", transactionId);",
               "",
-              "console.log(`Processing country ${sequence}/${codes.length}: alpha-3=${alpha3}, hotelCode=${hotelCode}, hotelName=${hotelName}, x-transaction-id=${transactionId}`);"
+              "console.log(`Processing country ${sequence}/${codes.length}: alpha-3=${alpha3}, hotelCode=${hotelCode}, hotelName=${hotelName}, x-transaction-id=${transactionId}, x-session-id=${pm.collectionVariables.get(\"x_session_id\")}`);"
             ]
           }
         },
@@ -421,13 +431,13 @@
             "key": "x-transaction-id",
             "value": "{{x_transaction_id}}",
             "type": "text",
-            "description": "Required GUID for transaction tracking. Auto-generated in pre-request script."
+            "description": "Mandatory transaction correlation ID. Must be a valid UUID (GUID) format."
           },
           {
-            "key": "sessionId",
-            "value": "{{login_session_id}}",
-            "disabled": true,
-            "description": "Enable this header only if the CreateHotel API requires sessionId from login response."
+            "key": "x-session-id",
+            "value": "{{x_session_id}}",
+            "type": "text",
+            "description": "Optional session correlation ID for tracking user sessions across requests."
           }
         ],
         "body": {
