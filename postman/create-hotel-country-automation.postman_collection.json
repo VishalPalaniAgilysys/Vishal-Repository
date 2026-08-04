@@ -207,7 +207,19 @@
               "pm.collectionVariables.set(\"current_hotel_name\", hotelName);",
               "pm.collectionVariables.set(\"current_sequence\", String(sequence));",
               "",
-              "console.log(`Processing country ${sequence}/${codes.length}: alpha-3=${alpha3}, hotelCode=${hotelCode}, hotelName=${hotelName}`);"
+              "// Generate a valid GUID (UUID v4) for x-transaction-id header",
+              "function generateGuid() {",
+              "    return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {",
+              "        const r = Math.random() * 16 | 0;",
+              "        const v = c === 'x' ? r : (r & 0x3 | 0x8);",
+              "        return v.toString(16);",
+              "    });",
+              "}",
+              "",
+              "const transactionId = generateGuid();",
+              "pm.collectionVariables.set(\"x_transaction_id\", transactionId);",
+              "",
+              "console.log(`Processing country ${sequence}/${codes.length}: alpha-3=${alpha3}, hotelCode=${hotelCode}, hotelName=${hotelName}, x-transaction-id=${transactionId}`);"
             ]
           }
         },
@@ -379,6 +391,12 @@
             "value": "application/json"
           },
           {
+            "key": "x-transaction-id",
+            "value": "{{x_transaction_id}}",
+            "type": "text",
+            "description": "Required GUID for transaction tracking. Auto-generated in pre-request script."
+          },
+          {
             "key": "sessionId",
             "value": "{{login_session_id}}",
             "disabled": true,
@@ -387,7 +405,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"corporateId\": {{login_corporate_id_from_response}},\n  \"brandId\": null,\n  \"brandCode\": \"{{brand_code}}\",\n  \"hotelGroupId\": null,\n  \"regionId\": null,\n  \"hotelCode\": \"{{current_hotel_code}}\",\n  \"hotelName\": \"{{current_hotel_name}}\",\n  \"firstName\": \"Auto\",\n  \"lastName\": \"Tester\",\n  \"contactPersonFirstName\": \"Auto\",\n  \"contactPersonLastName\": \"Tester\",\n  \"addressLine1\": \"Automation Address 1\",\n  \"addressLine2\": null,\n  \"city\": \"Automation City\",\n  \"stateProvince\": \"Automation State\",\n  \"postalCode\": \"000000\",\n  \"countryCode\": \"{{current_alpha3}}\",\n  \"dialCode\": \"{{default_dial_code}}\",\n  \"dialCountryCode\": \"{{default_dial_country_code}}\",\n  \"mobileNumber\": \"9876543210\",\n  \"contactPersonPhone\": \"9876543210\",\n  \"email\": \"createhotel.{{current_alpha3}}.{{current_sequence}}@example.com\",\n  \"contactPersonEmail\": \"createhotel.{{current_alpha3}}.{{current_sequence}}@example.com\",\n  \"timezone\": \"{{default_timezone}}\",\n  \"hotelStatus\": \"Active\",\n  \"currencySymbol\": \"{{default_currency_symbol}}\",\n  \"currencyRoundOff\": \"{{default_currency_round_off}}\",\n  \"paymentTypes\": \"AX\",\n  \"dateFormat\": \"{{default_date_format}}\",\n  \"timeFormat\": \"{{default_time_format}}\",\n  \"hotelDescription\": null,\n  \"sourceGroup\": null,\n  \"sourceSubGroup\": null,\n  \"sourceUserName\": null,\n  \"sourcePassword\": null,\n  \"systemId\": null,\n  \"createdBy\": {{login_user_id}},\n  \"requestedBy\": {{login_user_id}}\n}"
+          "raw": "{\n  \"corporateId\": {{login_corporate_id_from_response}},\n  \"brandId\": null,\n  \"brandCode\": \"{{brand_code}}\",\n  \"hotelGroupId\": null,\n  \"regionId\": null,\n  \"hotelCode\": \"{{current_hotel_code}}\",\n  \"hotelName\": \"{{current_hotel_name}}\",\n  \"countryCode\": \"{{current_alpha3}}\",\n  \"dialCode\": \"{{default_dial_code}}\",\n  \"dialCountryCode\": \"{{default_dial_country_code}}\",\n  \"timeZone\": \"{{default_timezone}}\",\n  \"currencySymbol\": \"{{default_currency_symbol}}\",\n  \"currencyRoundOff\": {{default_currency_round_off}},\n  \"timeFormat\": \"{{default_time_format}}\",\n  \"dateFormat\": \"{{default_date_format}}\"\n}"
         },
         "url": {
           "raw": "{{base_url}}/Hotels/createhotel",
