@@ -1,0 +1,478 @@
+{
+  "info": {
+    "name": "Create Hotel - One Hotel Per Alpha-3 Country Code",
+    "description": "Postman Collection Runner automation that logs in, loads alpha-3 country codes from the country dataset, and creates one hotel for every unique alpha-3 value.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Login",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Login HTTP status is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "let loginJson = {};",
+              "try {",
+              "    loginJson = pm.response.json();",
+              "} catch (error) {",
+              "    throw new Error(\"Login response is not valid JSON: \" + error.message);",
+              "}",
+              "",
+              "pm.test(\"Login response contains corporateId\", function () {",
+              "    pm.expect(loginJson).to.have.property(\"corporateId\");",
+              "    pm.expect(loginJson.corporateId, \"corporateId from login response\").to.not.be.oneOf([null, undefined, 0, \"\"]);",
+              "});",
+              "",
+              "pm.test(\"Login response contains userId\", function () {",
+              "    pm.expect(loginJson).to.have.property(\"userId\");",
+              "    pm.expect(loginJson.userId, \"userId from login response\").to.not.be.oneOf([null, undefined, 0, \"\"]);",
+              "});",
+              "",
+              "pm.collectionVariables.set(\"login_user_id\", String(loginJson.userId));",
+              "pm.collectionVariables.set(\"login_corporate_id_from_response\", String(loginJson.corporateId));",
+              "",
+              "if (loginJson.sessionId) {",
+              "    pm.collectionVariables.set(\"login_session_id\", String(loginJson.sessionId));",
+              "}",
+              "",
+              "console.log(\"Login completed. corporateId:\", loginJson.corporateId, \"userId:\", loginJson.userId);",
+              "postman.setNextRequest(\"Load Country Codes\");"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"username\": \"{{login_username}}\",\n  \"password\": \"{{login_password}}\",\n  \"corporateId\": {{login_corporate_id}}\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/Auth/login",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "Auth",
+            "login"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Load Country Codes",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "pm.test(\"Country dataset HTTP status is 200\", function () {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "let countryData;",
+              "try {",
+              "    countryData = pm.response.json();",
+              "} catch (error) {",
+              "    throw new Error(\"Country dataset response is not valid JSON: \" + error.message);",
+              "}",
+              "",
+              "function collectAlpha3Values(node, output) {",
+              "    if (Array.isArray(node)) {",
+              "        node.forEach(item => collectAlpha3Values(item, output));",
+              "        return;",
+              "    }",
+              "",
+              "    if (node && typeof node === \"object\") {",
+              "        if (Object.prototype.hasOwnProperty.call(node, \"alpha-3\")) {",
+              "            const value = String(node[\"alpha-3\"] || \"\").trim().toUpperCase();",
+              "            if (value) {",
+              "                output.push(value);",
+              "            }",
+              "        }",
+              "",
+              "        Object.keys(node).forEach(key => collectAlpha3Values(node[key], output));",
+              "    }",
+              "}",
+              "",
+              "const extractedCodes = [];",
+              "collectAlpha3Values(countryData, extractedCodes);",
+              "const uniqueCodes = Array.from(new Set(extractedCodes));",
+              "",
+              "pm.test(\"At least one alpha-3 country code is extracted\", function () {",
+              "    pm.expect(uniqueCodes.length, \"unique alpha-3 country code count\").to.be.above(0);",
+              "});",
+              "",
+              "pm.test(\"Every extracted alpha-3 value uses 3 uppercase letters\", function () {",
+              "    const invalidCodes = uniqueCodes.filter(code => !/^[A-Z]{3}$/.test(code));",
+              "    pm.expect(invalidCodes, \"invalid alpha-3 values\").to.eql([]);",
+              "});",
+              "",
+              "pm.collectionVariables.set(\"country_alpha3_codes\", JSON.stringify(uniqueCodes));",
+              "pm.collectionVariables.set(\"country_alpha3_total\", String(uniqueCodes.length));",
+              "pm.collectionVariables.set(\"country_alpha3_index\", \"0\");",
+              "pm.collectionVariables.set(\"createHotel_processed_count\", \"0\");",
+              "pm.collectionVariables.set(\"createHotel_passed_count\", \"0\");",
+              "pm.collectionVariables.set(\"createHotel_failed_count\", \"0\");",
+              "pm.collectionVariables.set(\"createHotel_failed_codes\", JSON.stringify([]));",
+              "pm.collectionVariables.unset(\"createHotel_summary\");",
+              "pm.collectionVariables.unset(\"current_alpha3\");",
+              "pm.collectionVariables.unset(\"current_hotel_code\");",
+              "pm.collectionVariables.unset(\"current_hotel_name\");",
+              "",
+              "console.log(\"Unique alpha-3 country codes loaded:\", uniqueCodes.length);",
+              "console.log(uniqueCodes);",
+              "postman.setNextRequest(pm.collectionVariables.get(\"createHotel_request_name\") || \"Create Hotel For Current Country\");"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{country_dataset_url}}",
+          "host": [
+            "{{country_dataset_url}}"
+          ]
+        }
+      },
+      "response": []
+    },
+    {
+      "name": "Create Hotel For Current Country",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "function getCollectionNumber(name, defaultValue) {",
+              "    const raw = pm.collectionVariables.get(name);",
+              "    const parsed = Number(raw);",
+              "    return Number.isFinite(parsed) ? parsed : defaultValue;",
+              "}",
+              "",
+              "const codesRaw = pm.collectionVariables.get(\"country_alpha3_codes\");",
+              "if (!codesRaw) {",
+              "    throw new Error(\"country_alpha3_codes is missing. Run the collection from the Login request so Load Country Codes executes first.\");",
+              "}",
+              "",
+              "let codes;",
+              "try {",
+              "    codes = JSON.parse(codesRaw);",
+              "} catch (error) {",
+              "    throw new Error(\"country_alpha3_codes is not valid JSON: \" + error.message);",
+              "}",
+              "",
+              "if (!Array.isArray(codes) || codes.length === 0) {",
+              "    throw new Error(\"No alpha-3 country codes are available to process.\");",
+              "}",
+              "",
+              "const index = getCollectionNumber(\"country_alpha3_index\", 0);",
+              "",
+              "if (index >= codes.length) {",
+              "    console.log(\"No remaining country codes. Stopping CreateHotel loop.\");",
+              "    postman.setNextRequest(null);",
+              "    return;",
+              "}",
+              "",
+              "const alpha3 = String(codes[index]).trim().toUpperCase();",
+              "if (!/^[A-Z]{3}$/.test(alpha3)) {",
+              "    throw new Error(`Invalid alpha-3 code at index ${index}: ${alpha3}`);",
+              "}",
+              "",
+              "const sequence = index + 1;",
+              "const sequencePadded = String(sequence).padStart(3, \"0\");",
+              "const timestampSuffix = String(Date.now()).slice(-6);",
+              "const hotelCode = `TC${sequencePadded}${alpha3}${timestampSuffix}`;",
+              "const hotelName = `TC_${sequencePadded}`;",
+              "",
+              "pm.collectionVariables.set(\"current_alpha3\", alpha3);",
+              "pm.collectionVariables.set(\"current_hotel_code\", hotelCode);",
+              "pm.collectionVariables.set(\"current_hotel_name\", hotelName);",
+              "pm.collectionVariables.set(\"current_sequence\", String(sequence));",
+              "",
+              "console.log(`Processing country ${sequence}/${codes.length}: alpha-3=${alpha3}, hotelCode=${hotelCode}, hotelName=${hotelName}`);"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "function getCollectionNumber(name, defaultValue) {",
+              "    const raw = pm.collectionVariables.get(name);",
+              "    const parsed = Number(raw);",
+              "    return Number.isFinite(parsed) ? parsed : defaultValue;",
+              "}",
+              "",
+              "function getJsonBodySafely() {",
+              "    try {",
+              "        return pm.response.json();",
+              "    } catch (error) {",
+              "        return null;",
+              "    }",
+              "}",
+              "",
+              "function responseContainsFailure(body) {",
+              "    if (!body || typeof body !== \"object\") {",
+              "        return false;",
+              "    }",
+              "",
+              "    const errorCode = body.errorCode;",
+              "    const errorMessage = body.errorMessage;",
+              "    const success = body.success;",
+              "    const succeeded = body.succeeded;",
+              "    const isSuccess = body.isSuccess;",
+              "    const successCode = body.successCode;",
+              "    const status = typeof body.status === \"string\" ? body.status.toLowerCase() : \"\";",
+              "    const message = typeof body.message === \"string\" ? body.message.toLowerCase() : \"\";",
+              "",
+              "    if (success === false || succeeded === false || isSuccess === false) {",
+              "        return true;",
+              "    }",
+              "",
+              "    if (errorCode && String(errorCode).trim() !== \"\" && String(errorCode).trim() !== \"0\") {",
+              "        return true;",
+              "    }",
+              "",
+              "    if (errorMessage && String(errorMessage).trim() !== \"\") {",
+              "        return true;",
+              "    }",
+              "",
+              "    if (status.includes(\"fail\") || status.includes(\"error\")) {",
+              "        return true;",
+              "    }",
+              "",
+              "    if (message.includes(\"fail\") || message.includes(\"error\")) {",
+              "        return true;",
+              "    }",
+              "",
+              "    if (successCode !== undefined && successCode !== null) {",
+              "        const normalizedSuccessCode = String(successCode).trim().toLowerCase();",
+              "        if ([\"false\", \"failed\", \"failure\", \"error\"].includes(normalizedSuccessCode)) {",
+              "            return true;",
+              "        }",
+              "    }",
+              "",
+              "    return false;",
+              "}",
+              "",
+              "const alpha3 = pm.collectionVariables.get(\"current_alpha3\");",
+              "const hotelCode = pm.collectionVariables.get(\"current_hotel_code\");",
+              "const hotelName = pm.collectionVariables.get(\"current_hotel_name\");",
+              "const codes = JSON.parse(pm.collectionVariables.get(\"country_alpha3_codes\") || \"[]\");",
+              "const total = getCollectionNumber(\"country_alpha3_total\", codes.length);",
+              "let index = getCollectionNumber(\"country_alpha3_index\", 0);",
+              "",
+              "const responseBody = getJsonBodySafely();",
+              "const httpStatusValid = [200, 201].includes(pm.response.code);",
+              "const explicitFailure = responseContainsFailure(responseBody);",
+              "const createSucceeded = httpStatusValid && !explicitFailure;",
+              "",
+              "pm.test(`HTTP status is 200 or 201 for alpha-3 ${alpha3}`, function () {",
+              "    pm.expect(pm.response.code, `HTTP status for ${alpha3}`).to.be.oneOf([200, 201]);",
+              "});",
+              "",
+              "pm.test(`Hotel creation succeeded for supplied alpha-3 ${alpha3}`, function () {",
+              "    pm.expect(createSucceeded, `CreateHotel failed for alpha-3=${alpha3}. Response: ${pm.response.text()}`).to.eql(true);",
+              "});",
+              "",
+              "if (responseBody && Object.prototype.hasOwnProperty.call(responseBody, \"countryCode\")) {",
+              "    pm.test(`Response countryCode matches supplied alpha-3 ${alpha3}`, function () {",
+              "        pm.expect(String(responseBody.countryCode).trim().toUpperCase()).to.eql(alpha3);",
+              "    });",
+              "}",
+              "",
+              "if (responseBody && Object.prototype.hasOwnProperty.call(responseBody, \"hotelCode\")) {",
+              "    pm.test(`Response hotelCode matches generated hotelCode for ${alpha3}`, function () {",
+              "        pm.expect(String(responseBody.hotelCode).trim()).to.eql(hotelCode);",
+              "    });",
+              "}",
+              "",
+              "let processedCount = getCollectionNumber(\"createHotel_processed_count\", 0) + 1;",
+              "let passedCount = getCollectionNumber(\"createHotel_passed_count\", 0);",
+              "let failedCount = getCollectionNumber(\"createHotel_failed_count\", 0);",
+              "let failedCodes;",
+              "",
+              "try {",
+              "    failedCodes = JSON.parse(pm.collectionVariables.get(\"createHotel_failed_codes\") || \"[]\");",
+              "    if (!Array.isArray(failedCodes)) {",
+              "        failedCodes = [];",
+              "    }",
+              "} catch (error) {",
+              "    failedCodes = [];",
+              "}",
+              "",
+              "if (createSucceeded) {",
+              "    passedCount += 1;",
+              "    console.log(`PASS: alpha-3=${alpha3}, hotelCode=${hotelCode}, hotelName=${hotelName}`);",
+              "} else {",
+              "    failedCount += 1;",
+              "    const failureDetail = {",
+              "        alpha3,",
+              "        hotelCode,",
+              "        hotelName,",
+              "        status: pm.response.code,",
+              "        response: pm.response.text()",
+              "    };",
+              "    failedCodes.push(failureDetail);",
+              "    console.error(\"FAIL:\", failureDetail);",
+              "}",
+              "",
+              "pm.collectionVariables.set(\"createHotel_processed_count\", String(processedCount));",
+              "pm.collectionVariables.set(\"createHotel_passed_count\", String(passedCount));",
+              "pm.collectionVariables.set(\"createHotel_failed_count\", String(failedCount));",
+              "pm.collectionVariables.set(\"createHotel_failed_codes\", JSON.stringify(failedCodes));",
+              "",
+              "index += 1;",
+              "pm.collectionVariables.set(\"country_alpha3_index\", String(index));",
+              "",
+              "if (index < total) {",
+              "    postman.setNextRequest(pm.collectionVariables.get(\"createHotel_request_name\") || \"Create Hotel For Current Country\");",
+              "} else {",
+              "    const summary = {",
+              "        totalCountryCodes: total,",
+              "        processed: processedCount,",
+              "        passed: passedCount,",
+              "        failed: failedCount,",
+              "        failedCountryCodes: failedCodes.map(item => item.alpha3),",
+              "        failedDetails: failedCodes",
+              "    };",
+              "",
+              "    pm.collectionVariables.set(\"createHotel_summary\", JSON.stringify(summary, null, 2));",
+              "",
+              "    pm.test(\"Total hotel creation requests equals total unique alpha-3 country codes\", function () {",
+              "        pm.expect(processedCount).to.eql(total);",
+              "    });",
+              "",
+              "    console.log(\"CreateHotel country automation completed.\");",
+              "    console.log(\"SUMMARY:\", summary);",
+              "    console.table(summary.failedDetails);",
+              "    postman.setNextRequest(null);",
+              "}"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          },
+          {
+            "key": "sessionId",
+            "value": "{{login_session_id}}",
+            "disabled": true,
+            "description": "Enable this header only if the CreateHotel API requires sessionId from login response."
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"corporateId\": {{login_corporate_id_from_response}},\n  \"brandId\": null,\n  \"brandCode\": \"{{brand_code}}\",\n  \"hotelGroupId\": null,\n  \"regionId\": null,\n  \"hotelCode\": \"{{current_hotel_code}}\",\n  \"hotelName\": \"{{current_hotel_name}}\",\n  \"firstName\": \"Auto\",\n  \"lastName\": \"Tester\",\n  \"contactPersonFirstName\": \"Auto\",\n  \"contactPersonLastName\": \"Tester\",\n  \"addressLine1\": \"Automation Address 1\",\n  \"addressLine2\": null,\n  \"city\": \"Automation City\",\n  \"stateProvince\": \"Automation State\",\n  \"postalCode\": \"000000\",\n  \"countryCode\": \"{{current_alpha3}}\",\n  \"dialCode\": \"{{default_dial_code}}\",\n  \"dialCountryCode\": \"{{default_dial_country_code}}\",\n  \"mobileNumber\": \"9876543210\",\n  \"contactPersonPhone\": \"9876543210\",\n  \"email\": \"createhotel.{{current_alpha3}}.{{current_sequence}}@example.com\",\n  \"contactPersonEmail\": \"createhotel.{{current_alpha3}}.{{current_sequence}}@example.com\",\n  \"timezone\": \"{{default_timezone}}\",\n  \"hotelStatus\": \"Active\",\n  \"currencySymbol\": \"{{default_currency_symbol}}\",\n  \"currencyRoundOff\": \"{{default_currency_round_off}}\",\n  \"paymentTypes\": \"AX\",\n  \"dateFormat\": \"{{default_date_format}}\",\n  \"timeFormat\": \"{{default_time_format}}\",\n  \"hotelDescription\": null,\n  \"sourceGroup\": null,\n  \"sourceSubGroup\": null,\n  \"sourceUserName\": null,\n  \"sourcePassword\": null,\n  \"systemId\": null,\n  \"createdBy\": {{login_user_id}},\n  \"requestedBy\": {{login_user_id}}\n}"
+        },
+        "url": {
+          "raw": "{{base_url}}/Hotels/createhotel",
+          "host": [
+            "{{base_url}}"
+          ],
+          "path": [
+            "Hotels",
+            "createhotel"
+          ]
+        }
+      },
+      "response": []
+    }
+  ],
+  "variable": [
+    {
+      "key": "base_url",
+      "value": "https://aks-crs-qa.hospitalityrevolution.com/api/v1.0",
+      "type": "string"
+    },
+    {
+      "key": "country_dataset_url",
+      "value": "https://aks-crs-qaint.hospitalityrevolution.com/assets/Country_Code.json",
+      "type": "string"
+    },
+    {
+      "key": "login_username",
+      "value": "jdoe",
+      "type": "string"
+    },
+    {
+      "key": "login_password",
+      "value": "P@ssw0rd!",
+      "type": "string"
+    },
+    {
+      "key": "login_corporate_id",
+      "value": "12345",
+      "type": "string"
+    },
+    {
+      "key": "brand_code",
+      "value": "QA",
+      "type": "string"
+    },
+    {
+      "key": "default_dial_code",
+      "value": "+1",
+      "type": "string"
+    },
+    {
+      "key": "default_dial_country_code",
+      "value": "USA",
+      "type": "string"
+    },
+    {
+      "key": "default_timezone",
+      "value": "UTC",
+      "type": "string"
+    },
+    {
+      "key": "default_currency_symbol",
+      "value": "USD",
+      "type": "string"
+    },
+    {
+      "key": "default_currency_round_off",
+      "value": "2",
+      "type": "string"
+    },
+    {
+      "key": "default_time_format",
+      "value": "HH:mm",
+      "type": "string"
+    },
+    {
+      "key": "default_date_format",
+      "value": "YYYY-MM-DD",
+      "type": "string"
+    },
+    {
+      "key": "createHotel_request_name",
+      "value": "Create Hotel For Current Country",
+      "type": "string"
+    }
+  ]
+}
