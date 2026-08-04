@@ -442,7 +442,7 @@
         ],
         "body": {
           "mode": "raw",
-          "raw": "{\n  \"corporateId\": {{login_corporate_id_from_response}},\n  \"brandId\": null,\n  \"brandCode\": \"{{brand_code}}\",\n  \"hotelGroupId\": null,\n  \"regionId\": null,\n  \"hotelCode\": \"{{current_hotel_code}}\",\n  \"hotelName\": \"{{current_hotel_name}}\",\n  \"countryCode\": \"{{current_alpha3}}\",\n  \"dialCode\": \"{{default_dial_code}}\",\n  \"dialCountryCode\": \"{{default_dial_country_code}}\",\n  \"timeZone\": \"{{default_timezone}}\",\n  \"currencySymbol\": \"{{default_currency_symbol}}\",\n  \"currencyRoundOff\": {{default_currency_round_off}},\n  \"timeFormat\": \"{{default_time_format}}\",\n  \"dateFormat\": \"{{default_date_format}}\"\n}"
+          "raw": "{\n  \"corporateId\": {{login_corporate_id_from_response}},\n  \"brandId\": null,\n  \"brandCode\": \"{{brand_code}}\",\n  \"hotelGroupId\": null,\n  \"regionId\": null,\n  \"hotelCode\": \"{{current_hotel_code}}\",\n  \"hotelName\": \"{{current_hotel_name}}\",\n  \"countryCode\": \"{{current_alpha3}}\",\n  \"dialCode\": \"{{default_dial_code}}\",\n  \"dialCountryCode\": \"{{default_dial_country_code}}\",\n  \"timeZone\": \"{{default_timezone}}\",\n  \"currencySymbol\": \"{{default_currency_symbol}}\",\n  \"currencyRoundOff\": {{default_currency_round_off}},\n  \"timeFormat\": \"{{default_time_format}}\",\n  \"dateFormat\": \"{{default_date_format}}\",\n  \"firstName\": \"{{hotel_first_name}}\",\n  \"lastName\": \"{{hotel_last_name}}\",\n  \"addressLine1\": \"{{hotel_address_line1}}\",\n  \"addressLine2\": \"{{hotel_address_line2}}\",\n  \"city\": \"{{hotel_city}}\",\n  \"stateProvince\": \"{{hotel_state_province}}\",\n  \"postalCode\": \"{{hotel_postal_code}}\",\n  \"mobileNumber\": \"{{hotel_mobile_number}}\",\n  \"email\": \"{{hotel_email}}\",\n  \"hotelStatus\": \"{{hotel_status}}\",\n  \"createdBy\": {{login_user_id}}\n}"
         },
         "url": {
           "raw": "{{base_url}}/Hotels/createhotel",
@@ -527,6 +527,56 @@
     {
       "key": "createHotel_request_name",
       "value": "Create Hotel For Current Country",
+      "type": "string"
+    },
+    {
+      "key": "hotel_first_name",
+      "value": "Test",
+      "type": "string"
+    },
+    {
+      "key": "hotel_last_name",
+      "value": "Contact",
+      "type": "string"
+    },
+    {
+      "key": "hotel_address_line1",
+      "value": "123 Main Street",
+      "type": "string"
+    },
+    {
+      "key": "hotel_address_line2",
+      "value": "Suite 100",
+      "type": "string"
+    },
+    {
+      "key": "hotel_city",
+      "value": "Test City",
+      "type": "string"
+    },
+    {
+      "key": "hotel_state_province",
+      "value": "Test State",
+      "type": "string"
+    },
+    {
+      "key": "hotel_postal_code",
+      "value": "12345",
+      "type": "string"
+    },
+    {
+      "key": "hotel_mobile_number",
+      "value": "+1234567890",
+      "type": "string"
+    },
+    {
+      "key": "hotel_email",
+      "value": "hotel@testcountry.com",
+      "type": "string"
+    },
+    {
+      "key": "hotel_status",
+      "value": "Active",
       "type": "string"
     }
   ]
