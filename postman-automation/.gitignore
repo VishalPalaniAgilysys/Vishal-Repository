@@ -1,0 +1,39 @@
+# Postman backups
+*.postman_environment.json.backup
+*.postman_collection.json.backup
+
+# Sensitive data
+*token*.txt
+*secret*.txt
+*password*.txt
+
+# Test results
+newman/
+results/
+*.json.report
+*.html.report
+
+# Logs
+*.log
+logs/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE
+.vscode/
+.idea/
+
+# Node modules
+node_modules/
+package-lock.json
+
+# Environment files
+.env
+.env.local
+
+# Temporary files
+tmp/
+temp/
+*.tmp
