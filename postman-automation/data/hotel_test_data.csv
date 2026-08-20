@@ -1,0 +1,5 @@
+hotelCode,hotelName,status,postalCode,country,timezone,dateFormat,timeFormat,firstName,lastName,countryCode,mobileNumber,currency,roundOff
+BNDF,Hotel Fribourg,Active,456543,Switzerland,Europe/Zurich,DD/MM/YYYY,24 hr,Hotel Fribourg,Hotel Manager,41,56787654,EUR,2 Decimals
+BNDN,Hotel Neuchâtel,Active,345432,Switzerland,Europe/Zurich,DD/MM/YYYY,24 hr,Hotel Neuchâtel,Hotel Manager,41,345676543,EUR,3 Decimals
+BNDS,Hotel Schaffhausen,Active,8765543,Switzerland,Europe/Zurich,DD/MM/YYYY,24 hr,Hotel Schaffhausen,Hotel Manager,41,8765435675,EUR,4 Decimals
+BNDSi,Hotel Sion,Active,234543,Switzerland,Europe/Zurich,DD/MM/YYYY,24 hr,Hotel Sion,Hotel Manager,41,56787654567,EUR,5 Decimals

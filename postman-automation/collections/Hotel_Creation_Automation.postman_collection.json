@@ -1,0 +1,267 @@
+{
+  "info": {
+    "_postman_id": "hotel-creation-automation-001",
+    "name": "Hotel Creation Automation",
+    "description": "Automated bulk hotel creation using test data with validation and error handling. \n\nThis collection creates multiple hotel records via the CRS API using data-driven testing. \nLoad hotel_test_data.csv or hotel_test_data.json as the data file in Collection Runner.",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Create Hotel",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Get iteration data",
+              "const hotelData = pm.iterationData.toObject();",
+              "",
+              "// Generate unique IDs",
+              "const transactionId = pm.variables.replaceIn('{{$guid}}');",
+              "const sessionId = `sess-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;",
+              "",
+              "pm.environment.set('transactionId', transactionId);",
+              "pm.environment.set('sessionId', sessionId);",
+              "",
+              "// Map test data to API format",
+              "const requestBody = {",
+              "  corporateId: parseInt(pm.environment.get('corporateId')) || 1,",
+              "  brandId: parseInt(pm.environment.get('brandId')) || 10,",
+              "  regionId: parseInt(pm.environment.get('regionId')) || 200,",
+              "  hotelCode: hotelData.hotelCode,",
+              "  hotelName: hotelData.hotelName,",
+              "  firstName: hotelData.firstName,",
+              "  lastName: hotelData.lastName,",
+              "  addressLine1: pm.environment.get('defaultAddressLine1') || '123 Main Street',",
+              "  addressLine2: pm.environment.get('defaultAddressLine2') || 'Suite 100',",
+              "  city: pm.environment.get('defaultCity') || 'Zurich',",
+              "  stateProvince: pm.environment.get('defaultStateProvince') || hotelData.country,",
+              "  postalCode: hotelData.postalCode,",
+              "  dialCode: pm.environment.get('defaultDialCode') || 'DIAL001',",
+              "  dialCountryCode: hotelData.countryCode,",
+              "  countryCode: hotelData.countryCode,",
+              "  mobileNumber: hotelData.mobileNumber,",
+              "  email: pm.environment.get('defaultEmail') || `${hotelData.hotelCode.toLowerCase()}@example.com`,",
+              "  timezone: hotelData.timezone,",
+              "  hotelStatus: hotelData.status,",
+              "  currencySymbol: hotelData.currency,",
+              "  dateFormat: hotelData.dateFormat,",
+              "  timeFormat: hotelData.timeFormat === '24 hr' ? 'HH:mm' : 'hh:mm a',",
+              "  hotelDescription: `${hotelData.hotelName} - Auto-created via Postman`,",
+              "  sourceGroup: null,",
+              "  sourceSubGroup: null,",
+              "  sourceUserName: pm.environment.get('sourceUserName') || 'postman.automation',",
+              "  sourceUrl: pm.environment.get('sourceUrl') || 'https://cdn.example.com/images/default.jpg',",
+              "  sourcePassword: pm.environment.get('sourcePassword'),",
+              "  systemId: pm.environment.get('systemId') || 'CRS',",
+              "  createdBy: parseInt(pm.environment.get('createdBy')) || 42,",
+              "  currencyRoundOff: hotelData.roundOff,",
+              "  paymentTypes: pm.environment.get('paymentTypes') || 'CreditCard,Cash',",
+              "  maxDistributionWindow: parseInt(pm.environment.get('maxDistributionWindow')) || 1",
+              "};",
+              "",
+              "pm.environment.set('currentRequestBody', JSON.stringify(requestBody, null, 2));",
+              "pm.environment.set('currentHotelCode', hotelData.hotelCode);",
+              "pm.environment.set('currentHotelName', hotelData.hotelName);",
+              "",
+              "console.log('=== Hotel Creation Request ===');",
+              "console.log('Hotel Code:', hotelData.hotelCode);",
+              "console.log('Hotel Name:', hotelData.hotelName);",
+              "console.log('Transaction ID:', transactionId);"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Parse response",
+              "let responseData;",
+              "try {",
+              "    responseData = pm.response.json();",
+              "} catch (e) {",
+              "    console.error('Failed to parse response:', pm.response.text());",
+              "    pm.test('Response is valid JSON', function() {",
+              "        pm.expect.fail('Response is not valid JSON');",
+              "    });",
+              "    return;",
+              "}",
+              "",
+              "const hotelCode = pm.environment.get('currentHotelCode');",
+              "const hotelName = pm.environment.get('currentHotelName');",
+              "",
+              "console.log('=== Hotel Creation Response ===');",
+              "console.log('Hotel Code:', hotelCode);",
+              "console.log('Status Code:', pm.response.code);",
+              "console.log('Response:', JSON.stringify(responseData, null, 2));",
+              "",
+              "// Validations",
+              "pm.test(`[${hotelCode}] Status code is 200`, function() {",
+              "    pm.response.to.have.status(200);",
+              "});",
+              "",
+              "pm.test(`[${hotelCode}] Response time is less than 5000ms`, function() {",
+              "    pm.expect(pm.response.responseTime).to.be.below(5000);",
+              "});",
+              "",
+              "pm.test(`[${hotelCode}] Response has required fields`, function() {",
+              "    pm.expect(responseData).to.have.property('successCode');",
+              "    pm.expect(responseData).to.have.property('requestId');",
+              "});",
+              "",
+              "pm.test(`[${hotelCode}] Hotel created successfully`, function() {",
+              "    if (responseData.successCode === 1) {",
+              "        pm.expect(responseData).to.have.property('hotelId');",
+              "        pm.expect(responseData.hotelId).to.be.a('number');",
+              "",
+              "        const createdHotels = pm.environment.get('createdHotels') ?",
+              "            JSON.parse(pm.environment.get('createdHotels')) : [];",
+              "        createdHotels.push({",
+              "            hotelCode: hotelCode,",
+              "            hotelName: hotelName,",
+              "            hotelId: responseData.hotelId,",
+              "            timestamp: new Date().toISOString(),",
+              "            requestId: responseData.requestId",
+              "        });",
+              "        pm.environment.set('createdHotels', JSON.stringify(createdHotels));",
+              "        console.log(`✓ SUCCESS: ${hotelName} created with ID: ${responseData.hotelId}`);",
+              "    } else {",
+              "        const failedHotels = pm.environment.get('failedHotels') ?",
+              "            JSON.parse(pm.environment.get('failedHotels')) : [];",
+              "        failedHotels.push({",
+              "            hotelCode: hotelCode,",
+              "            hotelName: hotelName,",
+              "            errorCode: responseData.errorCode,",
+              "            errorMessage: responseData.errorMessage,",
+              "            timestamp: new Date().toISOString()",
+              "        });",
+              "        pm.environment.set('failedHotels', JSON.stringify(failedHotels));",
+              "        console.error(`✗ FAILED: ${hotelName} - ${responseData.errorMessage}`);",
+              "        pm.expect.fail(`Hotel creation failed: ${responseData.errorMessage}`);",
+              "    }",
+              "});",
+              "",
+              "// Cleanup temporary variables",
+              "pm.environment.unset('currentRequestBody');",
+              "pm.environment.unset('currentHotelCode');",
+              "pm.environment.unset('currentHotelName');"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "auth": {
+          "type": "bearer",
+          "bearer": [
+            {
+              "key": "token",
+              "value": "{{bearerToken}}",
+              "type": "string"
+            }
+          ]
+        },
+        "method": "POST",
+        "header": [
+          {
+            "key": "x-transaction-id",
+            "value": "{{transactionId}}",
+            "description": "Mandatory UUID correlation ID (auto-generated in pre-request script)"
+          },
+          {
+            "key": "x-session-id",
+            "value": "{{sessionId}}",
+            "description": "Optional session correlation ID (auto-generated in pre-request script)"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{{currentRequestBody}}",
+          "options": {
+            "raw": {
+              "language": "json"
+            }
+          }
+        },
+        "url": {
+          "raw": "{{baseUrl}}/api/{{apiVersion}}/Hotels/createhotel",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "{{apiVersion}}", "Hotels", "createhotel"]
+        },
+        "description": "Creates a single hotel record. Run via Collection Runner with data file to create multiple hotels."
+      },
+      "response": []
+    },
+    {
+      "name": "Summary Report",
+      "event": [
+        {
+          "listen": "prerequest",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Generate and log final summary report",
+              "const createdHotels = pm.environment.get('createdHotels') ?",
+              "    JSON.parse(pm.environment.get('createdHotels')) : [];",
+              "const failedHotels = pm.environment.get('failedHotels') ?",
+              "    JSON.parse(pm.environment.get('failedHotels')) : [];",
+              "",
+              "console.log('');",
+              "console.log('========================================');",
+              "console.log('       HOTEL CREATION SUMMARY REPORT    ');",
+              "console.log('========================================');",
+              "console.log(`Total Processed : ${createdHotels.length + failedHotels.length}`);",
+              "console.log(`✓ Successful    : ${createdHotels.length}`);",
+              "console.log(`✗ Failed        : ${failedHotels.length}`);",
+              "console.log('');",
+              "",
+              "if (createdHotels.length > 0) {",
+              "    console.log('--- Successfully Created Hotels ---');",
+              "    createdHotels.forEach(h => {",
+              "        console.log(`  [${h.hotelCode}] ${h.hotelName} => ID: ${h.hotelId}`);",
+              "    });",
+              "    console.log('');",
+              "}",
+              "",
+              "if (failedHotels.length > 0) {",
+              "    console.log('--- Failed Hotels ---');",
+              "    failedHotels.forEach(h => {",
+              "        console.log(`  [${h.hotelCode}] ${h.hotelName} => ${h.errorCode}: ${h.errorMessage}`);",
+              "    });",
+              "    console.log('');",
+              "}",
+              "",
+              "console.log('========================================');"
+            ]
+          }
+        },
+        {
+          "listen": "test",
+          "script": {
+            "type": "text/javascript",
+            "exec": [
+              "// Stop the collection run after the summary — no HTTP request is needed here.",
+              "postman.setNextRequest(null);"
+            ]
+          }
+        }
+      ],
+      "request": {
+        "method": "GET",
+        "header": [],
+        "url": {
+          "raw": "{{baseUrl}}",
+          "host": ["{{baseUrl}}"]
+        },
+        "description": "This item does not send a real request. Its pre-request script generates the final summary report and halts the collection run."
+      },
+      "response": []
+    }
+  ],
+  "variable": []
+}
